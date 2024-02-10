@@ -21,6 +21,15 @@ public class UserService {
 
     public Optional<User> getUserById(Long id) { return this.userRepository.findById(id); }
 
-    public User saveUser(User user) { return this.userRepository.save(user); }
+    public User createUser(User user) {
+        // if a user with the given email exists, then don't create a new user
+        if(!this.userRepository.findByEmail(user.getEmail()).isPresent()){
+            // TODO: Password encryption
+            return this.userRepository.save(user);
+        }
+        return null;
+    }
+
+
 
 }

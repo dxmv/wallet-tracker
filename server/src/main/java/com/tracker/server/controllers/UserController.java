@@ -2,6 +2,7 @@ package com.tracker.server.controllers;
 
 import com.tracker.server.models.User;
 import com.tracker.server.services.UserService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -34,6 +35,8 @@ public class UserController {
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@RequestBody User user){
-        return this.userService.saveUser(user);
+        User newUser = this.userService.createUser(user);
+        // TODO: return a better response
+        return newUser;
     }
 }

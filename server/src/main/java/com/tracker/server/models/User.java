@@ -2,8 +2,11 @@ package com.tracker.server.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-@Table(name = "users")
+@Table(name = "USERS")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,6 +14,9 @@ public class User {
 
     private String email;
     private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Wallet> wallets = new ArrayList<Wallet>();
 
     public Long getId() {
         return id;
