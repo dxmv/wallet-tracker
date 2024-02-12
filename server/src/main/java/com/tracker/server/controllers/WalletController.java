@@ -31,4 +31,10 @@ public class WalletController {
         Wallet newWallet = walletService.createWallet(name,userId);
         return newWallet;
     }
+
+    @DeleteMapping("/{walletId}")
+    public String deleteWallet(@PathVariable Long walletId){
+        this.walletService.deleteWallet(walletId);
+        return "Okay";
+    }
 }

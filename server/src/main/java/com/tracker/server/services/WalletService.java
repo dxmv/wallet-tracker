@@ -3,7 +3,6 @@ package com.tracker.server.services;
 
 import com.tracker.server.models.User;
 import com.tracker.server.models.Wallet;
-import com.tracker.server.repositories.UserRepository;
 import com.tracker.server.repositories.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,12 +13,12 @@ import java.util.Optional;
 @Service
 public class WalletService {
     private final WalletRepository walletRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public WalletService(WalletRepository walletRepository,UserRepository userRepository){
+    public WalletService(WalletRepository walletRepository,UserService userService){
         this.walletRepository=walletRepository;
-        this.userRepository=userRepository;
+        this.userService=userService;
     }
 
     public List<Wallet> getAllWallets(){
@@ -31,7 +30,7 @@ public class WalletService {
     }
 
     public Wallet createWallet(String name,Long userId){
-        Optional<User> u=this.userRepository.findById(userId);
+        Optional<User> u=this.userService.getUserById(userId);
         // if the user with the given id exists, then create the wallet
         if(u.isPresent()){
             Wallet w=new Wallet();
@@ -40,5 +39,14 @@ public class WalletService {
             return this.walletRepository.save(w);
         }
         return null;
+    }
+
+    public void deleteWallet(Long walletId){
+        // check if the wallet doesn't exist
+        if(!this.walletRepository.existsById(walletId)){
+            return;
+        }
+        // TODO: check if this is the wallet of the current user
+        this.walletRepository.deleteById(walletId);
     }
 }
