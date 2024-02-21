@@ -5,6 +5,7 @@ import com.tracker.server.services.UserService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,21 +23,20 @@ public class UserController {
 
     @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
-    public List<User> getAllUsers(){
-        return this.userService.getAllUsers();
+    public ResponseEntity<List<User>> getAllUsers(){
+        return new ResponseEntity<>(this.userService.getAllUsers(),HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<User> getUserById(@PathVariable Long id){
-        return this.userService.getUserById(id);
+    public ResponseEntity<User> getUserById(@PathVariable Long id){
+        return new ResponseEntity<>(this.userService.getUserById(id),HttpStatus.OK);
     }
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
-    public User createUser(@RequestBody User user){
+    public ResponseEntity<User> createUser(@RequestBody User user){
         User newUser = this.userService.createUser(user);
-        // TODO: return a better response
-        return newUser;
+        return new ResponseEntity<>(newUser,HttpStatus.CREATED);
     }
 }

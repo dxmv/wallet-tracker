@@ -30,15 +30,12 @@ public class WalletService {
     }
 
     public Wallet createWallet(String name,Long userId){
-        Optional<User> u=this.userService.getUserById(userId);
+        User u=this.userService.getUserById(userId);
         // if the user with the given id exists, then create the wallet
-        if(u.isPresent()){
-            Wallet w=new Wallet();
-            w.setName(name);
-            w.setUser(u.get());
-            return this.walletRepository.save(w);
-        }
-        return null;
+        Wallet w=new Wallet();
+        w.setName(name);
+        w.setUser(u);
+        return this.walletRepository.save(w);
     }
 
     public void deleteWallet(Long walletId){
