@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,32 +16,12 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={inter.className}>
-				<Nav />
+			<body
+				className={inter.className}
+				style={{ height: "100vh", width: "100vw" }}
+			>
 				{children}
-				<Footer />
 			</body>
 		</html>
 	);
 }
-
-const Nav = () => (
-	/* Dodati efekat kada smo na aktivnoj stranici */
-	/* Profile drop down */
-	<nav className="flex flex-row justify-between p-4">
-		<div>Logo</div>
-		<div className="flex flex-row w-1/5 justify-between">
-			<Link href={"/"}>Home</Link>
-			<Link href={"/news"}>News</Link>
-			<Link href={"/"}>Profile</Link>
-		</div>
-	</nav>
-);
-
-const Footer = () => (
-	<footer className="p-4 text-right">
-		<a href="https://github.com/dxmv/wallet-tracker" target="_blank">
-			Github link
-		</a>
-	</footer>
-);
