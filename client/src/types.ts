@@ -12,3 +12,9 @@ export interface IUser {
 	email: String;
 	password: String;
 }
+
+// used for working with TextInput component
+export interface InputState {
+	value: string;
+	errorMessage?: string;
+}
