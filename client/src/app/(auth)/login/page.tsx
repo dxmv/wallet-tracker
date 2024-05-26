@@ -7,6 +7,7 @@ import { MdEmail } from "react-icons/md";
 import { MdKey } from "react-icons/md";
 import { useState } from "react";
 import { InputState } from "@/types";
+import { handleEmailChange, handlePasswordChange } from "@/utils/inputHandlers";
 
 const Login = () => {
 	const [email, setEmail] = useState<InputState>({
@@ -16,36 +17,6 @@ const Login = () => {
 	const [password, setPassword] = useState<InputState>({
 		value: "",
 	});
-
-	const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		// checks if the emails match the regex
-		const validEmail = (value: string): boolean => {
-			const emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // letters before '@', letters after '@', after those letters a '.' and then more letters
-			return emailRegex.test(value);
-		};
-
-		setEmail({
-			value: e.target.value,
-			errorMessage: !validEmail(e.target.value)
-				? "The email isn't in correct format"
-				: undefined,
-		});
-	};
-
-	const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		// checks if the password has at least one uppercase letter and one number
-		const validPassword = (value: string): boolean => {
-			const emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-			return emailRegex.test(value);
-		};
-
-		setPassword({
-			value: e.target.value,
-			errorMessage: !validPassword(e.target.value)
-				? "The password isn't in correct format"
-				: undefined,
-		});
-	};
 
 	return (
 		<div className="text-center">
@@ -62,7 +33,7 @@ const Login = () => {
 						<MdEmail className="absolute" style={{ top: "3px", left: "3px" }} />
 					}
 					value={email.value}
-					setValue={handleEmailChange}
+					setValue={e => handleEmailChange(e, setEmail)}
 					errorMessage={email.errorMessage}
 				/>
 				<TextInput
@@ -74,7 +45,7 @@ const Login = () => {
 					}
 					value={password.value}
 					errorMessage={password.errorMessage}
-					setValue={handlePasswordChange}
+					setValue={e => handlePasswordChange(e, setPassword)}
 				/>
 				<button className="bg-green">Log in</button>
 				<Link href={"/register"}>Don&apos;t have an account?</Link>
