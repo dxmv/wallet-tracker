@@ -28,8 +28,7 @@ public class WalletController {
     @PostMapping("/user/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
     public Wallet createWalletForUser(@PathVariable Long userId,@RequestBody String name){
-        Wallet newWallet = walletService.createWallet(name,userId);
-        return newWallet;
+        return walletService.createWallet(name,userId);
     }
 
     @DeleteMapping("/{walletId}")
