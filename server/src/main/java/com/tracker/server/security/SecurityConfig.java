@@ -47,8 +47,7 @@ public class SecurityConfig{
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // Define which requests are allowed without authentication
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth").permitAll()
-                        .requestMatchers("/api/users/").permitAll()
+                        .requestMatchers("/api/auth/login","api/users/").permitAll()
                         .anyRequest().authenticated())
                 // Add our JWT filter
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

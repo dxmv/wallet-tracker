@@ -14,17 +14,12 @@ import java.util.Optional;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-
+    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    public CustomUserDetailsService(UserRepository userService){
-        this.userRepository = userService;
-    }
-
     @Override
-    public UserDetails loadUserByUsername(String username)  {
-        User u = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+    public UserDetails loadUserByUsername(String email)  {
+        User u = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
         return
                 org.springframework.security.core.userdetails.User.withUsername(u.getEmail())
                 .password(u.getPassword())
