@@ -14,29 +14,30 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private String secret = "secret";
+    @Value("${jwt.secret}")
+    private String secret;
 
     // for signing jwt
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generateToken(String username) {
-        // generates a jwt token with a username as a subject
+    public String generateToken(String id) {
+        // generates a jwt token with an id as a subject
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(id)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)) // expires in 1 day
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public Boolean validateToken(String token, String username) {
-        final String extractedUsername = extractUsername(token);
-        return (extractedUsername.equals(username) && !isTokenExpired(token));
+    public Boolean validateToken(String token, String id) {
+        final String extractedId = extractId(token);
+        return (extractedId.equals(id) && !isTokenExpired(token));
     }
 
-    public String extractUsername(String token) {
+    public String extractId(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 

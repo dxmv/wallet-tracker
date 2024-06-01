@@ -34,11 +34,6 @@ public class SecurityConfig{
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        // Set up the authentication manager with the custom configuration
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 // Disable CSRF as we are using stateless sessions and JWTs
@@ -47,7 +42,7 @@ public class SecurityConfig{
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // Define which requests are allowed without authentication
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login","api/users/").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated())
                 // Add our JWT filter
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

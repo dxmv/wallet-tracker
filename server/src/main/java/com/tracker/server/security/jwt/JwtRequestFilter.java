@@ -34,24 +34,24 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authorizationHeader = request.getHeader("Authorization");
 
-        String email = null;
+
+        String id = null; // id is saved in the jwt
         String jwt = null;
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
-            email = jwtUtil.extractUsername(jwt);
+            id = jwtUtil.extractId(jwt);
         }
 
         // check if there isn't a user already authenticated for this session
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            User userDetails = this.userRepo.findByEmail(email).
-                    orElse(null);
+        if (id != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            User u = this.userRepo.findById(Long.parseLong(id)).orElse(null);
 
-            assert userDetails != null;
-            if (jwtUtil.validateToken(jwt, userDetails.getEmail())) {
+
+            if (u!= null && jwtUtil.validateToken(jwt, String.valueOf(u.getId()))) {
                 // Create a new UsernamePasswordAuthenticationToken using the validated UserDetails object
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, List.of(new GrantedAuthority() {
+                        u, null, List.of(new GrantedAuthority() {
                     @Override
                     public String getAuthority() {
                         return "USER";
