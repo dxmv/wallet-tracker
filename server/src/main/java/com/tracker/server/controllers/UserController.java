@@ -21,10 +21,16 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<User>> getAllUsers(){
         return new ResponseEntity<>(this.userService.getAllUsers(),HttpStatus.OK);
+    }
+
+    @GetMapping("/current")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<User> getCurrentUser(){
+        return new ResponseEntity<>(this.userService.getCurrentUser(),HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

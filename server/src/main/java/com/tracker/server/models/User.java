@@ -1,5 +1,6 @@
 package com.tracker.server.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +23,14 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Wallet> wallets = new ArrayList<>();
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof User u){
+            return u.getId().equals(this.id);
+        }
+        return false;
+    }
 }

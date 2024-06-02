@@ -1,5 +1,6 @@
 package com.tracker.server.controllers;
 
+import com.tracker.server.models.User;
 import com.tracker.server.models.Wallet;
 import com.tracker.server.services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,28 +13,23 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/wallets")
 public class WalletController {
-    private final WalletService walletService;
 
     @Autowired
-    public WalletController(WalletService walletService) {
-        this.walletService = walletService;
+    private WalletService walletService;
+
+    @GetMapping("/user/")
+    public ResponseEntity<List<Wallet>> getAllWalletsForCurrentUser(){
+        return new ResponseEntity<>(walletService.getWalletsForCurrentUser(),HttpStatus.OK);
     }
 
-    @GetMapping("/user/{userId}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Wallet> getAllWalletsForUser(@PathVariable Long userId){
-        return this.walletService.getAllWalletsForUser(userId);
+    @PostMapping("/user/")
+    public ResponseEntity<Wallet> createWalletForCurrentUser(@RequestBody String name){
+        return new ResponseEntity<>(walletService.createWalletForCurrentUser(name),HttpStatus.CREATED);
     }
 
-    @PostMapping("/user/{userId}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Wallet createWalletForUser(@PathVariable Long userId,@RequestBody String name){
-        return walletService.createWallet(name,userId);
-    }
-
-    @DeleteMapping("/{walletId}")
-    public String deleteWallet(@PathVariable Long walletId){
-        this.walletService.deleteWallet(walletId);
-        return "Okay";
+    @DeleteMapping("/user/{walletId}")
+    public ResponseEntity<String> deleteWallet(@PathVariable Long walletId){
+        walletService.deleteWalletForCurrentUser(walletId);
+        return new ResponseEntity<>("Deleted",HttpStatus.OK);
     }
 }

@@ -1,10 +1,12 @@
 package com.tracker.server.services;
 
 
+import com.tracker.server.exceptions.NotFoundException;
 import com.tracker.server.models.User;
 import com.tracker.server.models.Wallet;
 import com.tracker.server.repositories.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,21 +31,36 @@ public class WalletService {
         return this.walletRepository.findWalletsForUser(userId);
     }
 
-    public Wallet createWallet(String name,Long userId){
-        User u=this.userService.getUserById(userId);
-        // if the user with the given id exists, then create the wallet
+    public Wallet createWalletForCurrentUser(String name){
+        User u= userService.getCurrentUser();
+        if(u == null){
+            return null;
+        }
+
+        // if the current user exists, then create the wallet
         Wallet w=new Wallet();
         w.setName(name);
         w.setUser(u);
-        return this.walletRepository.save(w);
+        return walletRepository.save(w);
     }
 
-    public void deleteWallet(Long walletId){
-        // check if the wallet doesn't exist
-        if(!this.walletRepository.existsById(walletId)){
+    public void deleteWalletForCurrentUser(Long walletId){
+        Wallet w = walletRepository.findById(walletId).orElseThrow(()->new NotFoundException("Wallet with id:" + walletId + ", not found"));
+        User u = userService.getCurrentUser();
+        if(u == null){
             return;
         }
-        // TODO: check if this is the wallet of the current user
-        this.walletRepository.deleteById(walletId);
+        if(u.equals(w.getUser())){
+            this.walletRepository.deleteById(walletId);
+        }
+    }
+
+    public List<Wallet> getWalletsForCurrentUser() {
+        User u = userService.getCurrentUser();
+        // if the current user exists, then get all the wallets
+        if(u == null){
+            return null;
+        }
+        return getAllWalletsForUser(u.getId());
     }
 }

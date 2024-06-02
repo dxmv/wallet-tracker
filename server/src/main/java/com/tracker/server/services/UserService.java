@@ -5,6 +5,7 @@ import com.tracker.server.exceptions.NotFoundException;
 import com.tracker.server.models.User;
 import com.tracker.server.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,15 @@ public class UserService {
             throw new NotFoundException("Not found: User with id - "+id);
         }
         return this.userRepository.findById(id).orElseThrow(()->new NotFoundException("Not found: user with id :" + id));
+    }
+
+    public User getCurrentUser(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof User) {
+            Long userId = ((User) principal).getId();
+            return userRepository.findById(userId).orElse(null);
+        }
+        return null;
     }
 
 }

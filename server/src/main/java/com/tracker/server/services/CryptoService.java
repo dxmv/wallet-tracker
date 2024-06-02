@@ -9,11 +9,11 @@ import java.util.List;
 
 @Service
 public class CryptoService {
-    private final CryptoRepository cryptoRepository;
 
     @Autowired
-    public CryptoService(CryptoRepository cryptoRepository) {
-        this.cryptoRepository = cryptoRepository;
-    }
+    private CryptoRepository cryptoRepository;
 
+    public List<Crypto> getAll(){
+        return cryptoRepository.findAll();
+    }
 }
