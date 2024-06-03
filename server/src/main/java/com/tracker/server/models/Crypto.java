@@ -1,5 +1,6 @@
 package com.tracker.server.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import lombok.Setter;
 // We aren't saving all coins in the database, instead the user on the frontend chooses the coin
 // We can always get the amount in dollars by calling the coinmarketcap api
 @Entity
-@Table(name = "crypto")
+@Table(name = "CRYPTO")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,6 +26,11 @@ public class Crypto {
     @Column(name = "ticker",unique = true)
     private String ticker;
 
-    @Column(name = "amount",unique = true)
+    @Column(name = "amount")
     private double amount;
+
+    @ManyToOne
+    @JoinColumn(name = "wallet_id", nullable = false)
+    @JsonBackReference
+    private Wallet wallet;
 }

@@ -20,4 +20,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorResponse er=new ErrorResponse(HttpStatus.CONFLICT.value(),ex.getMessage());
         return new ResponseEntity<>(er, HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorized(UnauthorizedException ex){
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), ex.getMessage()),HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorized(BadRequestException ex){
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage()),HttpStatus.BAD_REQUEST);
+    }
 }

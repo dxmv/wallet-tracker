@@ -1,6 +1,11 @@
 package com.tracker.server.exceptions;
 
+import lombok.Getter;
+import lombok.Setter;
+
 // This class is used as a response when we encounter an error
+@Getter
+@Setter
 public class ErrorResponse {
     private int statusCode;
     private String message;
@@ -10,19 +15,4 @@ public class ErrorResponse {
         this.message = message;
     }
 
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

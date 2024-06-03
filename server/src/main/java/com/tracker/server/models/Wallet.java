@@ -6,8 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import java.util.ArrayList;
+import java.util.List;
 
-import java.util.Set;
 
 @Entity
 @Table (name="WALLETS")
@@ -25,8 +26,7 @@ public class Wallet {
     @JsonBackReference
     private User user;
 
-    @OneToMany
-    @Column(name="coins")
-    private Set<Crypto> coins;
+    @OneToMany(mappedBy = "wallet") // Specify mappedBy here
+    private List<Crypto> coins = new ArrayList<>();
 
 }
