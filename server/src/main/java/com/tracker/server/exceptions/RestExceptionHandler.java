@@ -1,5 +1,6 @@
 package com.tracker.server.exceptions;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import com.tracker.server.exceptions.ErrorResponse;

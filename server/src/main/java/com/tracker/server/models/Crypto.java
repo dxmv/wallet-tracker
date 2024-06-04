@@ -20,17 +20,18 @@ public class Crypto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name",unique = true)
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "ticker",unique = true)
+    @Column(name = "ticker")
     private String ticker;
 
     @Column(name = "amount")
     private double amount;
 
+    // Add this field to establish the relationship with Wallet
     @ManyToOne
-    @JoinColumn(name = "wallet_id", nullable = false)
+    @JoinColumn(name = "WALLET_ID")
     @JsonBackReference
     private Wallet wallet;
 }

@@ -87,27 +87,47 @@ public class WalletService {
 
 
     @Transactional
-    public Wallet addCryptoToWallet(Long walletId, String name, String ticker, double amount) {
+    public Wallet addCryptoToWallet(Long walletId, Crypto crypto) {
         Wallet wallet = getOneWalletForCurrentUser(walletId);
         boolean cryptoExistsInWallet = wallet.getCoins().stream()
-                .anyMatch(existingCrypto -> existingCrypto.getName().equals(name) && existingCrypto.getTicker().equals(ticker));
+                .anyMatch(existingCrypto -> existingCrypto.getName().equals(crypto.getName()) && existingCrypto.getTicker().equals(crypto.getTicker()));
 
         // the coin doesn't exist in the wallet
         if (cryptoExistsInWallet) {
             throw new BadRequestException("The wallet already has this crypto");
         }
 
-        if (amount < 0) {
+        if (crypto.getAmount() < 0) {
             throw new ConflictException("The amount cannot be negative");
         }
 
-        Crypto savedCrypto = new Crypto();
-        savedCrypto.setWallet(wallet);
-        savedCrypto.setName(name);
-        savedCrypto.setTicker(ticker);
-        savedCrypto.setAmount(amount);
-
-        wallet.getCoins().add(cryptoRepository.save(savedCrypto));
+        crypto.setWallet(wallet);
+        wallet.getCoins().add(cryptoRepository.save(crypto));
         return walletRepository.save(wallet);
     }
+
+    @Transactional
+    public Wallet removeCrypto(Long walletId, Long cryptoId){
+        // make sure that both the wallet and crypto exist
+        Wallet wallet = getOneWalletForCurrentUser(walletId);
+        Crypto crypto = cryptoRepository.findById(cryptoId).orElseThrow(()->new NotFoundException("Crypto with id: " + cryptoId + ", not found"));
+
+        cryptoRepository.delete(crypto);
+        return wallet;
+    }
+
+//    @Transactional
+//    public Wallet changeCryptoWalletAmount(Long walletId,Long cryptoId,double amount){
+////        Wallet wallet = getOneWalletForCurrentUser(walletId);
+////        Crypto crypto =
+////
+////        // the coin doesn't exist in the wallet
+////        if (cryptoExistsInWallet) {
+////            throw new BadRequestException("The wallet already has this crypto");
+////        }
+////
+////        if (amount < 0) {
+////            throw new ConflictException("The amount cannot be negative");
+////        }
+//    }
 }

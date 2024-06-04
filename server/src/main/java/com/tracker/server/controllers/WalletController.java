@@ -19,16 +19,6 @@ import java.util.Set;
 @RequestMapping("/api/wallets")
 public class WalletController {
 
-
-    @Getter
-    @Setter
-    static
-    class CryptoRequest{
-        private String name;
-        private String ticker;
-        private double amount;
-    }
-
     @Autowired
     private WalletService walletService;
 
@@ -55,8 +45,13 @@ public class WalletController {
 
 
     @PostMapping("/{walletId}")
-    public ResponseEntity<Wallet> addCrypto(@PathVariable Long walletId, @RequestBody CryptoRequest cryptoRequest){
-        return new ResponseEntity<>(walletService.addCryptoToWallet(walletId,cryptoRequest.getName(),cryptoRequest.getTicker(),cryptoRequest.getAmount()),HttpStatus.CREATED);
+    public ResponseEntity<Wallet> addCrypto(@PathVariable Long walletId, @RequestBody Crypto crypto){
+        return new ResponseEntity<>(walletService.addCryptoToWallet(walletId,crypto),HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{walletId}/{cryptoId}")
+    public ResponseEntity<Wallet> removeCrypto(@PathVariable Long walletId, @PathVariable Long cryptoId){
+        return new ResponseEntity<>(walletService.removeCrypto(walletId,cryptoId),HttpStatus.CREATED);
     }
 
 }
