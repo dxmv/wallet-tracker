@@ -3,6 +3,7 @@ package com.tracker.server.controllers;
 import com.tracker.server.models.Crypto;
 import com.tracker.server.models.User;
 import com.tracker.server.models.Wallet;
+import com.tracker.server.services.CryptoService;
 import com.tracker.server.services.WalletService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +22,9 @@ public class WalletController {
 
     @Autowired
     private WalletService walletService;
+
+    @Autowired
+    private CryptoService cryptoService;
 
     @GetMapping("/")
     public ResponseEntity<List<Wallet>> getAllWalletsForCurrentUser(){
@@ -49,9 +53,16 @@ public class WalletController {
         return new ResponseEntity<>(walletService.addCryptoToWallet(walletId,crypto),HttpStatus.CREATED);
     }
 
+    @PatchMapping("/{walletId}/{cryptoId}")
+    public ResponseEntity<Wallet> changeAmountCrypto(@PathVariable Long walletId, @PathVariable Long cryptoId, @RequestBody Double amount){
+        cryptoService.changeCryptoAmount(cryptoId,amount);
+        return new ResponseEntity<>(walletService.getWalletById(walletId),HttpStatus.ACCEPTED);
+    }
+
     @DeleteMapping("/{walletId}/{cryptoId}")
     public ResponseEntity<Wallet> removeCrypto(@PathVariable Long walletId, @PathVariable Long cryptoId){
-        return new ResponseEntity<>(walletService.removeCrypto(walletId,cryptoId),HttpStatus.CREATED);
+        cryptoService.deleteCrypto(cryptoId);
+        return new ResponseEntity<>(walletService.getWalletById(walletId),HttpStatus.CREATED);
     }
 
 }
