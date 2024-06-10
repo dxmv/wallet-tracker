@@ -24,6 +24,36 @@ const Register = () => {
 		value: "",
 	});
 
+	const handleRegister = async () => {
+		console.log("Zoki");
+		// Request payload
+		const payload = {
+			email: email.value,
+			password: password.value,
+		};
+
+		try {
+			const response = await fetch("http://localhost:8080/api/auth/register", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(payload),
+			});
+
+			console.log(await response.json());
+
+			if (response.ok) {
+				const data = await response.json();
+				// Optionally, redirect the user or handle success response
+			} else {
+				const error = await response.json();
+			}
+		} catch (error) {
+			console.log("Error");
+		}
+	};
+
 	return (
 		<div className="text-center">
 			{/* Logo */}
@@ -64,7 +94,15 @@ const Register = () => {
 					}
 					errorMessage={confirmPassword.errorMessage}
 				/>
-				<button className="bg-green">Register</button>
+
+				{/* 
+					disable the button if:
+						any of the text fields is empty
+						any of the error messages aren't empty
+				*/}
+				<button className="bg-green" onClick={handleRegister}>
+					Register
+				</button>
 				<Link href={"/login"}>Already have an account?</Link>
 				<Link href={"/register"}>Forgot your password?</Link>
 			</div>
