@@ -12,3 +12,6 @@ export const BreakingSection = ({
 		</div>
 	);
 };
+
+// the big component
+const Main = () => {};

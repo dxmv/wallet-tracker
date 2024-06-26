@@ -25,7 +25,6 @@ const Register = () => {
 	});
 
 	const handleRegister = async () => {
-		console.log("Zoki");
 		// Request payload
 		const payload = {
 			email: email.value,
@@ -41,12 +40,11 @@ const Register = () => {
 				body: JSON.stringify(payload),
 			});
 
-			console.log(await response.json());
-
 			if (response.ok) {
 				const data = await response.json();
 				// Optionally, redirect the user or handle success response
 			} else {
+				// TODO: ADD ERROR MESSAGE TO THE FORM
 				const error = await response.json();
 			}
 		} catch (error) {

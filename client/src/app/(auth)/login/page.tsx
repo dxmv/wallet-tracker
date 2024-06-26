@@ -8,6 +8,12 @@ import { MdKey } from "react-icons/md";
 import { useState } from "react";
 import { InputState } from "@/types";
 import { handleEmailChange, handlePasswordChange } from "@/utils/inputHandlers";
+import { setCookie } from "@/utils/cookies";
+
+// login response type
+interface ResponseJwt {
+	jwt: String;
+}
 
 const Login = () => {
 	const [email, setEmail] = useState<InputState>({
@@ -17,6 +23,37 @@ const Login = () => {
 	const [password, setPassword] = useState<InputState>({
 		value: "",
 	});
+
+	const handleLogin = async () => {
+		// Request payload
+		const payload = {
+			email: email.value,
+			password: password.value,
+		};
+
+		try {
+			const response = await fetch("http://localhost:8080/api/auth/login", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(payload),
+			});
+
+			if (response.ok) {
+				const data = (await response.json()) as ResponseJwt;
+
+				// setting the id as cookie
+				setCookie("token", data.jwt, 1);
+				// Redirect the user or handle success response
+			} else {
+				// TODO: ADD ERROR MESSAGE TO THE FORM
+				const error = await response.json();
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	return (
 		<div className="text-center">
@@ -47,7 +84,9 @@ const Login = () => {
 					errorMessage={password.errorMessage}
 					setValue={e => handlePasswordChange(e, setPassword)}
 				/>
-				<button className="bg-green">Log in</button>
+				<button className="bg-green" onClick={handleLogin}>
+					Log in
+				</button>
 				<Link href={"/register"}>Don&apos;t have an account?</Link>
 				<Link href={"/register"}>Forgot your password?</Link>
 			</div>
