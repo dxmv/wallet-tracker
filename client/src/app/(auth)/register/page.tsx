@@ -5,11 +5,9 @@ import { TextInput } from "@/components/TextInput";
 import { MdEmail } from "react-icons/md";
 import { MdKey } from "react-icons/md";
 import { InputState } from "@/types";
-import {
-	handleConfirmPasswordChange,
-	handleEmailChange,
-	handlePasswordChange,
-} from "@/utils/inputHandlers";
+import { handleEmailChange, handlePasswordChange } from "@/utils/inputHandlers";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 
 const Register = () => {
 	const [email, setEmail] = useState<InputState>({
@@ -24,31 +22,31 @@ const Register = () => {
 		value: "",
 	});
 
+	// error for the whole form
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+	const { register } = useAuth();
+
+	const router = useRouter(); // to go to another page
+
 	const handleRegister = async () => {
-		// Request payload
-		const payload = {
-			email: email.value,
-			password: password.value,
-		};
+		// password must match
+		if (password.value !== confirmPassword.value) {
+			setErrorMessage("Passwords do not match");
+			return;
+		}
 
 		try {
-			const response = await fetch("http://localhost:8080/api/auth/register", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(payload),
-			});
-
-			if (response.ok) {
-				const data = await response.json();
-				// Optionally, redirect the user or handle success response
-			} else {
-				// TODO: ADD ERROR MESSAGE TO THE FORM
-				const error = await response.json();
-			}
+			// maybe add user to some kind of state?
+			await register(email.value, password.value);
+			// redirect to login page
+			router.push("/login");
 		} catch (error) {
-			console.log("Error");
+			if (error instanceof Error) {
+				setErrorMessage(error.message);
+			} else {
+				setErrorMessage("An unexpected error occurred during registration");
+			}
 		}
 	};
 
@@ -57,6 +55,9 @@ const Register = () => {
 			{/* Logo */}
 			<h1 className="font-bold my-3">Welcome to name of the website</h1>
 			<h1>Please register</h1>
+
+			{errorMessage && <div className="text-red-500 mt-2">{errorMessage}</div>}
+
 			{/* Register window */}
 			<div className="w-full flex-col flex bg-white text-black mt-4">
 				<TextInput
@@ -87,9 +88,7 @@ const Register = () => {
 						<MdKey className="absolute" style={{ top: "3px", left: "3px" }} />
 					}
 					value={confirmPassword.value}
-					setValue={e =>
-						handleConfirmPasswordChange(e, setConfirm, password.value)
-					}
+					setValue={e => handlePasswordChange(e, setConfirm)}
 					errorMessage={confirmPassword.errorMessage}
 				/>
 

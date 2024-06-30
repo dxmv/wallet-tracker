@@ -8,9 +8,17 @@ export const getCookie = (name: String) => {
 };
 
 // Set the cookies with expiration date
-export const setCookie = (name: String, value: String, days: number) => {
-	const expirationDate = new Date();
-	expirationDate.setDate(expirationDate.getDate() + days);
+export const setCookie = (name: String, value: String, days?: number) => {
+	if (days) {
+		const expirationDate = new Date();
+		expirationDate.setDate(expirationDate.getDate() + days);
+		document.cookie = `${name}=${value}; expires=${expirationDate.toUTCString()}; path=/`;
+	} else {
+		document.cookie = `${name}=${value}; path=/`;
+	}
+};
 
-	document.cookie = `${name}=${value}; expires=${expirationDate.toUTCString()}; path=/`;
+// Remove the cookie with the given name
+export const removeCookie = (name: String) => {
+	// delete cookie
 };

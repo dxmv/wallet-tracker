@@ -37,16 +37,3 @@ export const handlePasswordChange = (
 			: undefined,
 	});
 };
-
-export const handleConfirmPasswordChange = (
-	e: React.ChangeEvent<HTMLInputElement>,
-	setConfirm: React.Dispatch<React.SetStateAction<InputState>>,
-	password: String
-) => {
-	// checks if the confirm password matches the original password
-	setConfirm({
-		value: e.target.value,
-		errorMessage:
-			e.target.value != password ? "The passwords don't match" : undefined,
-	});
-};

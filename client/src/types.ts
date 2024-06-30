@@ -18,3 +18,9 @@ export interface InputState {
 	value: string;
 	errorMessage?: string;
 }
+
+// used for working with errors on request
+export interface RequestError {
+	statusCode: number;
+	message: string;
+}

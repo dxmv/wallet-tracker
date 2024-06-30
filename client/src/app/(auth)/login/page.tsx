@@ -8,12 +8,8 @@ import { MdKey } from "react-icons/md";
 import { useState } from "react";
 import { InputState } from "@/types";
 import { handleEmailChange, handlePasswordChange } from "@/utils/inputHandlers";
-import { setCookie } from "@/utils/cookies";
-
-// login response type
-interface ResponseJwt {
-	jwt: String;
-}
+import { useAuth } from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
 	const [email, setEmail] = useState<InputState>({
@@ -24,34 +20,24 @@ const Login = () => {
 		value: "",
 	});
 
+	// error for the whole form
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+	const router = useRouter(); // to go to another page
+
+	const { login } = useAuth();
+
 	const handleLogin = async () => {
-		// Request payload
-		const payload = {
-			email: email.value,
-			password: password.value,
-		};
-
 		try {
-			const response = await fetch("http://localhost:8080/api/auth/login", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(payload),
-			});
-
-			if (response.ok) {
-				const data = (await response.json()) as ResponseJwt;
-
-				// setting the id as cookie
-				setCookie("token", data.jwt, 1);
-				// Redirect the user or handle success response
-			} else {
-				// TODO: ADD ERROR MESSAGE TO THE FORM
-				const error = await response.json();
-			}
+			await login(email.value, password.value);
+			// redirect here
+			router.push("/");
 		} catch (error) {
-			console.log(error);
+			if (error instanceof Error) {
+				setErrorMessage(error.message);
+			} else {
+				setErrorMessage("An unexpected error occurred during login");
+			}
 		}
 	};
 
@@ -60,6 +46,8 @@ const Login = () => {
 			{/* Logo */}
 			<h1 className="font-bold my-3">Good to see you again</h1>
 			<h1>Please log in</h1>
+
+			{errorMessage && <div className="text-red-500 mt-2">{errorMessage}</div>}
 
 			{/* Login window */}
 			<div className="w-full flex-col flex bg-white text-black mt-4">
