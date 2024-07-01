@@ -31,7 +31,7 @@ const Login = () => {
 		try {
 			await login(email.value, password.value);
 			// redirect here
-			router.push("/");
+			router.push("/dashboard");
 		} catch (error) {
 			if (error instanceof Error) {
 				setErrorMessage(error.message);
