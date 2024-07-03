@@ -8,9 +8,23 @@ export interface INews {
 }
 
 export interface IUser {
-	id: BigInteger;
+	id: number;
 	email: String;
 	password: String;
+}
+
+export interface IWallet {
+	id: number;
+	name: String;
+	coins: Array<ICrypto>;
+}
+
+export interface ICrypto {
+	id: number;
+	name: String;
+	ticker: String;
+	amount: number;
+	imageURL: string;
 }
 
 // used for working with TextInput component
