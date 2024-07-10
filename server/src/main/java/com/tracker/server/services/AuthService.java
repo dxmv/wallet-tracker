@@ -2,6 +2,7 @@ package com.tracker.server.services;
 
 import com.tracker.server.exceptions.ConflictException;
 import com.tracker.server.exceptions.NotFoundException;
+import com.tracker.server.models.Role;
 import com.tracker.server.models.User;
 import com.tracker.server.repositories.UserRepository;
 import com.tracker.server.security.jwt.JwtUtil;
@@ -53,6 +54,8 @@ public class AuthService {
         }
 
         User u = new User();
+        // set the default role to user
+        u.getRoles().add(Role.USER);
         u.setEmail(email);
         u.setPassword(this.passwordEncoder.encode(password));
         return userRepo.save(u);

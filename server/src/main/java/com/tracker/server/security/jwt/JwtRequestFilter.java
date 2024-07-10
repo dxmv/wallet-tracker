@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +21,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -49,14 +51,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
 
             if (u!= null && jwtUtil.validateToken(jwt, String.valueOf(u.getId()))) {
+                // map the list of user roles to granted authorities
+                List<GrantedAuthority> authorities = u.getRoles().stream()
+                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
+                        .collect(Collectors.toList());
+
                 // Create a new UsernamePasswordAuthenticationToken using the validated UserDetails object
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                        u, null, List.of(new GrantedAuthority() {
-                    @Override
-                    public String getAuthority() {
-                        return "USER";
-                    }
-                }));
+                        u, null, authorities);
 
                 // Set additional details for the authentication token from the HTTP request
                 usernamePasswordAuthenticationToken

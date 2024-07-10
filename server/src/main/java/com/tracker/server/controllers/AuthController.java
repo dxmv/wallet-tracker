@@ -40,7 +40,6 @@ public class AuthController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<User> createUser(@RequestBody AuthenticationRequest user){
-        System.out.println(user.getEmail());
         return new ResponseEntity<>(authService.registerUser(user.getEmail(),user.getPassword()),HttpStatus.CREATED);
     }
 }

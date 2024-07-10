@@ -1,8 +1,10 @@
 package com.tracker.server.services;
 
+import com.tracker.server.exceptions.BadRequestException;
 import com.tracker.server.exceptions.ConflictException;
 import com.tracker.server.exceptions.NotFoundException;
 import com.tracker.server.exceptions.UnauthorizedException;
+import com.tracker.server.models.Role;
 import com.tracker.server.models.User;
 import com.tracker.server.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +42,6 @@ public class UserService {
         }
         throw new UnauthorizedException("The user isn't logged in");
     }
+
 
 }
