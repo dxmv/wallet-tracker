@@ -5,6 +5,7 @@ import com.tracker.server.exceptions.BadRequestException;
 import com.tracker.server.exceptions.ConflictException;
 import com.tracker.server.exceptions.NotFoundException;
 import com.tracker.server.exceptions.UnauthorizedException;
+import com.tracker.server.models.AdminWallet;
 import com.tracker.server.models.Crypto;
 import com.tracker.server.models.User;
 import com.tracker.server.models.Wallet;
@@ -23,11 +24,13 @@ public class WalletService {
 
     private final CryptoService cryptoService;
 
+    private AdminWalletService adminWalletService;
     @Autowired
-    public WalletService(WalletRepository walletRepository,UserService userService,CryptoService cryptoService){
+    public WalletService(WalletRepository walletRepository,UserService userService,CryptoService cryptoService, AdminWalletService adminWalletService){
         this.walletRepository=walletRepository;
         this.userService=userService;
         this.cryptoService = cryptoService;
+        this.adminWalletService = adminWalletService;
     }
 
 
@@ -39,12 +42,13 @@ public class WalletService {
     }
 
     @Transactional
-    public Wallet createWalletForCurrentUser(String name){
+    public Wallet addWalletForCurrentUser(Long adminWalletId){
         User u = userService.getCurrentUser();
+        AdminWallet aw = adminWalletService.getWalletById(adminWalletId);
 
         // if the current user exists, then create the wallet
         Wallet w = new Wallet();
-        w.setName(name);
+        w.setAdminWallet(aw);
         w.setUser(u);
         // add wallet to user?
         return walletRepository.save(w);

@@ -9,9 +9,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ *  Maps users with the wallets created by admins
+ * */
 @Entity
-@Table (name="WALLETS")
+@Table(name = "USER_WALLETS")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,13 +22,16 @@ public class Wallet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "ADMIN_WALLET_ID", nullable = false)
+    private AdminWallet adminWallet;
+
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
     @JsonBackReference
     private User user;
 
-    @OneToMany(mappedBy = "wallet") // Specify mappedBy here
+    @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL)
     private List<Crypto> coins = new ArrayList<>();
-
 }
+
