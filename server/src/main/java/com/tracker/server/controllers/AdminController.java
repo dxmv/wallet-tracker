@@ -1,15 +1,20 @@
 package com.tracker.server.controllers;
 
+import com.tracker.server.exceptions.BadRequestException;
 import com.tracker.server.models.AdminWallet;
 import com.tracker.server.models.Role;
 import com.tracker.server.models.User;
 import com.tracker.server.services.AdminService;
 import com.tracker.server.services.AdminWalletService;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,8 +26,11 @@ import java.util.List;
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
+    @Getter
+    @Setter
     public static class AdminWalletRequestBody{
-        public String name;
+        private String name;
+        private MultipartFile icon;
     }
 
     @Autowired
@@ -70,10 +78,13 @@ public class AdminController {
     /**
      * Adds an admin wallet
      */
-    @PostMapping("/wallets")
+    @PostMapping(value = "/wallets",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<AdminWallet> addWallet(@RequestBody AdminWalletRequestBody aw){
-        return new ResponseEntity<>(adminWalletService.addWallet(aw.name),HttpStatus.OK);
+    public ResponseEntity<AdminWallet> addWallet(@ModelAttribute AdminWalletRequestBody aw){
+        if (aw.getIcon() == null) {
+            throw new BadRequestException("Icon file is missing");
+        }
+        return new ResponseEntity<>(adminWalletService.addWallet(aw.getName(),aw.getIcon()),HttpStatus.OK);
     }
 
     /**

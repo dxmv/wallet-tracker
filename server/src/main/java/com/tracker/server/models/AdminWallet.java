@@ -21,4 +21,7 @@ public class AdminWallet {
     @Column(unique = true)
     private String name;
 
+    @Column(unique = true)
+    private String iconUrl;
+
 }

@@ -1,12 +1,16 @@
 package com.tracker.server.services;
 
+import com.tracker.server.exceptions.BadRequestException;
 import com.tracker.server.exceptions.ConflictException;
 import com.tracker.server.exceptions.NotFoundException;
 import com.tracker.server.models.AdminWallet;
 import com.tracker.server.repositories.AdminWalletRepository;
+import com.tracker.server.utils.ImageUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +18,9 @@ import java.util.Optional;
 public class AdminWalletService {
     @Autowired
     private AdminWalletRepository adminWalletRepository;
+
+    @Autowired
+    private ImageUploadService imageUploadService;
 
     public AdminWallet getWalletById(Long id) {
         return adminWalletRepository.findById(id).orElseThrow(()->new NotFoundException("Not found: Admin wallet with id - " + id));
@@ -33,10 +40,16 @@ public class AdminWalletService {
         }
     }
 
-    public AdminWallet addWallet(String name) {
-        AdminWallet aw = new AdminWallet();
-        aw.setName(name);
-        return adminWalletRepository.save(aw);
+    public AdminWallet addWallet(String name, MultipartFile icon) {
+        walletWithNameExists(name);
+        try{
+            AdminWallet aw = new AdminWallet();
+            aw.setName(name);
+            aw.setIconUrl(imageUploadService.uploadImage(icon));
+            return adminWalletRepository.save(aw);
+        } catch (IOException e) {
+            throw new BadRequestException(e.getMessage());
+        }
     }
 
     public void deleteWallet(Long id) {
@@ -45,6 +58,7 @@ public class AdminWalletService {
     }
 
     public AdminWallet updateWallet(Long id, String name) {
+
         // these two throw error if the wallet with id or name already exist
         walletWithNameExists(name);
         AdminWallet aw = getWalletById(id);
