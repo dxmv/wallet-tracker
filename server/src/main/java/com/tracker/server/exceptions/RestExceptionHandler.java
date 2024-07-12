@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import com.tracker.server.exceptions.ErrorResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
@@ -28,7 +29,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ErrorResponse> handleUnauthorized(BadRequestException ex){
+    public ResponseEntity<ErrorResponse> handleBadRequest(BadRequestException ex){
         return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage()),HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(HttpClientErrorException.Forbidden.class)
+    public ResponseEntity<ErrorResponse> handleForbidden(HttpClientErrorException.Forbidden ex){
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.FORBIDDEN.value(),"Forbidden request"),HttpStatus.FORBIDDEN);
     }
 }

@@ -13,9 +13,13 @@ export interface IUser {
 	password: String;
 }
 
-export interface IWallet {
+export interface IAdminWallet {
 	id: number;
 	name: String;
+	iconUrl: String;
+}
+
+export interface IWallet extends IAdminWallet {
 	coins: Array<ICrypto>;
 }
 

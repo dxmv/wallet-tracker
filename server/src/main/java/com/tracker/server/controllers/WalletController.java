@@ -37,7 +37,7 @@ public class WalletController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<Wallet> createWalletForCurrentUser(@PathVariable Long id){
+    public ResponseEntity<Wallet> addWalletForCurrentUser(@PathVariable Long id){
         return new ResponseEntity<>(walletService.addWalletForCurrentUser(id),HttpStatus.CREATED);
     }
 

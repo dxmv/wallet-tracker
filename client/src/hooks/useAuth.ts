@@ -20,6 +20,8 @@ export function useAuth() {
 			try {
 				// verify the token's expiration
 				const decodedToken = jwtDecode(token);
+				console.log(decodedToken);
+
 				const currentTime = Date.now() / 1000;
 				if (decodedToken.exp && decodedToken.exp > currentTime) {
 					setIsAuthenticated(true);
@@ -45,7 +47,9 @@ export function useAuth() {
 			const data = await authApi.login(email, password);
 			setIsAuthenticated(true);
 			setCookie("token", data.jwt);
+			console.log(data);
 		} catch (error) {
+			console.log(error);
 			// Rethrow the error so it can be caught in the component
 			throw error;
 		}

@@ -19,28 +19,7 @@ const Dashboard = () => {
 				openModal={() => setOpenModal(true)}
 			/>
 			{openModal && (
-				<AddModal
-					showing={showing}
-					list={[
-						{
-							id: 1,
-							name: "Bitcoin",
-							ticker: "BTC",
-							amount: 1.05,
-							imageURL:
-								"https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1200px-Bitcoin.svg.png",
-						},
-						{
-							id: 2,
-							name: "Solana",
-							ticker: "SOL",
-							amount: 4.05,
-							imageURL:
-								"https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1200px-Bitcoin.svg.png",
-						},
-					]}
-					closeModal={() => setOpenModal(false)}
-				/>
+				<AddModal showing={showing} closeModal={() => setOpenModal(false)} />
 			)}
 		</main>
 	);
@@ -76,26 +55,6 @@ const RightHalf = ({
 				</div>
 			</div>
 
-			<MyLegend
-				items={[
-					{
-						id: 1,
-						name: "Bitcoin",
-						ticker: "BTC",
-						amount: 1.05,
-						imageURL:
-							"https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1200px-Bitcoin.svg.png",
-					},
-					{
-						id: 2,
-						name: "Solana",
-						ticker: "SOL",
-						amount: 4.05,
-						imageURL:
-							"https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1200px-Bitcoin.svg.png",
-					},
-				]}
-			/>
 			<button onClick={openModal}>Add {showing}</button>
 		</div>
 	);
