@@ -19,8 +19,10 @@ export interface IAdminWallet {
 	iconUrl: String;
 }
 
-export interface IWallet extends IAdminWallet {
+export interface IWallet {
+	id: number;
 	coins: Array<ICrypto>;
+	adminWallet: IAdminWallet;
 }
 
 export interface ICrypto {

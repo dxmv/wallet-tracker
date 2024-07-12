@@ -2,34 +2,16 @@
 import React, { useState } from "react";
 import { TextInput } from "./TextInput";
 import { IoMdSearch } from "react-icons/io";
-import ListAdminWallets from "./ListAdminWallets";
-import { walletApi } from "@/api/wallet";
-import { useRouter } from "next/navigation";
 
-export const AddModal = ({
-	showing,
-	closeModal,
-}: {
-	showing: any;
+interface IModalParams {
+	title: string;
 	closeModal: () => void;
-}) => {
+	handleNext: () => void;
+	children: React.ReactNode;
+}
+
+const Modal = ({ title, closeModal, handleNext, children }: IModalParams) => {
 	const [search, setSearch] = useState<string>("");
-
-	const [selectedId, setSelectedId] = useState<number | null>(null);
-
-	const router = useRouter(); // to go to another page
-
-	const handleNext = async () => {
-		// check if a wallet is selected
-		if (selectedId) {
-			try {
-				const data = await walletApi.addWallet(selectedId);
-				router.push(`/wallets/${data.id}`);
-			} catch (e) {
-				console.error(e);
-			}
-		}
-	};
 
 	return (
 		<div
@@ -46,7 +28,7 @@ export const AddModal = ({
 		>
 			<div className="w-1/5 bg-white h-4/5 flex flex-col items-center p-4">
 				<div className="w-full flex justify-end">
-					<h1 className="font-semibold text-lg text-center">Add {showing}</h1>
+					<h1 className="font-semibold text-lg text-center">{title}</h1>
 					<button onClick={closeModal}>X</button>
 				</div>
 				{/* Search bar */}
@@ -58,10 +40,7 @@ export const AddModal = ({
 					icon={<IoMdSearch />}
 				/>
 				{/* List of items */}
-				<ListAdminWallets
-					selectedId={selectedId}
-					setSelectedId={setSelectedId}
-				/>
+				{children}
 				<button className="border-2 px-3 py-1 mt-6" onClick={handleNext}>
 					Next
 				</button>
@@ -69,3 +48,5 @@ export const AddModal = ({
 		</div>
 	);
 };
+
+export default Modal;

@@ -10,4 +10,11 @@ export const walletApi = {
 				Authorization: `Bearer ${getCookie("token")}`,
 			},
 		}),
+	getOneWallet: (walletId: number) =>
+		fetchCustom<IWallet>(`/wallets/${walletId}`, {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${getCookie("token")}`,
+			},
+		}),
 };

@@ -1,13 +1,29 @@
 "use client";
 import React, { useState } from "react";
-import { MyLegend } from "./_components/MyLegend";
-import { AddModal } from "@/components/AddModal";
+import Modal from "@/components/Modal";
+import { walletApi } from "@/api/wallet";
+import { useRouter } from "next/navigation";
+import ListAdminWallets from "@/components/ListAdminWallets";
 
 type IShow = "Wallets" | "Crypto";
 
 const Dashboard = () => {
 	const [showing, setShowing] = useState<IShow>("Wallets");
 	const [openModal, setOpenModal] = useState<boolean>(false);
+	const [selectedId, setSelectedId] = useState<number | null>(null);
+	const { push } = useRouter();
+
+	const handleNext = async () => {
+		// check if a wallet is selected
+		if (selectedId) {
+			try {
+				const data = await walletApi.addWallet(selectedId);
+				push(`/wallets/${data.id}`); // redirect
+			} catch (e) {
+				console.error(e);
+			}
+		}
+	};
 
 	return (
 		<main style={{ height: "87vh" }} className="py-8 px-4 text-white flex">
@@ -19,7 +35,16 @@ const Dashboard = () => {
 				openModal={() => setOpenModal(true)}
 			/>
 			{openModal && (
-				<AddModal showing={showing} closeModal={() => setOpenModal(false)} />
+				<Modal
+					title={`Add wallets`}
+					closeModal={() => setOpenModal(false)}
+					handleNext={handleNext}
+				>
+					<ListAdminWallets
+						selectedId={selectedId}
+						setSelectedId={setSelectedId}
+					/>
+				</Modal>
 			)}
 		</main>
 	);
