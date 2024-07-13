@@ -1,9 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "@/components/Modal";
 import { walletApi } from "@/api/wallet";
 import { useRouter } from "next/navigation";
 import ListAdminWallets from "@/components/ListAdminWallets";
+import { IWallet } from "@/types";
+import MyList from "./_components/MyList";
 
 type IShow = "Wallets" | "Crypto";
 
@@ -34,23 +36,37 @@ const Dashboard = () => {
 				setShowing={setShowing}
 				openModal={() => setOpenModal(true)}
 			/>
-			{openModal && (
-				<Modal
-					title={`Add wallets`}
-					closeModal={() => setOpenModal(false)}
-					handleNext={handleNext}
-				>
-					<ListAdminWallets
-						selectedId={selectedId}
-						setSelectedId={setSelectedId}
-					/>
-				</Modal>
-			)}
+
+			{/* Show a modal based on the current showing */}
+			{openModal &&
+				(showing == "Wallets" ? (
+					<Modal
+						title={`Add wallets`}
+						closeModal={() => setOpenModal(false)}
+						handleNext={handleNext}
+					>
+						<ListAdminWallets
+							selectedId={selectedId}
+							setSelectedId={setSelectedId}
+						/>
+					</Modal>
+				) : (
+					<Modal
+						title={`Add crypto`}
+						closeModal={() => setOpenModal(false)}
+						handleNext={handleNext}
+					>
+						<ListAdminWallets
+							selectedId={selectedId}
+							setSelectedId={setSelectedId}
+						/>
+					</Modal>
+				))}
 		</main>
 	);
 };
 
-// shows the elements currently on the chart
+// shows the list of elements currently on the chart
 const RightHalf = ({
 	showing,
 	setShowing,
@@ -62,6 +78,10 @@ const RightHalf = ({
 }) => {
 	const SHOW_STYLE = "px-3 py-1 border-gray-600 border-2";
 
+	const handleChangeShowing = () => {
+		setShowing(showing == "Wallets" ? "Crypto" : "Wallets");
+	};
+
 	return (
 		<div className="flex flex-col w-1/2">
 			<div className="flex justify-between">
@@ -69,18 +89,30 @@ const RightHalf = ({
 				{/* Choose what items to show */}
 				<div className="mb-4 items-end">
 					<button
-						className={`${SHOW_STYLE} border-r-0`}
-						onClick={() => setShowing("Wallets")}
+						className={`${SHOW_STYLE} border-r-0 ${
+							showing == "Wallets" ? "bg-gray-500" : ""
+						}`}
+						onClick={handleChangeShowing}
 					>
 						Wallets
 					</button>
-					<button className={SHOW_STYLE} onClick={() => setShowing("Crypto")}>
+					<button
+						className={`${SHOW_STYLE} ${
+							showing == "Crypto" ? "bg-gray-500" : ""
+						}`}
+						onClick={handleChangeShowing}
+					>
 						Crypto
 					</button>
 				</div>
 			</div>
 
-			<button onClick={openModal}>Add {showing}</button>
+			{/* Different api calls for both wallets and crypto */}
+			<MyList apiCall={walletApi.getAllWallets} />
+
+			<button className="mt-8" onClick={openModal}>
+				Add {showing}
+			</button>
 		</div>
 	);
 };
