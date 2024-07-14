@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import ListAdminWallets from "@/components/ListAdminWallets";
 import { IWallet } from "@/types";
 import MyList from "./_components/MyList";
+import ListCrypto from "@/components/ListCrypto";
 
 type IShow = "Wallets" | "Crypto";
 
@@ -56,10 +57,7 @@ const Dashboard = () => {
 						closeModal={() => setOpenModal(false)}
 						handleNext={handleNext}
 					>
-						<ListAdminWallets
-							selectedId={selectedId}
-							setSelectedId={setSelectedId}
-						/>
+						<ListCrypto selectedId={selectedId} setSelectedId={setSelectedId} />
 					</Modal>
 				))}
 		</main>

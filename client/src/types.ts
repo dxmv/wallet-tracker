@@ -44,3 +44,14 @@ export interface RequestError {
 	statusCode: number;
 	message: string;
 }
+
+// interface for coins from the Coin Market Cap API
+export interface ICoinFromCoinGecko {
+	id: String;
+	symbol: String;
+	name: String;
+	image: String;
+	current_price: number;
+	market_cap: number;
+	market_cap_rank: number;
+}

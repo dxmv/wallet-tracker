@@ -20,7 +20,7 @@ const MyListItem = ({
 			className="flex py-2 border-b-2 border-gray-800 justify-between hover:bg-gray-500 mb-2 items-center"
 		>
 			<div className="flex">
-				<img src={iconUrl} />
+				<img src={iconUrl} width={25} height={25} className="rounded-lg" />
 				<h1 className="font-bold ml-2">{name}</h1>
 			</div>
 			<p>{amount}</p>

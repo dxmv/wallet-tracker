@@ -18,7 +18,7 @@ const MyList = ({ apiCall }: { apiCall: () => Promise<Array<IWallet>> }) => {
 			}
 		};
 		fetchData();
-	});
+	}, [apiCall]);
 
 	return (
 		<div>

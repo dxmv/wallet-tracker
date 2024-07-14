@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import CryptoProvider from "@/context/coins/CryptoProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +22,9 @@ export default function RootLayout({
 				className={inter.className}
 				style={{ height: "100vh", width: "100vw" }}
 			>
-				<ProtectedRoute>{children}</ProtectedRoute>
+				<ProtectedRoute>
+					<CryptoProvider>{children}</CryptoProvider>
+				</ProtectedRoute>
 			</body>
 		</html>
 	);
