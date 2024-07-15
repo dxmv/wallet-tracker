@@ -32,7 +32,13 @@ const WalletsModal = ({ closeModal }: { closeModal: () => void }) => {
 			<MyList
 				key={selectedId}
 				apiCall={adminApi.getAllAdminWallets}
-				renderItem={item => <AdminWalletListItem />}
+				renderItem={item => (
+					<AdminWalletListItem
+						item={item}
+						selectedId={selectedId}
+						setSelectedId={setSelectedId}
+					/>
+				)}
 			></MyList>
 		</Modal>
 	);

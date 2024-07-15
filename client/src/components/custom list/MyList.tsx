@@ -23,7 +23,7 @@ const MyList = <T,>({ apiCall, renderItem }: MyListProps<T>) => {
 	}, [apiCall]);
 
 	return (
-		<div>
+		<div className="w-full h-3/4 overflow-y-scroll">
 			{list.map((item, index) => (
 				<React.Fragment key={index}>{renderItem(item)}</React.Fragment>
 			))}
