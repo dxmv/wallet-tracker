@@ -1,5 +1,5 @@
 import { IAdminWallet } from "@/types";
-import { fetchCustom } from "./defaul";
+import { fetchCustom } from "./default";
 import { getCookie } from "@/utils/cookies";
 
 export const adminApi = {

@@ -23,8 +23,6 @@ public class WalletController {
     @Autowired
     private WalletService walletService;
 
-    @Autowired
-    private CryptoService cryptoService;
 
     @GetMapping("/")
     public ResponseEntity<List<Wallet>> getAllWalletsForCurrentUser(){
@@ -47,23 +45,6 @@ public class WalletController {
         return new ResponseEntity<>("Deleted",HttpStatus.OK);
     }
 
-
-    @PostMapping("/crypto/{walletId}")
-    public ResponseEntity<Wallet> addCrypto(@PathVariable Long walletId, @RequestBody Crypto crypto){
-        return new ResponseEntity<>(walletService.addCryptoToWallet(walletId,crypto),HttpStatus.CREATED);
-    }
-
-    @PatchMapping("/crypto/{walletId}/{cryptoId}")
-    public ResponseEntity<Wallet> changeAmountCrypto(@PathVariable Long walletId, @PathVariable Long cryptoId, @RequestBody Double amount){
-        cryptoService.changeCryptoAmount(cryptoId,amount);
-        return new ResponseEntity<>(walletService.getWalletById(walletId),HttpStatus.ACCEPTED);
-    }
-
-    @DeleteMapping("/crypto/{walletId}/{cryptoId}")
-    public ResponseEntity<Wallet> removeCrypto(@PathVariable Long walletId, @PathVariable Long cryptoId){
-        cryptoService.deleteCrypto(cryptoId);
-        return new ResponseEntity<>(walletService.getWalletById(walletId),HttpStatus.CREATED);
-    }
 
 }
 

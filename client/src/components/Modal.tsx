@@ -33,7 +33,7 @@ const Modal = ({ title, closeModal, handleNext, children }: IModalParams) => {
 		return () => {
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
-	});
+	}, []);
 
 	return (
 		<div

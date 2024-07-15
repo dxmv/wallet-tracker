@@ -1,5 +1,5 @@
 import { IUser, RequestError } from "@/types";
-import { fetchCustom } from "./defaul";
+import { fetchCustom } from "./default";
 
 export const authApi = {
 	login: (email: string, password: string) =>

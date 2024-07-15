@@ -21,19 +21,13 @@ import java.util.List;
 public class WalletService {
     private final WalletRepository walletRepository;
     private final UserService userService;
-
-    private final CryptoService cryptoService;
-
-    private AdminWalletService adminWalletService;
+    private final AdminWalletService adminWalletService;
     @Autowired
-    public WalletService(WalletRepository walletRepository,UserService userService,CryptoService cryptoService, AdminWalletService adminWalletService){
+    public WalletService(WalletRepository walletRepository,UserService userService, AdminWalletService adminWalletService){
         this.walletRepository=walletRepository;
         this.userService=userService;
-        this.cryptoService = cryptoService;
         this.adminWalletService = adminWalletService;
     }
-
-
 
     public Wallet getWalletById(Long walletId) {return walletRepository.findById(walletId).orElseThrow(()->new NotFoundException("Wallet with id: " + walletId + ", not found"));}
 
@@ -83,15 +77,6 @@ public class WalletService {
             throw new UnauthorizedException("The user doesn't own this wallet, wallet id: " + walletId);
         }
         return w;
-    }
-
-
-    @Transactional
-    public Wallet addCryptoToWallet(Long walletId, Crypto crypto) {
-        Wallet wallet = getOneWalletForCurrentUser(walletId);
-
-        wallet.getCoins().add(cryptoService.createCrypto(crypto,wallet));
-        return walletRepository.save(wallet);
     }
 
 }

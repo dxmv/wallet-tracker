@@ -13,7 +13,7 @@ import java.util.List;
  *  Maps users with the wallets created by admins
  * */
 @Entity
-@Table(name = "USER_WALLETS")
+@Table(name = "WALLETS")
 @Getter
 @Setter
 @NoArgsConstructor
