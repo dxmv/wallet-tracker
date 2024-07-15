@@ -1,32 +1,16 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Modal from "@/components/Modal";
+import React, { useState } from "react";
 import { walletApi } from "@/api/wallet";
-import { useRouter } from "next/navigation";
-import ListAdminWallets from "@/components/ListAdminWallets";
-import { IWallet } from "@/types";
-import MyList from "./_components/MyList";
-import ListCrypto from "@/components/ListCrypto";
+import MyList from "../../components/custom list/MyList";
+import WalletsModal from "./_components/WalletsModal";
+import WalletListItem from "@/components/custom list/WalletListItem";
+import CryptoModal from "./_components/CryptoModal";
 
 type IShow = "Wallets" | "Crypto";
 
 const Dashboard = () => {
 	const [showing, setShowing] = useState<IShow>("Wallets");
 	const [openModal, setOpenModal] = useState<boolean>(false);
-	const [selectedId, setSelectedId] = useState<number | null>(null);
-	const { push } = useRouter();
-
-	const handleNext = async () => {
-		// check if a wallet is selected
-		if (selectedId) {
-			try {
-				const data = await walletApi.addWallet(selectedId);
-				push(`/wallets/${data.id}`); // redirect
-			} catch (e) {
-				console.error(e);
-			}
-		}
-	};
 
 	return (
 		<main style={{ height: "87vh" }} className="py-8 px-4 text-white flex">
@@ -41,24 +25,9 @@ const Dashboard = () => {
 			{/* Show a modal based on the current showing */}
 			{openModal &&
 				(showing == "Wallets" ? (
-					<Modal
-						title={`Add wallets`}
-						closeModal={() => setOpenModal(false)}
-						handleNext={handleNext}
-					>
-						<ListAdminWallets
-							selectedId={selectedId}
-							setSelectedId={setSelectedId}
-						/>
-					</Modal>
+					<WalletsModal closeModal={() => setOpenModal(false)} />
 				) : (
-					<Modal
-						title={`Add crypto`}
-						closeModal={() => setOpenModal(false)}
-						handleNext={handleNext}
-					>
-						<ListCrypto selectedId={selectedId} setSelectedId={setSelectedId} />
-					</Modal>
+					<CryptoModal closeModal={() => setOpenModal(false)} />
 				))}
 		</main>
 	);
@@ -106,7 +75,10 @@ const RightHalf = ({
 			</div>
 
 			{/* Different api calls for both wallets and crypto */}
-			<MyList apiCall={walletApi.getAllWallets} />
+			<MyList
+				apiCall={walletApi.getAllWallets}
+				renderItem={item => <WalletListItem item={item} />}
+			/>
 
 			<button className="mt-8" onClick={openModal}>
 				Add {showing}
