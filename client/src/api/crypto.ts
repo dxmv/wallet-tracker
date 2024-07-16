@@ -11,4 +11,11 @@ export const cryptoApi = {
 			},
 			body: JSON.stringify(crypto),
 		}),
+	getAllCryptoForUser: () =>
+		fetchCustom<Array<ICrypto>>("/crypto/", {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${getCookie("token")}`,
+			},
+		}),
 };

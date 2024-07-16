@@ -4,6 +4,7 @@ import { walletApi } from "@/api/wallet";
 import Modal from "@/components/Modal";
 import AdminWalletListItem from "@/components/custom list/AdminWalletListItem";
 import MyList from "@/components/custom list/MyList";
+import SelectItemWrapper from "@/components/custom list/wrappers/SelectItemWrapper";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
@@ -33,11 +34,13 @@ const WalletsModal = ({ closeModal }: { closeModal: () => void }) => {
 				key={selectedId}
 				apiCall={adminApi.getAllAdminWallets}
 				renderItem={item => (
-					<AdminWalletListItem
-						item={item}
+					<SelectItemWrapper
 						selectedId={selectedId}
 						setSelectedId={setSelectedId}
-					/>
+						itemId={item.id}
+					>
+						<AdminWalletListItem item={item} />
+					</SelectItemWrapper>
 				)}
 			></MyList>
 		</Modal>

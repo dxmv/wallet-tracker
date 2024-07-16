@@ -1,16 +1,14 @@
 import { IWallet } from "@/types";
-import Link from "next/link";
 import React from "react";
 
 const WalletListItem = ({ item }: { item: IWallet }) => {
+	console.log(item);
 	return (
-		<Link
-			href={`/wallets/${item.id}`}
-			className="flex py-2 border-b-2 border-gray-800 justify-between hover:bg-gray-500 mb-2 items-center"
-		>
+		<>
 			<div className="flex">
 				<img
-					src={item.adminWallet.iconUrl}
+					src={item.adminWallet.iconUrl as string}
+					alt=""
 					width={25}
 					height={25}
 					className="rounded-lg"
@@ -18,7 +16,7 @@ const WalletListItem = ({ item }: { item: IWallet }) => {
 				<h1 className="font-bold ml-2">{item.adminWallet.name}</h1>
 			</div>
 			<p>{item.coins.length}</p>
-		</Link>
+		</>
 	);
 };
 

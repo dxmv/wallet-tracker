@@ -1,9 +1,11 @@
 "use client";
 import { adminApi } from "@/api/admin";
 import { cryptoApi } from "@/api/crypto";
-import AdminWalletListItem from "@/components/custom list/AdminWalletListItem";
+import { walletApi } from "@/api/wallet";
 import CryptoApiListItem from "@/components/custom list/CryptoApiListItem";
 import MyList from "@/components/custom list/MyList";
+import WalletListItem from "@/components/custom list/WalletListItem";
+import SelectItemWrapper from "@/components/custom list/wrappers/SelectItemWrapper";
 import Modal from "@/components/Modal";
 import { TextInput } from "@/components/TextInput";
 import { useCrypto } from "@/hooks/useCrypto";
@@ -22,8 +24,10 @@ const CryptoModal = ({ closeModal }: { closeModal: () => void }) => {
 
 	const handleNext = async () => {
 		if (stage == 1 && selectedId) {
+			console.log("a");
 			await setStage(prev => prev + 1);
-		} else if (stage == 2 && selectedId && walletId) {
+		} else if (stage == 2 && selectedId && walletId && amount > 0) {
+			// can only add if we selected the crypto wallet and entered a valid value for the amount
 			const payload: Omit<ICrypto, "id"> = {
 				name: crypto[selectedId - 1].name,
 				imageURL: crypto[selectedId - 1].image,
@@ -42,32 +46,33 @@ const CryptoModal = ({ closeModal }: { closeModal: () => void }) => {
 		return crypto;
 	};
 
-	console.log(selectedId);
-
 	return (
 		<Modal title={`Add crypto`} closeModal={closeModal} handleNext={handleNext}>
 			{stage == 1 ? (
 				<MyList
 					apiCall={getCoins}
 					renderItem={item => (
-						<CryptoApiListItem
-							item={item}
+						<SelectItemWrapper
 							selectedId={selectedId}
 							setSelectedId={setSelectedId}
-						/>
+							itemId={item.market_cap_rank - 1}
+						>
+							<CryptoApiListItem item={item} />
+						</SelectItemWrapper>
 					)}
 				/>
 			) : (
 				<>
 					<MyList
-						key={selectedId}
-						apiCall={adminApi.getAllAdminWallets}
+						apiCall={walletApi.getAllWallets}
 						renderItem={item => (
-							<AdminWalletListItem
-								item={item}
+							<SelectItemWrapper
 								selectedId={walletId}
 								setSelectedId={setWalletId}
-							/>
+								itemId={item.id}
+							>
+								<WalletListItem item={item} />
+							</SelectItemWrapper>
 						)}
 					/>
 					<TextInput

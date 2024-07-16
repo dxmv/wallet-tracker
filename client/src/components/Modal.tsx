@@ -52,8 +52,11 @@ const Modal = ({ title, closeModal, handleNext, children }: IModalParams) => {
 				className="w-1/5 bg-white h-4/5 flex flex-col items-center p-4"
 				ref={modalRef}
 			>
-				<div className="w-full flex justify-end">
-					<h1 className="font-semibold text-lg text-center">{title}</h1>
+				<div className="w-full flex justify-between items-center">
+					<div className="w-4"></div> {/* Spacer */}
+					<h1 className="font-semibold text-lg flex-grow text-center">
+						{title}
+					</h1>
 					<button onClick={closeModal}>X</button>
 				</div>
 				{/* Search bar */}
@@ -64,6 +67,7 @@ const Modal = ({ title, closeModal, handleNext, children }: IModalParams) => {
 					inputText="Search:"
 					icon={<IoMdSearch />}
 				/>
+				<div className="mb-6"></div>
 				{/* List of items */}
 				{children}
 				<button className="border-2 px-3 py-1 mt-6" onClick={handleNext}>
