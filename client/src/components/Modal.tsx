@@ -8,10 +8,18 @@ interface IModalParams {
 	closeModal: () => void;
 	handleNext: () => void;
 	children: React.ReactNode;
+	search: string;
+	setSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Modal = ({ title, closeModal, handleNext, children }: IModalParams) => {
-	const [search, setSearch] = useState<string>("");
+const Modal = ({
+	title,
+	closeModal,
+	handleNext,
+	children,
+	search,
+	setSearch,
+}: IModalParams) => {
 	const modalRef = useRef<HTMLDivElement>(null); // references the modal
 
 	useEffect(() => {

@@ -4,10 +4,17 @@ import React, { useEffect, useState } from "react";
 interface MyListProps<T> {
 	apiCall: () => Promise<Array<T>>;
 	renderItem: (item: T) => React.ReactNode;
+	searchTerm?: String;
+	searchKeys?: (keyof T)[]; // can search by more parameters
 }
 
 // list of items with the type T
-const MyList = <T,>({ apiCall, renderItem }: MyListProps<T>) => {
+const MyList = <T,>({
+	apiCall,
+	renderItem,
+	searchTerm,
+	searchKeys,
+}: MyListProps<T>) => {
 	const [list, setList] = useState<Array<T>>([]);
 
 	useEffect(() => {
@@ -22,9 +29,20 @@ const MyList = <T,>({ apiCall, renderItem }: MyListProps<T>) => {
 		fetchData();
 	}, [apiCall]);
 
+	const filteredList = list.filter(item => {
+		if (!searchTerm) return true;
+		return searchKeys?.some(key => {
+			const value = item[key];
+			return (
+				typeof value === "string" &&
+				value.toLowerCase().includes(searchTerm.toLowerCase())
+			);
+		});
+	});
+
 	return (
 		<div className="w-full h-3/4 overflow-y-scroll">
-			{list.map((item, index) => (
+			{filteredList.map((item, index) => (
 				<React.Fragment key={index}>{renderItem(item)}</React.Fragment>
 			))}
 		</div>
