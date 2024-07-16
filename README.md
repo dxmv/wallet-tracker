@@ -1,5 +1,7 @@
 # Todo
+
 ## Frontend
+
 - [ ] Caching requests
 - [ ] Auth context?
 - [ ] Change navigation when logged in
@@ -9,30 +11,36 @@
 - [ ] Logout
 - [ ] Better design
 - [ ] Tickets page
-- [ ] Optimise
+- [ ] Optimize
+- [ ] Admin page
 
 - Crypto modal
-    - [ ] Can't add crypto if not selected wallet or crypto or amount
-    - [ ] Search in modal
-    - [ ] List with infinite scroll
-    - [ ] Get only wallets for user
+
+  - [x] Link & Select wrapper
+  - [ ] Can't add crypto if not selected wallet or crypto or amount
+  - [ ] Search in modal
+  - [ ] List with infinite scroll
+  - [ ] Get only wallets for user
 
 - Wallet page
-    - [ ] Add crypto from here
-    - [ ] Update crypto here
-    - [ ] Delete crypto
-    - [ ] Delte wallet
+
+  - [ ] Add crypto from here
+  - [ ] Update crypto here
+  - [ ] Delete crypto
+  - [ ] Delte wallet
 
 - Dashboard
-    - [ ] Pie chart
-    - [ ] Animation for switching showing
-    - [ ] Balance on legend
+
+  - [ ] Pie chart
+  - [ ] Animation for switching showing
+  - [ ] Balance on legend
+  - [x] Display crypto
+  - [ ] Fix display of wallets
 
 - Profile page
-- [ ] Simple details
-- [ ] Change password
-- [ ] Stats like how much crypto in usd
-
+  - [ ] Simple details
+  - [ ] Change password
+  - [ ] Stats like how much crypto in usd
 
 ## Backend
 
@@ -41,5 +49,5 @@
 - [ ] Tests
 
 - Tickets
-- [ ] A user can submit a ticket
-- [ ] Admins can delete tickets
+  - [ ] A user can submit a ticket
+  - [ ] Admins can delete tickets
