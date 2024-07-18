@@ -26,9 +26,11 @@
   - [x] The wrong crypto is being added
   - [x] Do the same thing for wallet
   - [ ] Back button for the second stage of crypto modal
+  - [ ] Error message
 
 - Wallet page
 
+  - [ ] Display crypto
   - [ ] Add crypto from here
   - [ ] Update crypto here
   - [ ] Delete crypto

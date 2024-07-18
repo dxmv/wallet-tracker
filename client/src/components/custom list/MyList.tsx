@@ -1,18 +1,32 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
-import { FixedSizeList as List, ListChildComponentProps } from "react-window";
+import {
+	FixedSizeList as List,
+	FixedSizeGrid as Grid,
+	ListChildComponentProps,
+	GridChildComponentProps,
+} from "react-window";
 
 interface MyListProps<T> {
 	apiCall: () => Promise<Array<T>>;
 	renderItem: (item: T) => React.ReactNode;
+	containerWidth?: number;
+	containerHeight?: number;
 	searchTerm?: String;
 	searchKeys?: (keyof T)[]; // can search by more parameters
+	// the kind of display
+	display?: "list" | "grid";
+	columnCount?: number; // if the display is grid
 }
 
 // list of items with the type T
 const MyList = <T,>({
 	apiCall,
 	renderItem,
+	containerWidth = 800,
+	containerHeight = 400,
+	display = "list",
+	columnCount = 3,
 	searchTerm,
 	searchKeys,
 }: MyListProps<T>) => {
@@ -34,12 +48,23 @@ const MyList = <T,>({
 	}, [apiCall]);
 
 	// Memoized row renderer for the virtualized list
-	const Row = useCallback(
+	const ListRow = useCallback(
 		({ index, style }: ListChildComponentProps) => {
 			const item = filteredItems[index];
 			return <div style={style}>{renderItem(item)}</div>;
 		},
 		[filteredItems, renderItem]
+	);
+
+	// Memoized cell renderer for the virtualized grid
+	const GridCell = useCallback(
+		({ columnIndex, rowIndex, style }: GridChildComponentProps) => {
+			const index = rowIndex * columnCount + columnIndex; // calculating the item's index
+			const item = filteredItems[index];
+			if (!item) return null;
+			return <div style={style}>{renderItem(item)}</div>;
+		},
+		[filteredItems, renderItem, columnCount]
 	);
 
 	// filtering
@@ -57,15 +82,26 @@ const MyList = <T,>({
 		setFilteredItems(filteredList);
 	}, [allItems, searchTerm, searchKeys]);
 
-	return (
+	return display === "list" ? (
 		<List
-			height={400} // Fixed height, adjust as needed
+			height={containerHeight}
 			itemCount={filteredItems.length}
-			itemSize={50} // Height of each item in pixels
-			width="100%"
+			itemSize={50}
+			width={containerWidth}
 		>
-			{Row}
+			{ListRow}
 		</List>
+	) : (
+		<Grid
+			columnCount={columnCount}
+			columnWidth={containerWidth / columnCount}
+			height={containerHeight}
+			rowCount={Math.ceil(filteredItems.length / columnCount)}
+			rowHeight={50}
+			width={containerWidth}
+		>
+			{GridCell}
+		</Grid>
 	);
 };
 

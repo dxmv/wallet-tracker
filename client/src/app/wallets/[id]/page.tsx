@@ -1,5 +1,8 @@
 "use client";
 import { walletApi } from "@/api/wallet";
+import CryptoListItem from "@/components/custom list/CryptoListItem";
+import MyList from "@/components/custom list/MyList";
+import LinkItemWrapper from "@/components/custom list/wrappers/LinkItemWrapper";
 import { IWallet } from "@/types";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -18,7 +21,11 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 			}
 		};
 		fetchWallet();
-	}, []);
+	}, [params.id]);
+
+	if (!wallet) {
+		return <>a</>;
+	}
 
 	return (
 		<main className="flex flex-col w-full py-8 px-4" style={{ height: "87vh" }}>
@@ -44,9 +51,15 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 					gridGap: "20px",
 				}}
 			>
-				{wallet?.coins.map(el => (
-					<div key={el.id}>a</div>
-				))}
+				<MyList
+					apiCall={async () => await wallet.coins}
+					renderItem={item => (
+						<LinkItemWrapper href="/test">
+							<CryptoListItem item={item} image="" />
+						</LinkItemWrapper>
+					)}
+					display="grid"
+				/>
 			</div>
 			{/* Button for adding crypto */}
 			<button>Add crypto</button>
