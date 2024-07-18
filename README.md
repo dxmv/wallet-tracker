@@ -2,6 +2,7 @@
 
 ## Frontend
 
+- [ ] How to display the icon for crypto
 - [ ] Caching requests
 - [ ] Auth context?
 - [ ] Change navigation when logged in
@@ -13,23 +14,26 @@
 - [ ] Tickets page
 - [ ] Admin page
 - [ ] When a user click on a crypto, they get various info about it in a modal
+- [ ] Get 1000 cryptos from api
 
-- Crypto modal
+- Modal
 
   - [x] Link & Select wrapper
   - [x] Can't add crypto if not selected wallet or crypto or amount
   - [x] Search in modal
-  - [ ] List with infinite scroll
+  - [x] List with infinite scroll
   - [x] Get only wallets for user
-  - [ ] The wrong crypto is being added
-  - [ ] Do the same thing for wallet
+  - [x] The wrong crypto is being added
+  - [x] Do the same thing for wallet
+  - [ ] Back button for the second stage of crypto modal
 
 - Wallet page
 
   - [ ] Add crypto from here
   - [ ] Update crypto here
   - [ ] Delete crypto
-  - [ ] Delte wallet
+  - [ ] Delete wallet
+  - [ ] Edit the nickname of the wallet
 
 - Dashboard
 

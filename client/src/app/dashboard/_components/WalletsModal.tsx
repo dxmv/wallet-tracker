@@ -6,15 +6,18 @@ import AdminWalletListItem from "@/components/custom list/AdminWalletListItem";
 import MyList from "@/components/custom list/MyList";
 import SelectItemWrapper from "@/components/custom list/wrappers/SelectItemWrapper";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 
 const WalletsModal = ({ closeModal }: { closeModal: () => void }) => {
 	const [selectedId, setSelectedId] = useState<number | null>(null);
+
+	const [search, setSearch] = useState<string>("");
 	const { push } = useRouter();
 
 	const handleNext = async () => {
 		// check if a wallet is selected
-		if (selectedId) {
+		if (selectedId != null) {
+			console.log("a");
 			try {
 				const data = await walletApi.addWallet(selectedId);
 				push(`/wallets/${data.id}`); // redirect
@@ -24,14 +27,10 @@ const WalletsModal = ({ closeModal }: { closeModal: () => void }) => {
 		}
 	};
 
-	return (
-		<Modal
-			title={`Add wallets`}
-			closeModal={closeModal}
-			handleNext={handleNext}
-		>
+	// optimized rendering the list of cryptos
+	const renderAdminWalletList = useCallback(
+		() => (
 			<MyList
-				key={selectedId}
 				apiCall={adminApi.getAllAdminWallets}
 				renderItem={item => (
 					<SelectItemWrapper
@@ -42,7 +41,22 @@ const WalletsModal = ({ closeModal }: { closeModal: () => void }) => {
 						<AdminWalletListItem item={item} />
 					</SelectItemWrapper>
 				)}
-			></MyList>
+				searchTerm={search}
+				searchKeys={["name"]}
+			/>
+		),
+		[selectedId, setSelectedId, search]
+	);
+
+	return (
+		<Modal
+			title={`Add wallets`}
+			closeModal={closeModal}
+			handleNext={handleNext}
+			search={search}
+			setSearch={setSearch}
+		>
+			{renderAdminWalletList()}
 		</Modal>
 	);
 };

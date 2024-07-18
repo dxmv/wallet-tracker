@@ -27,7 +27,6 @@ const CryptoModal = ({ closeModal }: { closeModal: () => void }) => {
 
 	const handleNext = async () => {
 		if (stage == 1 && selectedId != null) {
-			console.log("a");
 			await setStage(prev => prev + 1);
 		} else if (stage == 2 && selectedId && walletId && amount > 0) {
 			// can only add if we selected the crypto wallet and entered a valid value for the amount
@@ -59,7 +58,7 @@ const CryptoModal = ({ closeModal }: { closeModal: () => void }) => {
 					<SelectItemWrapper
 						selectedId={selectedId}
 						setSelectedId={setSelectedId}
-						itemId={item.market_cap_rank - 1}
+						itemId={item.market_cap_rank}
 					>
 						<CryptoApiListItem item={item} />
 					</SelectItemWrapper>
