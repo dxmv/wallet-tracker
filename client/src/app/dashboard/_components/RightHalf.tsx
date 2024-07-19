@@ -6,6 +6,8 @@ import LinkItemWrapper from "@/components/custom list/wrappers/LinkItemWrapper";
 import MyList from "@/components/custom list/MyList";
 import WalletListItem from "@/components/custom list/WalletListItem";
 import React, { useMemo } from "react";
+import DetailsModalItemWrapper from "@/components/custom list/wrappers/DetailsModalItemWrapper";
+import DetailsModalWrapper from "@/components/custom list/wrappers/DetailsModalItemWrapper";
 
 const SHOW_STYLE = "px-3 py-1 border-gray-600 border-2";
 
@@ -57,14 +59,19 @@ const RightHalf = ({
 				<MyList
 					apiCall={cryptoApi.getAllCryptoForUser}
 					renderItem={item => (
-						<LinkItemWrapper href={`/crypto/${item.id}`}>
-							<CryptoListItem
-								item={item}
-								image={
-									"https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1200px-Bitcoin.svg.png"
-								}
-							/>
-						</LinkItemWrapper>
+						<DetailsModalWrapper
+							item={item}
+							renderDetails={crypto => (
+								<div>
+									<h2>{crypto.name}</h2>
+									<p>Amount: {crypto.amount}</p>
+									<p>Value:</p>
+									{/* Add more details as needed */}
+								</div>
+							)}
+						>
+							<CryptoListItem item={item} image="" />
+						</DetailsModalWrapper>
 					)}
 				/>
 			)}

@@ -1,7 +1,9 @@
 import { ICoinFromCoinGecko, RequestError } from "@/types";
 import { CoinGeckoClient } from "coingecko-api-v3";
 
-const clientApi = new CoinGeckoClient(); // we're using this because it's free
+const clientApi = new CoinGeckoClient({
+	timeout: 1000,
+}); // we're using this because it's free
 
 // const API_KEY = "CG-KCkwa9NJzSHPLHJoL3JTkyUj";
 

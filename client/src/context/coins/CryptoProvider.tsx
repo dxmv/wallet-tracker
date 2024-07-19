@@ -15,8 +15,10 @@ const CryptoProvider = ({ children }: { children: React.ReactNode }) => {
 	useEffect(() => {
 		const fetchCryptocurrencies = async () => {
 			try {
-				const response = await coinGecko.getCoinListWithMarketData(1);
-				setCryptocurrencies(response);
+				for (let i = 1; i <= 4; i++) {
+					const response = await coinGecko.getCoinListWithMarketData(i);
+					setCryptocurrencies(prev => [...prev, ...response]);
+				}
 			} catch (err) {
 				console.error(err);
 			} finally {

@@ -13,8 +13,8 @@
 - [ ] Better design
 - [ ] Tickets page
 - [ ] Admin page
-- [ ] When a user click on a crypto, they get various info about it in a modal
-- [ ] Get 1000 cryptos from api
+- [x] When a user click on a crypto, they get various info about it in a modal
+- [x] Get 1000 cryptos from api
 - [ ] Optimize the dashboard
 - [ ] Add loading
 - [ ] Add refreshing
@@ -42,9 +42,9 @@
   - [x] Refresh the wallet after crypto action
   - [x] Edit crypto and display info for crypto modal
 
-- Crypto page
+- Crypto "page"
 
-  - [ ] Display basic info
+  - [x] Display basic info
   - [ ] Display the list of wallets for the crypto
 
 - Dashboard
@@ -72,6 +72,7 @@
 - [ ] Add crypto types accepted for a wallet
 - [ ] Tests
 - [x] If crypto is already in a wallet, update it
+- [ ] Myb save the id of coin gecko crypto?
 
 - Tickets
   - [ ] A user can submit a ticket
