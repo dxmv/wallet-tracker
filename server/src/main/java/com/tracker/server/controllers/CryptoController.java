@@ -2,6 +2,7 @@ package com.tracker.server.controllers;
 
 import com.tracker.server.models.Crypto;
 import com.tracker.server.models.Wallet;
+import com.tracker.server.models.responses.DeleteResponse;
 import com.tracker.server.services.CryptoService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/crypto")
@@ -24,7 +26,7 @@ public class CryptoController {
      * Returns all crypto that belongs to the current user
      */
     @GetMapping("/")
-    public ResponseEntity<List<Crypto>> getCryptoForUser(){
+    public ResponseEntity<Set<Crypto>> getCryptoForUser(){
         return new ResponseEntity<>(cryptoService.getAllForUser(), HttpStatus.OK);
     }
 
@@ -44,17 +46,13 @@ public class CryptoController {
         return new ResponseEntity<>(cryptoService.changeCryptoAmount(cryptoId,amount),HttpStatus.CREATED);
     }
 
-
+    /**
+     * Deletes the crypto with the given id
+     */
     @DeleteMapping("/{cryptoId}")
     public ResponseEntity<DeleteResponse> deleteCrypto(@PathVariable Long cryptoId){
         cryptoService.deleteCrypto(cryptoId);
         return new ResponseEntity<>(new DeleteResponse("Deleted"),HttpStatus.OK);
     }
 
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    public static class DeleteResponse {
-        private final String message;
-    }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class AuthController {
 
+    // we keep the two classes because they are only used in this controller
     @Getter
     @Setter
     static
@@ -27,6 +28,8 @@ public class AuthController {
     class AuthenticationResponse {
         private final String jwt;
     }
+
+
 
     @Autowired
     private AuthService authService;

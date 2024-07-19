@@ -20,7 +20,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository,PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -38,10 +38,9 @@ public class UserService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof User) {
             Long userId = ((User) principal).getId();
-            return userRepository.findById(userId).orElse(null);
+            return getUserById(userId);
         }
         throw new UnauthorizedException("The user isn't logged in");
     }
-
 
 }

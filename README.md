@@ -18,6 +18,7 @@
 - [ ] Optimize the dashboard
 - [ ] Add loading
 - [ ] Add refreshing
+- [ ] Handle errors
 
 - Modal
 
@@ -35,12 +36,15 @@
 
   - [x] Display crypto
   - [x] Add crypto from here
-  - [ ] Update crypto here
   - [x] Delete crypto
   - [x] Delete wallet
   - [ ] Edit the nickname of the wallet
   - [x] Refresh the wallet after crypto action
-  - [ ] Open a small modal when a user clicks on the crypto
+
+- Crypto page
+
+  - [ ] Display basic info
+  - [ ] Update amount
 
 - Dashboard
 
@@ -61,8 +65,8 @@
 
 ## Backend
 
-- [ ] Check if crypto belongs to a user's wallet
-- [ ] Fix the response for deletes
+- [x] Check if crypto belongs to a user's wallet
+- [x] Fix the response for deletes
 - [ ] Add 'nicknames' for user wallets
 - [ ] Add crypto types accepted for a wallet
 - [ ] Tests

@@ -27,8 +27,6 @@ public class AuthService {
     @Autowired
     private UserRepository userRepo;
 
-
-
     /**
      Returns a JWT token
     */
@@ -55,7 +53,7 @@ public class AuthService {
 
         User u = new User();
         // set the default role to user
-        u.getRoles().add(Role.ADMIN);
+        u.getRoles().add(Role.USER);
         u.setEmail(email);
         u.setPassword(this.passwordEncoder.encode(password));
         return userRepo.save(u);

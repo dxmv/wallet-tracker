@@ -3,6 +3,7 @@ package com.tracker.server.controllers;
 import com.tracker.server.models.Crypto;
 import com.tracker.server.models.User;
 import com.tracker.server.models.Wallet;
+import com.tracker.server.models.responses.DeleteResponse;
 import com.tracker.server.services.CryptoService;
 import com.tracker.server.services.WalletService;
 import lombok.AllArgsConstructor;
@@ -43,13 +44,6 @@ public class WalletController {
     public ResponseEntity<DeleteResponse> deleteWallet(@PathVariable Long walletId){
         walletService.deleteWalletForCurrentUser(walletId);
         return new ResponseEntity<>(new DeleteResponse("Deleted"),HttpStatus.OK);
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    public static class DeleteResponse {
-        private final String message;
     }
 
 }

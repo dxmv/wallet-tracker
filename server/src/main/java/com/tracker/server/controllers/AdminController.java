@@ -26,9 +26,10 @@ import java.util.List;
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
+    // we keep this here because it is only used in this controller
     @Getter
     @Setter
-    public static class AdminWalletRequestBody{
+    static class AdminWalletRequestBody{
         private String name;
         private MultipartFile icon;
     }

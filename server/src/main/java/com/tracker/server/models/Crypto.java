@@ -34,4 +34,12 @@ public class Crypto {
     @JoinColumn(name = "WALLET_ID")
     @JsonBackReference
     private Wallet wallet;
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Crypto c){
+            return this.name.equals(c.getName()) && this.ticker.equals(c.getTicker());
+        }
+        return false;
+    }
 }

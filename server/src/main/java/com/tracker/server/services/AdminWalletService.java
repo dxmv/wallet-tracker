@@ -40,26 +40,29 @@ public class AdminWalletService {
         }
     }
 
+    /**
+     * Creates a new AdminWallet
+     */
     public AdminWallet addWallet(String name, MultipartFile icon) {
-        walletWithNameExists(name);
+        walletWithNameExists(name); // doesn't create it if the wallet with the same name exists
         try{
             AdminWallet aw = new AdminWallet();
             aw.setName(name);
             aw.setIconUrl(imageUploadService.uploadImage(icon));
             return adminWalletRepository.save(aw);
         } catch (IOException e) {
+            // TODO: maybe internal exception here
             throw new BadRequestException(e.getMessage());
         }
     }
 
     public void deleteWallet(Long id) {
-        AdminWallet aw = getWalletById(id); // this is going to throw an error if the wallet doesn't exist
+        AdminWallet aw = getWalletById(id); // this will to throw an error if the wallet doesn't exist
         adminWalletRepository.deleteById(id);
     }
 
     public AdminWallet updateWallet(Long id, String name) {
-
-        // these two throw error if the wallet with id or name already exist
+        // these two throw an error if the wallet with id or name already exist
         walletWithNameExists(name);
         AdminWallet aw = getWalletById(id);
 

@@ -12,8 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class CryptoService {
@@ -33,13 +32,13 @@ public class CryptoService {
         return cryptoRepository.findById(id).orElseThrow(() -> new NotFoundException("Crypto with id: " + id + ", not found"));
     }
 
-    private Crypto createCrypto(Crypto crypto, Wallet wallet){
-        boolean cryptoExistsInWallet = wallet.getCoins().stream()
-                .anyMatch(existingCrypto -> existingCrypto.getName().equals(crypto.getName()) && existingCrypto.getTicker().equals(crypto.getTicker()));
+    @Transactional
+    protected Crypto createCrypto(Crypto crypto, Wallet wallet){
+        int cryptoId = wallet.getCoins().indexOf(crypto);
 
-        // the coin exist in the wallet
-        if (cryptoExistsInWallet) {
-            throw new BadRequestException("The wallet already has this crypto");
+        // the coin exist in the wallet, so we just add the amount
+        if (cryptoId != -1) {
+            return changeCryptoAmount(wallet.getId(),cryptoId);
         }
 
         if (crypto.getAmount() < 0) {
@@ -54,6 +53,7 @@ public class CryptoService {
 
     @Transactional
     public Crypto addCryptoToWallet(Long walletId, Crypto crypto) {
+        // throws the error if the wallet doesn't belong to the current user
         Wallet wallet = walletService.getOneWalletForCurrentUser(walletId);
 
         Crypto newCoin = createCrypto(crypto,wallet);
@@ -64,6 +64,9 @@ public class CryptoService {
     @Transactional
     public Crypto changeCryptoAmount(Long id, double amount){
         Crypto crypto = getById(id);
+        // check if the crypto belongs to a user's wallet
+        // throws the error if the wallet doesn't belong to the current user
+        walletService.getOneWalletForCurrentUser(crypto.getWallet().getId());
 
         if(amount < 0){
             throw new ConflictException("The amount of crypto cannot be negative");
@@ -74,20 +77,39 @@ public class CryptoService {
 
     @Transactional
     public void deleteCrypto(Long id){
-        // check if it exists
-        if(!cryptoRepository.existsById(id)){
-            throw new NotFoundException("Crypto with id: " + id + ", not found");
-        }
+        // checks if the crypto even exists
+        Crypto crypto = getById(id);
+        // check if the crypto belongs to a user's wallet
+        // throws the error if the wallet doesn't belong to the current user
+        walletService.getOneWalletForCurrentUser(crypto.getWallet().getId());
 
         cryptoRepository.deleteById(id);
     }
 
-    public List<Crypto> getAllForUser() {
-        List<Crypto> crypto = new ArrayList<>();
+    public Set<Crypto> getAllForUser() {
+        // TODO: compare by market cap rank
+        // Use a TreeSet with a custom comparator
+        TreeSet<Crypto> cryptoSet = new TreeSet<>(Comparator.comparing(Crypto::getName));
+        Map<String, Crypto> cryptoMap = new HashMap<>();
+
+        // Get all wallets for the current user
         List<Wallet> wallets = walletService.getWalletsForCurrentUser();
-        for(Wallet w:wallets){
-            crypto.addAll(w.getCoins());
+
+        for (Wallet wallet : wallets) {
+            for (Crypto crypto : wallet.getCoins()) {
+                String cryptoName = crypto.getName();
+                if (cryptoMap.containsKey(cryptoName)) {
+                    // Update the amount if the crypto already exists
+                    Crypto existingCrypto = cryptoMap.get(cryptoName);
+                    existingCrypto.setAmount(existingCrypto.getAmount() + crypto.getAmount());
+                } else {
+                    // Add new crypto to the set and map
+                    cryptoSet.add(crypto);
+                    cryptoMap.put(cryptoName, crypto);
+                }
+            }
         }
-        return crypto;
+
+        return cryptoSet;
     }
 }

@@ -40,18 +40,18 @@ public class WalletService {
         User u = userService.getCurrentUser();
         AdminWallet aw = adminWalletService.getWalletById(adminWalletId);
 
-        // if the current user exists, then create the wallet
+        // if the current user & admin wallet exist, then create the wallet
         Wallet w = new Wallet();
         w.setAdminWallet(aw);
         w.setUser(u);
-        // add wallet to user?
         return walletRepository.save(w);
     }
 
     @Transactional
     public void deleteWalletForCurrentUser(Long walletId){
-        Wallet w = walletRepository.findById(walletId).orElseThrow(()->new NotFoundException("Wallet with id:" + walletId + ", not found"));
+        Wallet w = getWalletById(walletId);
         User u = userService.getCurrentUser();
+
         if(u.equals(w.getUser())){
             this.walletRepository.deleteById(walletId);
         }
