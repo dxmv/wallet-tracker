@@ -40,11 +40,12 @@
   - [x] Delete wallet
   - [ ] Edit the nickname of the wallet
   - [x] Refresh the wallet after crypto action
+  - [x] Edit crypto and display info for crypto modal
 
 - Crypto page
 
   - [ ] Display basic info
-  - [ ] Update amount
+  - [ ] Display the list of wallets for the crypto
 
 - Dashboard
 
@@ -70,7 +71,7 @@
 - [ ] Add 'nicknames' for user wallets
 - [ ] Add crypto types accepted for a wallet
 - [ ] Tests
-- [ ] If crypto is already in a wallet, update it
+- [x] If crypto is already in a wallet, update it
 
 - Tickets
   - [ ] A user can submit a ticket

@@ -38,7 +38,7 @@ public class CryptoService {
 
         // the coin exist in the wallet, so we just add the amount
         if (cryptoId != -1) {
-            return changeCryptoAmount(wallet.getId(),cryptoId);
+            return changeCryptoAmount(wallet.getCoins().get(cryptoId).getId(),wallet.getCoins().get(cryptoId).getAmount() + crypto.getAmount());
         }
 
         if (crypto.getAmount() < 0) {

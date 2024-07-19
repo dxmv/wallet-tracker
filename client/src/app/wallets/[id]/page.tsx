@@ -55,8 +55,8 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 
 	const handleEditCrypto = async (id: number, amount: number) => {
 		try {
-			await cryptoApi.deleteCrypto(id);
-			refreshWallet();
+			await cryptoApi.changeAmount(id, amount);
+			await refreshWallet();
 		} catch (e) {
 			console.error(e);
 		}

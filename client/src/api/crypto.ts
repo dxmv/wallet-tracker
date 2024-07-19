@@ -25,12 +25,13 @@ export const cryptoApi = {
 				Authorization: `Bearer ${getCookie("token")}`,
 			},
 		}),
-	updateCrypto: (id: number, amount: number) =>
-		fetchCustom(`/crypto/${id}`, {
+	changeAmount: (id: number, amount: number) =>
+		fetchCustom<ICrypto>(`/crypto/${id}`, {
 			method: "PATCH",
 			headers: {
 				Authorization: `Bearer ${getCookie("token")}`,
+				"Content-Type": "application/json", // Add this line
 			},
-			body: JSON.stringify(amount),
+			body: JSON.stringify(amount), // Change this line
 		}),
 };

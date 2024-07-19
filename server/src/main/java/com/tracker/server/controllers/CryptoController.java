@@ -30,6 +30,7 @@ public class CryptoController {
         return new ResponseEntity<>(cryptoService.getAllForUser(), HttpStatus.OK);
     }
 
+
     /**
      * Adds crypto to the wallet
      */

@@ -1,7 +1,7 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
-export default function DashboardLayout({
+export default function WalletLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
