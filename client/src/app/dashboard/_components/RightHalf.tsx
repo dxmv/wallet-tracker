@@ -1,10 +1,13 @@
+"use client";
 import { cryptoApi } from "@/api/crypto";
 import { walletApi } from "@/api/wallet";
 import CryptoListItem from "@/components/custom list/CryptoListItem";
 import LinkItemWrapper from "@/components/custom list/wrappers/LinkItemWrapper";
 import MyList from "@/components/custom list/MyList";
 import WalletListItem from "@/components/custom list/WalletListItem";
-import React from "react";
+import React, { useMemo } from "react";
+
+const SHOW_STYLE = "px-3 py-1 border-gray-600 border-2";
 
 // shows the list of elements currently on the chart
 const RightHalf = ({
@@ -16,9 +19,7 @@ const RightHalf = ({
 	setShowing: React.Dispatch<React.SetStateAction<"Wallets" | "Crypto">>;
 	openModal: () => void;
 }) => {
-	const SHOW_STYLE = "px-3 py-1 border-gray-600 border-2";
-
-	const handleChangeShowing = () => {
+	const handleChangeShowing = (): void => {
 		setShowing(showing == "Wallets" ? "Crypto" : "Wallets");
 	};
 
@@ -28,22 +29,17 @@ const RightHalf = ({
 				<h1>Your {showing}</h1>
 				{/* Choose what items to show */}
 				<div className="mb-4 items-end">
-					<button
-						className={`${SHOW_STYLE} border-r-0 ${
-							showing == "Wallets" ? "bg-gray-500" : ""
-						}`}
-						onClick={handleChangeShowing}
-					>
-						Wallets
-					</button>
-					<button
-						className={`${SHOW_STYLE} ${
-							showing == "Crypto" ? "bg-gray-500" : ""
-						}`}
-						onClick={handleChangeShowing}
-					>
-						Crypto
-					</button>
+					{["Wallets", "Crypto"].map(type => (
+						<button
+							key={type}
+							className={`${SHOW_STYLE} ${
+								type === "Crypto" ? "" : "border-r-0"
+							} ${showing === type ? "bg-gray-500" : ""}`}
+							onClick={handleChangeShowing}
+						>
+							{type}
+						</button>
+					))}
 				</div>
 			</div>
 

@@ -2,19 +2,31 @@
 import { walletApi } from "@/api/wallet";
 import CryptoListItem from "@/components/custom list/CryptoListItem";
 import MyList from "@/components/custom list/MyList";
-import LinkItemWrapper from "@/components/custom list/wrappers/LinkItemWrapper";
 import Modal from "@/components/Modal";
 import { IWallet } from "@/types";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import AddCryptoModal from "../_components/AddCryptoModal";
+import EditAndDeleteItemWrapper from "@/components/custom list/wrappers/EditAndDeleteItemWrapper";
+import { cryptoApi } from "@/api/crypto";
 
 const Wallet = ({ params }: { params: { id: string } }) => {
 	const [wallet, setWallet] = useState<IWallet | null>(null);
 	const [deleteWalletModal, setDeleteWalletModal] = useState<boolean>(false);
 	const [addCryptoModal, setAddCryptoModal] = useState<boolean>(false);
 	const { push } = useRouter();
+
+	const refreshWallet = useCallback(async () => {
+		try {
+			const updatedWallet = await walletApi.getOneWallet(
+				Number.parseInt(params.id)
+			);
+			setWallet(updatedWallet);
+		} catch (e) {
+			console.error(e);
+		}
+	}, [params.id]);
 
 	useEffect(() => {
 		const fetchWallet = async () => {
@@ -36,6 +48,24 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 		try {
 			await walletApi.deleteWallet(wallet?.id);
 			await push("/dashboard");
+		} catch (e) {
+			console.error(e);
+		}
+	};
+
+	const handleEditCrypto = async (id: number, amount: number) => {
+		try {
+			await cryptoApi.deleteCrypto(id);
+			refreshWallet();
+		} catch (e) {
+			console.error(e);
+		}
+	};
+
+	const handleDeleteCrypto = async (id: number) => {
+		try {
+			await cryptoApi.deleteCrypto(id);
+			refreshWallet();
 		} catch (e) {
 			console.error(e);
 		}
@@ -75,9 +105,13 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 			<MyList
 				apiCall={async () => await wallet.coins}
 				renderItem={item => (
-					<LinkItemWrapper href="/test">
+					<EditAndDeleteItemWrapper
+						onEdit={handleEditCrypto}
+						onDelete={handleDeleteCrypto}
+						id={item.id}
+					>
 						<CryptoListItem item={item} image="" />
-					</LinkItemWrapper>
+					</EditAndDeleteItemWrapper>
 				)}
 				display="grid"
 			/>
@@ -106,6 +140,7 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 				<AddCryptoModal
 					closeModal={() => setAddCryptoModal(false)}
 					walletId={wallet.id}
+					refreshWallet={refreshWallet}
 				/>
 			)}
 		</main>

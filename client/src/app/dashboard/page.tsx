@@ -1,12 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import { walletApi } from "@/api/wallet";
-import MyList from "../../components/custom list/MyList";
 import WalletsModal from "./_components/WalletsModal";
-import WalletListItem from "@/components/custom list/WalletListItem";
 import CryptoModal from "./_components/CryptoModal";
-import { cryptoApi } from "@/api/crypto";
-import CryptoListItem from "@/components/custom list/CryptoListItem";
 import RightHalf from "./_components/RightHalf";
 
 type IShow = "Wallets" | "Crypto";

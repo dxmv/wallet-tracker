@@ -3,6 +3,9 @@ package com.tracker.server.controllers;
 import com.tracker.server.models.Crypto;
 import com.tracker.server.models.Wallet;
 import com.tracker.server.services.CryptoService;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +46,15 @@ public class CryptoController {
 
 
     @DeleteMapping("/{cryptoId}")
-    public ResponseEntity<String> deleteCrypto(@PathVariable Long cryptoId){
+    public ResponseEntity<DeleteResponse> deleteCrypto(@PathVariable Long cryptoId){
         cryptoService.deleteCrypto(cryptoId);
-        return new ResponseEntity<>("Success",HttpStatus.OK);
+        return new ResponseEntity<>(new DeleteResponse("Deleted"),HttpStatus.OK);
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class DeleteResponse {
+        private final String message;
     }
 }

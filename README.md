@@ -15,6 +15,9 @@
 - [ ] Admin page
 - [ ] When a user click on a crypto, they get various info about it in a modal
 - [ ] Get 1000 cryptos from api
+- [ ] Optimize the dashboard
+- [ ] Add loading
+- [ ] Add refreshing
 
 - Modal
 
@@ -33,9 +36,11 @@
   - [x] Display crypto
   - [x] Add crypto from here
   - [ ] Update crypto here
-  - [ ] Delete crypto
+  - [x] Delete crypto
   - [x] Delete wallet
   - [ ] Edit the nickname of the wallet
+  - [x] Refresh the wallet after crypto action
+  - [ ] Open a small modal when a user clicks on the crypto
 
 - Dashboard
 
@@ -56,6 +61,7 @@
 
 ## Backend
 
+- [ ] Check if crypto belongs to a user's wallet
 - [ ] Fix the response for deletes
 - [ ] Add 'nicknames' for user wallets
 - [ ] Add crypto types accepted for a wallet

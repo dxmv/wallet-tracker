@@ -15,9 +15,11 @@ import React, { useCallback, useState } from "react";
 const AddCryptoModal = ({
 	closeModal,
 	walletId,
+	refreshWallet,
 }: {
 	closeModal: () => void;
 	walletId: number;
+	refreshWallet: () => Promise<void>;
 }) => {
 	const [selectedId, setSelectedId] = useState<number | null>(null);
 	const [amount, setAmount] = useState<number>(0);
@@ -38,7 +40,8 @@ const AddCryptoModal = ({
 			ticker: crypto[selectedId - 1].symbol,
 			amount,
 		};
-		const c = await cryptoApi.addCrypto(walletId, payload);
+		await cryptoApi.addCrypto(walletId, payload);
+		await refreshWallet();
 		closeModal();
 	};
 

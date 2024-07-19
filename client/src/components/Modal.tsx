@@ -63,12 +63,13 @@ const Modal = ({
 				ref={modalRef}
 			>
 				<div className="w-full flex justify-between items-center">
-					<div className="w-4"></div> {/* Spacer */}
+					<div className="w-4"></div> {/* Space */}
 					<h1 className="font-semibold text-lg flex-grow text-center">
 						{title}
 					</h1>
 					<button onClick={closeModal}>X</button>
 				</div>
+				{/* Search bar */}
 				{searchPart && (
 					<TextInput
 						placeholderText="Search by name..."
@@ -78,7 +79,6 @@ const Modal = ({
 						icon={<IoMdSearch />}
 					/>
 				)}
-				{/* Search bar */}
 
 				<div className="mb-6"></div>
 				{/* List of items */}

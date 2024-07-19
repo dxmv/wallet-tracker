@@ -18,4 +18,19 @@ export const cryptoApi = {
 				Authorization: `Bearer ${getCookie("token")}`,
 			},
 		}),
+	deleteCrypto: (id: number) =>
+		fetchCustom(`/crypto/${id}`, {
+			method: "DELETE",
+			headers: {
+				Authorization: `Bearer ${getCookie("token")}`,
+			},
+		}),
+	updateCrypto: (id: number, amount: number) =>
+		fetchCustom(`/crypto/${id}`, {
+			method: "PATCH",
+			headers: {
+				Authorization: `Bearer ${getCookie("token")}`,
+			},
+			body: JSON.stringify(amount),
+		}),
 };
