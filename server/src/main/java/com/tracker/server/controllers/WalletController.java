@@ -40,11 +40,17 @@ public class WalletController {
     }
 
     @DeleteMapping("/{walletId}")
-    public ResponseEntity<String> deleteWallet(@PathVariable Long walletId){
+    public ResponseEntity<DeleteResponse> deleteWallet(@PathVariable Long walletId){
         walletService.deleteWalletForCurrentUser(walletId);
-        return new ResponseEntity<>("Deleted",HttpStatus.OK);
+        return new ResponseEntity<>(new DeleteResponse("Deleted"),HttpStatus.OK);
     }
 
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class DeleteResponse {
+        private final String message;
+    }
 
 }
 

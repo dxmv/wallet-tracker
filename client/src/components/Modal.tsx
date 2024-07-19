@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { TextInput } from "./TextInput";
 import { IoMdSearch } from "react-icons/io";
 
@@ -9,6 +9,7 @@ interface IModalParams {
 	handleNext: () => void;
 	children: React.ReactNode;
 	search: string;
+	searchPart?: boolean;
 	setSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -16,6 +17,7 @@ const Modal = ({
 	title,
 	closeModal,
 	handleNext,
+	searchPart = true,
 	children,
 	search,
 	setSearch,
@@ -67,14 +69,17 @@ const Modal = ({
 					</h1>
 					<button onClick={closeModal}>X</button>
 				</div>
+				{searchPart && (
+					<TextInput
+						placeholderText="Search by name..."
+						value={search}
+						setValue={e => setSearch(e.target.value)}
+						inputText="Search:"
+						icon={<IoMdSearch />}
+					/>
+				)}
 				{/* Search bar */}
-				<TextInput
-					placeholderText="Search by name..."
-					value={search}
-					setValue={e => setSearch(e.target.value)}
-					inputText="Search:"
-					icon={<IoMdSearch />}
-				/>
+
 				<div className="mb-6"></div>
 				{/* List of items */}
 				{children}

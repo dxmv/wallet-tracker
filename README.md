@@ -30,11 +30,11 @@
 
 - Wallet page
 
-  - [ ] Display crypto
-  - [ ] Add crypto from here
+  - [x] Display crypto
+  - [x] Add crypto from here
   - [ ] Update crypto here
   - [ ] Delete crypto
-  - [ ] Delete wallet
+  - [x] Delete wallet
   - [ ] Edit the nickname of the wallet
 
 - Dashboard
@@ -56,6 +56,7 @@
 
 ## Backend
 
+- [ ] Fix the response for deletes
 - [ ] Add 'nicknames' for user wallets
 - [ ] Add crypto types accepted for a wallet
 - [ ] Tests

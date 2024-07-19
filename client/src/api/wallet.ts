@@ -24,4 +24,11 @@ export const walletApi = {
 				Authorization: `Bearer ${getCookie("token")}`,
 			},
 		}),
+	deleteWallet: (id: number) =>
+		fetchCustom(`/wallets/${id}`, {
+			method: "DELETE",
+			headers: {
+				Authorization: `Bearer ${getCookie("token")}`,
+			},
+		}),
 };
