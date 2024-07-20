@@ -5,9 +5,10 @@ import CryptoListItem from "@/components/custom list/CryptoListItem";
 import LinkItemWrapper from "@/components/custom list/wrappers/LinkItemWrapper";
 import MyList from "@/components/custom list/MyList";
 import WalletListItem from "@/components/custom list/WalletListItem";
-import React from "react";
+import React, { useCallback } from "react";
 import DetailsModalWrapper from "@/components/custom list/wrappers/DetailsModalItemWrapper";
 import CryptoDetails from "./CryptoDetails";
+import { ICrypto, IWallet } from "@/types";
 
 const SHOW_STYLE = "px-3 py-1 border-gray-600 border-2";
 
@@ -21,12 +22,12 @@ const RightHalf = ({
 	setShowing: React.Dispatch<React.SetStateAction<"Wallets" | "Crypto">>;
 	openModal: () => void;
 }) => {
-	const handleChangeShowing = (): void => {
-		setShowing(showing == "Wallets" ? "Crypto" : "Wallets");
-	};
+	const renderChoice = useCallback(() => {
+		const handleChangeShowing = (): void => {
+			setShowing(showing == "Wallets" ? "Crypto" : "Wallets");
+		};
 
-	return (
-		<div className="flex flex-col w-1/2">
+		return (
 			<div className="flex justify-between">
 				<h1>Your {showing}</h1>
 				{/* Choose what items to show */}
@@ -44,28 +45,43 @@ const RightHalf = ({
 					))}
 				</div>
 			</div>
+		);
+	}, [showing, setShowing]);
 
+	const renderWalletItem = useCallback(
+		(item: IWallet) => (
+			<LinkItemWrapper href={`/wallets/${item.id}`}>
+				<WalletListItem item={item} />
+			</LinkItemWrapper>
+		),
+		[]
+	);
+
+	const renderCryptoItem = useCallback(
+		(item: ICrypto) => (
+			<DetailsModalWrapper
+				item={item}
+				renderDetails={crypto => <CryptoDetails crypto={crypto} />}
+			>
+				<CryptoListItem item={item} />
+			</DetailsModalWrapper>
+		),
+		[]
+	);
+
+	return (
+		<div className="flex flex-col w-1/2">
+			{renderChoice()}
 			{/* Different api calls for both wallets and crypto */}
 			{showing == "Wallets" ? (
 				<MyList
 					apiCall={walletApi.getAllWallets}
-					renderItem={item => (
-						<LinkItemWrapper href={`/wallets/${item.id}`}>
-							<WalletListItem item={item} />
-						</LinkItemWrapper>
-					)}
+					renderItem={renderWalletItem}
 				/>
 			) : (
 				<MyList
 					apiCall={cryptoApi.getAllCryptoForUser}
-					renderItem={item => (
-						<DetailsModalWrapper
-							item={item}
-							renderDetails={crypto => <CryptoDetails crypto={crypto} />}
-						>
-							<CryptoListItem item={item} />
-						</DetailsModalWrapper>
-					)}
+					renderItem={renderCryptoItem}
 				/>
 			)}
 

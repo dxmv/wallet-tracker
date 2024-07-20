@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import WalletsModal from "./_components/WalletsModal";
 import CryptoModal from "./_components/CryptoModal";
 import RightHalf from "./_components/RightHalf";
@@ -10,16 +10,21 @@ const Dashboard = () => {
 	const [showing, setShowing] = useState<IShow>("Wallets");
 	const [openModal, setOpenModal] = useState<boolean>(false);
 
-	return (
-		<main style={{ height: "87vh" }} className="py-8 px-4 text-white flex">
-			{/* Pie chart */}
-			<div className="w-1/2">a</div>
+	const renderRightSide = useCallback(() => {
+		return (
 			<RightHalf
 				showing={showing}
 				setShowing={setShowing}
 				openModal={() => setOpenModal(true)}
 			/>
+		);
+	}, [showing, setShowing]);
 
+	return (
+		<main style={{ height: "87vh" }} className="py-8 px-4 text-white flex">
+			{/* Pie chart */}
+			<div className="w-1/2">a</div>
+			{renderRightSide()}
 			{/* Show a modal based on the current showing */}
 			{openModal &&
 				(showing == "Wallets" ? (

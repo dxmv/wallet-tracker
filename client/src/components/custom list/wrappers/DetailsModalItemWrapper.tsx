@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import ReactDOM from "react-dom";
+import React, { useCallback, useState } from "react";
+import { createPortal } from "react-dom";
 import Modal from "@/components/Modal";
 
 interface DetailsModalWrapperProps<T> {
@@ -14,6 +14,14 @@ function DetailsModalWrapper<T>({
 	renderDetails,
 }: DetailsModalWrapperProps<T>) {
 	const [showModal, setShowModal] = useState(false);
+
+	const handleClick = useCallback(() => {
+		setShowModal(true);
+	}, []);
+
+	const handleClose = useCallback(() => {
+		setShowModal(false);
+	}, []);
 
 	// Styles for the modal overlay
 	const modalOverlayStyle: React.CSSProperties = {
@@ -36,8 +44,8 @@ function DetailsModalWrapper<T>({
 		<div style={modalOverlayStyle}>
 			<Modal
 				title="Item Details"
-				closeModal={() => setShowModal(false)}
-				handleNext={() => setShowModal(false)}
+				closeModal={handleClose}
+				handleNext={handleClose}
 				searchPart={false}
 			>
 				{renderDetails(item)}
@@ -48,12 +56,12 @@ function DetailsModalWrapper<T>({
 	return (
 		<>
 			<div
-				onClick={() => setShowModal(true)}
+				onClick={handleClick}
 				className="flex py-2 border-b-2 border-gray-800 justify-between hover:bg-gray-500 mb-2 items-center"
 			>
 				{children}
 			</div>
-			{showModal && ReactDOM.createPortal(renderModal(), document.body)}
+			{showModal && createPortal(renderModal(), document.body)}
 		</>
 	);
 }

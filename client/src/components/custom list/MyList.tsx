@@ -38,8 +38,8 @@ const MyList = <T,>({
 		const fetchData = async () => {
 			try {
 				const data = await apiCall();
-				await setAllItems(data);
-				await setFilteredItems(data);
+				setAllItems(data);
+				setFilteredItems(data);
 			} catch (e) {
 				console.error(e);
 			}

@@ -1,13 +1,17 @@
 import { IWallet } from "@/types";
 import React from "react";
+import Image from "next/image";
 
 const WalletListItem = ({ item }: { item: IWallet }) => {
-	console.log(item);
+	if (!item.adminWallet) {
+		return <div>Loading</div>;
+	}
+
 	return (
 		<>
 			<div className="flex">
-				<img
-					src={item.adminWallet.iconUrl as string}
+				<Image
+					src={item.adminWallet.iconUrl && (item.adminWallet.iconUrl as string)}
 					alt=""
 					width={25}
 					height={25}
