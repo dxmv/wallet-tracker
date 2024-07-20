@@ -11,9 +11,7 @@
 - [ ] News page
 - [ ] Logout
 - [ ] Better design
-- [ ] Tickets page
-- [ ] Admin page
-- [x] When a user click on a crypto, they get various info about it in a modal
+- [x] When a user clicks on a crypto, they get various info about it in a modal
 - [x] Get 1000 cryptos from api
 - [ ] Optimize the dashboard
 - [ ] Add loading
@@ -62,9 +60,24 @@
   - [ ] Stats like how much crypto in usd
 
 - Optimize
+
   - [ ] Search in modal
 
+- Admin page
+  - [ ] Promote/demote users
+  - [ ] rdu admin wallets
+
 ## Backend
+
+- Crypto
+
+  - [x] Save apiId for crypto
+  - [x] Save iconUrl for crypto
+
+- Wallet
+
+  - [ ] Save the nickname
+  - [ ] Types of crypto in the wallet
 
 - [x] Check if crypto belongs to a user's wallet
 - [x] Fix the response for deletes

@@ -53,7 +53,7 @@ public class AuthService {
 
         User u = new User();
         // set the default role to user
-        u.getRoles().add(Role.USER);
+        u.getRoles().add(Role.ADMIN);
         u.setEmail(email);
         u.setPassword(this.passwordEncoder.encode(password));
         return userRepo.save(u);

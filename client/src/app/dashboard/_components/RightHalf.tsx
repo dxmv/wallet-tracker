@@ -5,9 +5,9 @@ import CryptoListItem from "@/components/custom list/CryptoListItem";
 import LinkItemWrapper from "@/components/custom list/wrappers/LinkItemWrapper";
 import MyList from "@/components/custom list/MyList";
 import WalletListItem from "@/components/custom list/WalletListItem";
-import React, { useMemo } from "react";
-import DetailsModalItemWrapper from "@/components/custom list/wrappers/DetailsModalItemWrapper";
+import React from "react";
 import DetailsModalWrapper from "@/components/custom list/wrappers/DetailsModalItemWrapper";
+import CryptoDetails from "./CryptoDetails";
 
 const SHOW_STYLE = "px-3 py-1 border-gray-600 border-2";
 
@@ -61,16 +61,9 @@ const RightHalf = ({
 					renderItem={item => (
 						<DetailsModalWrapper
 							item={item}
-							renderDetails={crypto => (
-								<div>
-									<h2>{crypto.name}</h2>
-									<p>Amount: {crypto.amount}</p>
-									<p>Value:</p>
-									{/* Add more details as needed */}
-								</div>
-							)}
+							renderDetails={crypto => <CryptoDetails crypto={crypto} />}
 						>
-							<CryptoListItem item={item} image="" />
+							<CryptoListItem item={item} />
 						</DetailsModalWrapper>
 					)}
 				/>

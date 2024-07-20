@@ -30,7 +30,8 @@ export interface ICrypto {
 	name: String;
 	ticker: String;
 	amount: number;
-	imageURL: String;
+	imageUrl: string;
+	apiId: string;
 }
 
 // used for working with TextInput component

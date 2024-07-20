@@ -32,8 +32,9 @@ const CryptoModal = ({ closeModal }: { closeModal: () => void }) => {
 			// can only add if we selected the crypto wallet and entered a valid value for the amount
 			const payload: Omit<ICrypto, "id"> = {
 				name: crypto[selectedId - 1].name,
-				imageURL: crypto[selectedId - 1].image,
+				imageUrl: crypto[selectedId - 1].image as string,
 				ticker: crypto[selectedId - 1].symbol,
+				apiId: crypto[selectedId - 1].id as string,
 				amount,
 			};
 			const c = await cryptoApi.addCrypto(walletId, payload);

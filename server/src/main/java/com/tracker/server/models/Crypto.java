@@ -29,6 +29,12 @@ public class Crypto {
     @Column(name = "amount")
     private double amount;
 
+    @Column(name="apiId")
+    private String apiId;
+
+    @Column(name="imageUrl")
+    private String imageUrl;
+
     // Add this field to establish the relationship with Wallet
     @ManyToOne
     @JoinColumn(name = "WALLET_ID")
