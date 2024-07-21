@@ -37,7 +37,7 @@ const CryptoModal = ({ closeModal }: { closeModal: () => void }) => {
 				apiId: crypto[selectedId - 1].id as string,
 				amount,
 			};
-			const c = await cryptoApi.addCrypto(walletId, payload);
+			await cryptoApi.addCrypto(walletId, payload);
 			closeModal();
 		}
 	};

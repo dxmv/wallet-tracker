@@ -4,6 +4,7 @@ import com.tracker.server.exceptions.BadRequestException;
 import com.tracker.server.models.AdminWallet;
 import com.tracker.server.models.Role;
 import com.tracker.server.models.User;
+import com.tracker.server.models.responses.DeleteResponse;
 import com.tracker.server.services.AdminService;
 import com.tracker.server.services.AdminWalletService;
 import lombok.Getter;
@@ -102,8 +103,8 @@ public class AdminController {
      */
     @DeleteMapping("/wallets/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> deleteWallet(@PathVariable Long id){
+    public ResponseEntity<DeleteResponse> deleteWallet(@PathVariable Long id){
         adminWalletService.deleteWallet(id);
-        return new ResponseEntity<>("Deleted",HttpStatus.OK);
+        return new ResponseEntity<>(new DeleteResponse("Successfully deleted"),HttpStatus.OK);
     }
 }

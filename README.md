@@ -17,6 +17,10 @@
 - [ ] Add loading
 - [ ] Add refreshing
 - [ ] Handle errors
+- [ ] Fix use auth, to check if the token is valid
+- [ ] Use fetch for the coingecko api
+- [ ] Favicon
+- [ ] Notifications
 
 - Modal
 
@@ -49,9 +53,9 @@
 
   - [ ] Pie chart
   - [ ] Animation for switching showing
-  - [ ] Balance on legend
+  - [ ] Percentage on legend
   - [x] Display crypto
-  - [ ] Fix display of wallets
+  - [x] Fix display of wallets
 
 - Profile page
 
@@ -64,10 +68,16 @@
   - [ ] Search in modal
 
 - Admin page
-  - [ ] Promote/demote users
+  - [x] Promote/demote users
   - [ ] rdu admin wallets
+  - [ ] only accessible to admins
+  - [ ] Refresh users
+  - [ ] Notifications
 
 ## Backend
+
+- [ ] JWT Malformed exception
+- [ ] Can't add admin wallet if the name is the same
 
 - Crypto
 

@@ -7,10 +7,13 @@ export interface INews {
 	createdAt: String;
 }
 
+type Role = "USER" | "ADMIN";
+
 export interface IUser {
 	id: number;
 	email: String;
 	password: String;
+	roles: Array<Role>;
 }
 
 export interface IAdminWallet {

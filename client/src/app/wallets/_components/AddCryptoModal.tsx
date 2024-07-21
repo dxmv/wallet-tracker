@@ -36,8 +36,9 @@ const AddCryptoModal = ({
 		}
 		const payload: Omit<ICrypto, "id"> = {
 			name: crypto[selectedId - 1].name,
-			imageURL: crypto[selectedId - 1].image,
+			imageUrl: crypto[selectedId - 1].image as string,
 			ticker: crypto[selectedId - 1].symbol,
+			apiId: crypto[selectedId - 1].id as string,
 			amount,
 		};
 		await cryptoApi.addCrypto(walletId, payload);

@@ -10,7 +10,6 @@ const AdminLayout = ({
 	return (
 		<>
 			<Nav />
-			<h1 className="p-4">Admin Dashboard</h1>
 			{children}
 			<Footer />
 		</>
