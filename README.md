@@ -43,7 +43,7 @@
 - Crypto "page"
 
   - [x] Display basic info
-  - [ ] Display the list of wallets for the crypto
+  - [x] Display the list of wallets for the crypto
 
 - Dashboard
 
@@ -73,6 +73,7 @@
 
   - [x] Save apiId for crypto
   - [x] Save iconUrl for crypto
+  - [x] Get user's wallets that contain the given crypto
 
 - Wallet
 

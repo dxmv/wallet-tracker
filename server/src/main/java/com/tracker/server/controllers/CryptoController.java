@@ -30,6 +30,14 @@ public class CryptoController {
         return new ResponseEntity<>(cryptoService.getAllForUser(), HttpStatus.OK);
     }
 
+    /**
+     * Returns all wallets that belong to the user
+     * that contain the crypto with the given name
+     */
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<Wallet>> getAllWalletsForCryptoWithName(@PathVariable String name){
+        return new ResponseEntity<>(cryptoService.getAllWalletsForCryptoWithName(name),HttpStatus.OK);
+    }
 
     /**
      * Adds crypto to the wallet

@@ -21,6 +21,7 @@ public class CryptoService {
     private final WalletService walletService;
     private final WalletRepository walletRepository;
 
+
     @Autowired
     public CryptoService(CryptoRepository cryptoRepository, WalletService walletService, WalletRepository walletRepository) {
         this.cryptoRepository = cryptoRepository;
@@ -111,5 +112,17 @@ public class CryptoService {
         }
 
         return cryptoSet;
+    }
+
+    public List<Wallet> getAllWalletsForCryptoWithName(String name) {
+        List<Wallet> all = walletService.getWalletsForCurrentUser();
+        List<Wallet> res = new ArrayList<>();
+
+        for(Wallet w:all){
+            if(w.getCoins().stream().anyMatch(el->el.getName().equals(name))){
+                res.add(w);
+            }
+        }
+        return res;
     }
 }

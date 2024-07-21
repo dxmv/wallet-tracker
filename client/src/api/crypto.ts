@@ -1,5 +1,5 @@
 import { fetchCustom } from "./default";
-import { ICrypto } from "@/types";
+import { ICrypto, IWallet } from "@/types";
 import { getCookie } from "@/utils/cookies";
 
 export const cryptoApi = {
@@ -10,6 +10,13 @@ export const cryptoApi = {
 				Authorization: `Bearer ${getCookie("token")}`,
 			},
 			body: JSON.stringify(crypto),
+		}),
+	getWalletsByName: (name: string) =>
+		fetchCustom<Array<IWallet>>(`/crypto/name/${name}`, {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${getCookie("token")}`,
+			},
 		}),
 	getAllCryptoForUser: () =>
 		fetchCustom<Array<ICrypto>>("/crypto/", {
