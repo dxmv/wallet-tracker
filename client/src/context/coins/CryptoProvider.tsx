@@ -7,18 +7,28 @@ import { coinGecko } from "@/api/coinGecko";
 // wrapper for context
 const CryptoProvider = ({ children }: { children: React.ReactNode }) => {
 	const [cryptocurrencies, setCryptocurrencies] = useState<
-		Array<ICoinFromCoinGecko>
-	>([]);
+		Map<string, ICoinFromCoinGecko>
+	>(new Map());
 	// const [loading, setLoading] = useState<boolean>(true);
 	// const [error, setError] = useState<String>("");
 
 	useEffect(() => {
 		const fetchCryptocurrencies = async () => {
 			try {
+				// add all cryptos to the list
+				let list: Array<ICoinFromCoinGecko> = [];
 				for (let i = 1; i <= 1; i++) {
 					const response = await coinGecko.getCoinListWithMarketData(i);
-					setCryptocurrencies(prev => [...prev, ...response]);
+					list = [...list, ...response];
 				}
+				// then convert all of it to a map
+				setCryptocurrencies(prev => {
+					const newMap = new Map();
+					list.forEach(c => {
+						newMap.set(c.id, c);
+					});
+					return newMap;
+				});
 			} catch (err) {
 				console.error(err);
 			} finally {

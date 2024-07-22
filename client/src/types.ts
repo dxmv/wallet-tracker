@@ -58,15 +58,6 @@ export interface ICoinFromCoinGecko {
 	current_price: number;
 	market_cap: number;
 	market_cap_rank: number;
-}
-
-export interface ICoinFromCoinGeckoStats {
-	market_cap_rank: number;
-	market_data: {
-		current_price: {
-			usd: number;
-		};
-		price_change_24h: number;
-		price_change_percentage_24h: number;
-	};
+	price_change_24h: number;
+	price_change_percentage_24h: number;
 }

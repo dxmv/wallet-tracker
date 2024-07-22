@@ -16,7 +16,7 @@ import React, { useCallback, useState } from "react";
 // second stage show wallet list and amount input
 const CryptoModal = ({ closeModal }: { closeModal: () => void }) => {
 	const [stage, setStage] = useState<number>(1); // what stage are we in?
-	const [selectedId, setSelectedId] = useState<number | null>(null);
+	const [selectedId, setSelectedId] = useState<string | null>(null);
 	const [walletId, setWalletId] = useState<number | null>(null);
 	const [amount, setAmount] = useState<number>(0);
 
@@ -29,12 +29,16 @@ const CryptoModal = ({ closeModal }: { closeModal: () => void }) => {
 		if (stage == 1 && selectedId != null) {
 			await setStage(prev => prev + 1);
 		} else if (stage == 2 && selectedId && walletId && amount > 0) {
+			const selectedCrypto = crypto.get(selectedId);
+			if (!selectedCrypto) {
+				return;
+			}
 			// can only add if we selected the crypto wallet and entered a valid value for the amount
 			const payload: Omit<ICrypto, "id"> = {
-				name: crypto[selectedId - 1].name,
-				imageUrl: crypto[selectedId - 1].image as string,
-				ticker: crypto[selectedId - 1].symbol,
-				apiId: crypto[selectedId - 1].id as string,
+				name: selectedCrypto.name,
+				imageUrl: selectedCrypto.image as string,
+				ticker: selectedCrypto.symbol,
+				apiId: selectedCrypto.id as string,
 				amount,
 			};
 			await cryptoApi.addCrypto(walletId, payload);
@@ -42,24 +46,19 @@ const CryptoModal = ({ closeModal }: { closeModal: () => void }) => {
 		}
 	};
 
-	const handleBack = () => {
-		setStage(prev => prev - 1);
-	};
-
-	const getCoins = async () => {
-		return crypto;
-	};
-
 	// optimized rendering the list of cryptos
-	const renderCryptoList = useCallback(
-		() => (
+	const renderCryptoList = useCallback(() => {
+		const getCoins = async () => {
+			return Array.from(crypto.values());
+		};
+		return (
 			<MyList
 				apiCall={getCoins}
 				renderItem={item => (
 					<SelectItemWrapper
 						selectedId={selectedId}
 						setSelectedId={setSelectedId}
-						itemId={item.market_cap_rank}
+						itemId={item.id as string}
 					>
 						<CryptoApiListItem item={item} />
 					</SelectItemWrapper>
@@ -67,9 +66,8 @@ const CryptoModal = ({ closeModal }: { closeModal: () => void }) => {
 				searchTerm={search}
 				searchKeys={["name", "symbol"]}
 			/>
-		),
-		[selectedId, setSelectedId, search, getCoins]
-	);
+		);
+	}, [selectedId, setSelectedId, search]);
 
 	// optimized the second step
 	const renderSecondStage = useCallback(

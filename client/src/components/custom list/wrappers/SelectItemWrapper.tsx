@@ -1,19 +1,19 @@
 import React from "react";
 
-interface PropsSelectItemWrapper {
-	selectedId: number | null;
-	itemId: number;
-	setSelectedId: React.Dispatch<React.SetStateAction<number | null>>;
+interface PropsSelectItemWrapper<T> {
+	selectedId: T | null;
+	itemId: T;
+	setSelectedId: React.Dispatch<React.SetStateAction<T | null>>;
 	children: React.ReactNode;
 }
 
 // we use this when a user wants to only select an item
-const SelectItemWrapper = ({
+const SelectItemWrapper = <T,>({
 	selectedId,
 	itemId,
 	setSelectedId,
 	children,
-}: PropsSelectItemWrapper) => {
+}: PropsSelectItemWrapper<T>) => {
 	return (
 		<div
 			className={`flex py-2 border-b-2 border-gray-200 justify-between mb-2 items-center w-full cursor-pointer ${

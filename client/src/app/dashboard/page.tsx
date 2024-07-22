@@ -9,6 +9,7 @@ type IShow = "Wallets" | "Crypto";
 const Dashboard = () => {
 	const [showing, setShowing] = useState<IShow>("Wallets");
 	const [openModal, setOpenModal] = useState<boolean>(false);
+	const [totalValue, setTotalValue] = useState<number>(0);
 
 	const renderRightSide = useCallback(() => {
 		return (
@@ -16,6 +17,7 @@ const Dashboard = () => {
 				showing={showing}
 				setShowing={setShowing}
 				openModal={() => setOpenModal(true)}
+				setTotalValue={setTotalValue}
 			/>
 		);
 	}, [showing, setShowing]);
@@ -23,7 +25,11 @@ const Dashboard = () => {
 	return (
 		<main style={{ height: "87vh" }} className="py-8 px-4 text-white flex">
 			{/* Pie chart */}
-			<div className="w-1/2">a</div>
+			<div className="w-1/2">
+				<p className="font-bold text-2xl">
+					Total value: {totalValue.toFixed(2)}
+				</p>
+			</div>
 			{renderRightSide()}
 			{/* Show a modal based on the current showing */}
 			{openModal &&

@@ -56,6 +56,7 @@
   - [ ] Percentage on legend
   - [x] Display crypto
   - [x] Fix display of wallets
+  - [ ] Refresh on add
 
 - Profile page
 

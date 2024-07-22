@@ -1,4 +1,4 @@
-import { ICoinFromCoinGecko, ICoinFromCoinGeckoStats } from "@/types";
+import { ICoinFromCoinGecko } from "@/types";
 import { CoinGeckoClient } from "coingecko-api-v3";
 
 const clientApi = new CoinGeckoClient(); // we're using this because it's free
@@ -18,17 +18,6 @@ export const coinGecko = {
 				per_page: perPage,
 			})) as Array<ICoinFromCoinGecko>;
 			return response;
-		} catch (e) {
-			throw new Error("Error while fetching coin gecko");
-		}
-	},
-	// id - id of crypto in coingecko api
-	getCoinStats: async (id: string): Promise<ICoinFromCoinGeckoStats> => {
-		try {
-			const response = await clientApi.coinId({
-				id,
-			});
-			return response as ICoinFromCoinGeckoStats;
 		} catch (e) {
 			throw new Error("Error while fetching coin gecko");
 		}

@@ -1,7 +1,11 @@
+import { useCrypto } from "@/hooks/useCrypto";
 import { ICrypto } from "@/types";
-import React from "react";
+import React, { useMemo } from "react";
 
 const CryptoListItem = ({ item }: { item: ICrypto }) => {
+	const crypto = useCrypto();
+	const current = useMemo(() => crypto.get(item.apiId), [crypto, item.apiId]);
+
 	return (
 		<div className="flex justify-between items-center w-full">
 			<div className="flex items-center">
@@ -17,7 +21,7 @@ const CryptoListItem = ({ item }: { item: ICrypto }) => {
 					<p className="text-sm">{item.ticker && item.ticker.toUpperCase()}</p>
 				</div>
 			</div>
-			<div>{item.amount}</div>
+			{current && <p>{(item.amount * current.current_price).toFixed(2)}</p>}
 		</div>
 	);
 };

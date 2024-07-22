@@ -3,26 +3,21 @@ import { cryptoApi } from "@/api/crypto";
 import MyList from "@/components/custom list/MyList";
 import WalletListItem from "@/components/custom list/WalletListItem";
 import LinkItemWrapper from "@/components/custom list/wrappers/LinkItemWrapper";
+import { useCrypto } from "@/hooks/useCrypto";
 import { ICoinFromCoinGeckoStats, ICrypto } from "@/types";
 import React, { useCallback, useEffect, useState } from "react";
 
 const CryptoDetails = ({ crypto }: { crypto: ICrypto }) => {
-	const [coinData, setCoinData] = useState<ICoinFromCoinGeckoStats>();
-
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const data = await coinGecko.getCoinStats(crypto.apiId);
-				setCoinData(data);
-			} catch (e) {
-				console.error(e);
-			}
-		};
-		fetchData();
-	}, [crypto.apiId]);
+	const cryptoMap = useCrypto();
 
 	// optimize details rendering
 	const renderDetails = useCallback(() => {
+		if (!cryptoMap.has(crypto.apiId)) {
+			return <div>a</div>;
+		}
+
+		const current = cryptoMap.get(crypto.apiId);
+
 		return (
 			<div className="flex flex-col font-bold text-xl w-full mb-8 items-center">
 				<div className="w-1/6">
@@ -36,31 +31,32 @@ const CryptoDetails = ({ crypto }: { crypto: ICrypto }) => {
 					{crypto.name} ({crypto.ticker.toUpperCase()})
 				</h2>
 				{/* Only render if the coin is loaded */}
-				{coinData && coinData.market_data && (
+				{current && (
 					<>
+						<p className="mt-2">Market-Cap rank: {current.market_cap_rank}</p>
 						<p
 							className={`${
-								coinData.market_data.price_change_24h > 0
-									? "text-green-500"
-									: "text-red-500"
-							}`}
+								current.price_change_24h > 0 ? "text-green-500" : "text-red-500"
+							} mt-2`}
 						>
-							24h change: {coinData.market_data.price_change_24h.toFixed(2)} (
-							{coinData.market_data.price_change_percentage_24h.toFixed(2)}%)
+							24h change: ${current.price_change_24h.toFixed(2)} (
+							{current.price_change_percentage_24h.toFixed(2)}%)
 						</p>
-						<p>Market-Cap rank: {coinData.market_cap_rank}</p>
-						<p className="mt-2">
+						<p
+							className={`${
+								current.price_change_24h > 0 ? "text-green-500" : "text-red-500"
+							} mt-2`}
+						>
 							Amount in USD: $
-							{(crypto.amount * coinData.market_data.current_price.usd).toFixed(
-								2
-							)}
+							{(crypto.amount * current.current_price).toFixed(2)}
 						</p>
 					</>
 				)}
+
 				<p className="mt-2">Amount: {crypto.amount}</p>
 			</div>
 		);
-	}, [coinData]);
+	}, [cryptoMap, crypto]);
 
 	return (
 		<div className="w-full flex-col justify-center items-center">

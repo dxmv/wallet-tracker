@@ -6,6 +6,8 @@ import MyList from "@/components/custom list/MyList";
 import EditAndDeleteItemWrapper from "@/components/custom list/wrappers/EditAndDeleteItemWrapper";
 import Modal from "@/components/Modal";
 import React, { useState } from "react";
+import { UserManagementSection } from "./_components/UserManagmentSection";
+import { AdminWalletSection } from "./_components/AdminWalletManagmentSection";
 
 // Page only accessible by admins
 const AdminDashboard = () => {
@@ -50,66 +52,8 @@ const AdminDashboard = () => {
 				gridGap: "100px",
 			}}
 		>
-			{/* Here the user can see admin wallets, add, update and delete them */}
-			<div>
-				<h1 className="font-bold text-2xl pb-2 border-b-2 border-b-gray-300 mb-8">
-					Admin wallets
-				</h1>
-				<MyList
-					apiCall={adminApi.getAllAdminWallets}
-					renderItem={item => (
-						<EditAndDeleteItemWrapper
-							id={item.id}
-							name={item.name as string}
-							onDelete={handleDelete}
-						>
-							<AdminWalletListItem item={item} />
-						</EditAndDeleteItemWrapper>
-					)}
-				/>
-				<button onClick={() => setAddWalletModal(true)}>Add a wallet</button>
-			</div>
-			<div>
-				<div>
-					{/* Here the user can see all of the users and promote & demote them */}
-					<h1 className="font-bold text-2xl pb-2 border-b-2 border-b-gray-300 mb-8">
-						Users
-					</h1>
-					<MyList
-						apiCall={userApi.getAllUsers}
-						renderItem={item => (
-							<div className="flex justify-between items-center">
-								<p>
-									<span className="font-bold">{item.email}</span> (ID:{item.id})
-									[{item.roles.join("-")}]
-								</p>
-								<div className="flex ">
-									<button
-										className="border-2 px-3 py-1 mr-2"
-										onClick={() => handlePromoteUser(item.id)}
-									>
-										PROMOTE
-									</button>
-									<button
-										className="border-2 px-3 py-1"
-										onClick={() => handleDemoteUser(item.id)}
-									>
-										DEMOTE
-									</button>
-								</div>
-							</div>
-						)}
-					/>
-				</div>
-			</div>
-			{addWalletModal && (
-				<Modal
-					searchPart={false}
-					closeModal={() => setAddWalletModal(false)}
-					title="Add admin wallet"
-					handleNext={handleAddWallet}
-				></Modal>
-			)}
+			<AdminWalletSection />
+			<UserManagementSection />
 		</main>
 	);
 };

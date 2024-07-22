@@ -5,18 +5,37 @@ import MyList from "@/components/custom list/MyList";
 import Modal from "@/components/Modal";
 import { IWallet } from "@/types";
 import { useRouter } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import AddCryptoModal from "../_components/AddCryptoModal";
 import EditAndDeleteItemWrapper from "@/components/custom list/wrappers/EditAndDeleteItemWrapper";
 import { cryptoApi } from "@/api/crypto";
+import { useCrypto } from "@/hooks/useCrypto";
 
 const Wallet = ({ params }: { params: { id: string } }) => {
 	const [wallet, setWallet] = useState<IWallet | null>(null);
 	const [deleteWalletModal, setDeleteWalletModal] = useState<boolean>(false);
 	const [addCryptoModal, setAddCryptoModal] = useState<boolean>(false);
 	const { push } = useRouter();
+	const cryptoMap = useCrypto();
 
+	// calculate the amount in dollars
+	const amountInDollars = useMemo(() => {
+		if (!wallet) {
+			return 0;
+		}
+		return wallet.coins
+			.reduce((previous, current) => {
+				const currentApi = cryptoMap.get(current.apiId);
+				if (!currentApi) {
+					return previous;
+				}
+				return previous + current.amount * currentApi.current_price;
+			}, 0)
+			.toFixed(2);
+	}, [wallet, cryptoMap]);
+
+	// when we modify the coins, we need to refetch the wallet
 	const refreshWallet = useCallback(async () => {
 		try {
 			const updatedWallet = await walletApi.getOneWallet(
@@ -28,19 +47,12 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 		}
 	}, [params.id]);
 
+	// fetch the wallet
 	useEffect(() => {
-		const fetchWallet = async () => {
-			try {
-				const wallet = await walletApi.getOneWallet(Number.parseInt(params.id));
-				setWallet(wallet);
-				console.log(wallet);
-			} catch (e) {
-				console.error(e);
-			}
-		};
-		fetchWallet();
-	}, [params.id]);
+		refreshWallet();
+	}, []);
 
+	// deletes the wallet
 	const handleDeleteWallet = async () => {
 		if (!wallet) {
 			return;
@@ -53,6 +65,7 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 		}
 	};
 
+	// edits the crypto
 	const handleEditCrypto = async (id: number, amount: number) => {
 		try {
 			await cryptoApi.changeAmount(id, amount);
@@ -62,6 +75,7 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 		}
 	};
 
+	// deletes the crypto
 	const handleDeleteCrypto = async (id: number) => {
 		try {
 			await cryptoApi.deleteCrypto(id);
@@ -89,8 +103,8 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 					/>
 					<div className="flex flex-col justify-between ml-3 h-1/2">
 						<h1 className="font-bold text-2xl">{wallet?.adminWallet.name}</h1>
-						<p>Number of coins: {wallet?.coins.length}</p>
-						<p>Amount in dollars: {wallet?.coins.length}</p>
+						<p>Number of coins: {wallet.coins.length}</p>
+						<p>Amount in dollars: {amountInDollars}</p>
 					</div>
 				</div>
 				<div>
@@ -110,7 +124,7 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 						onDelete={handleDeleteCrypto}
 						id={item.id}
 					>
-						<CryptoListItem item={item} image="" />
+						<CryptoListItem item={item} />
 					</EditAndDeleteItemWrapper>
 				)}
 				display="grid"
