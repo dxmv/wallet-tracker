@@ -51,7 +51,8 @@
 
 - Dashboard
 
-  - [ ] Pie chart
+  - [x] Pie chart
+  - [ ] Random colors
   - [ ] Animation for switching showing
   - [ ] Percentage on legend
   - [x] Display crypto

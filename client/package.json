@@ -9,10 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "chart.js": "^4.4.3",
     "coingecko-api-v3": "^0.0.29",
     "jwt-decode": "^4.0.0",
     "next": "14.2.3",
     "react": "^18",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18",
     "react-icons": "^5.1.0",
     "react-window": "^1.8.10"
