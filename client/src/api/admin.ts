@@ -18,6 +18,14 @@ export const adminApi = {
 			},
 			body: formData,
 		}),
+	updateAdminWallet: (id: number, formData: FormData) =>
+		fetchCustom<IAdminWallet>(`/admin/wallets/${id}`, {
+			method: "PUT",
+			headers: {
+				Authorization: `Bearer ${getCookie("token")}`,
+			},
+			body: formData,
+		}),
 	deleteAdminWallet: (id: number) =>
 		fetchCustom<{ message: string }>(`/admin/wallets/${id}`, {
 			method: "DELETE",

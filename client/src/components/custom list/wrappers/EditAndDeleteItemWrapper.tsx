@@ -1,26 +1,23 @@
-import Modal from "@/components/Modal";
-import { TextInput } from "@/components/TextInput";
 import React, { useState, useEffect } from "react";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 import ReactDOM from "react-dom";
 
 interface PropsEditAndDeleteItemWrapper {
-	onEdit: (id: number, amount: number) => void;
+	onEdit: () => void;
 	onDelete: (id: number) => void;
 	children: React.ReactNode;
-	name: string;
 	id: number;
+	renderEditModal: React.ReactNode; // Custom edit modal to be rendered
 }
 
 const EditAndDeleteItemWrapper = ({
 	children,
 	onEdit,
 	onDelete,
-	name,
 	id,
+	renderEditModal,
 }: PropsEditAndDeleteItemWrapper) => {
 	const [editModal, setEditModal] = useState<boolean>(false);
-	const [amount, setAmount] = useState<number>(0);
 	// State to hold the DOM element where the modal will be rendered
 	const [modalRoot, setModalRoot] = useState<HTMLElement | null>(null);
 
@@ -48,23 +45,10 @@ const EditAndDeleteItemWrapper = ({
 	// Function to render the modal content
 	const renderModal = () => (
 		<div style={modalOverlayStyle}>
-			<Modal
-				title={`Edit the amount of ${name}`}
-				closeModal={() => setEditModal(false)}
-				handleNext={async () => {
-					await onEdit(id, amount);
-					setEditModal(false); // Close the modal after editing
-				}}
-				searchPart={false}
-			>
-				<TextInput
-					inputText="Amount"
-					placeholderText={amount + ""}
-					value={amount + ""}
-					setValue={e => setAmount(Number.parseInt(e.target.value))}
-					icon={<></>}
-				/>
-			</Modal>
+			{/* Clone the provided edit modal and inject the closeModal prop */}
+			{React.cloneElement(renderEditModal as React.ReactElement, {
+				closeModal: () => setEditModal(false),
+			})}
 		</div>
 	);
 
@@ -77,7 +61,10 @@ const EditAndDeleteItemWrapper = ({
 				<div className="absolute top-0 right-0 bg-gray-400 bg-opacity-90 p-2 rounded hidden group-hover:flex justify-around items-center space-x-2 w-full h-full">
 					<FaEdit
 						className="text-blue-500 cursor-pointer"
-						onClick={() => setEditModal(true)}
+						onClick={() => {
+							setEditModal(true);
+							onEdit();
+						}}
 					/>
 					<FaRegTrashAlt
 						className="text-red-500 cursor-pointer"

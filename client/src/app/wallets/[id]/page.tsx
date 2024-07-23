@@ -11,6 +11,7 @@ import AddCryptoModal from "../_components/AddCryptoModal";
 import EditAndDeleteItemWrapper from "@/components/custom list/wrappers/EditAndDeleteItemWrapper";
 import { cryptoApi } from "@/api/crypto";
 import { useCrypto } from "@/hooks/useCrypto";
+import EditCryptoModal from "../_components/EditCryptoModal";
 
 const Wallet = ({ params }: { params: { id: string } }) => {
 	const [wallet, setWallet] = useState<IWallet | null>(null);
@@ -120,11 +121,17 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 				apiCall={async () => await wallet.coins}
 				renderItem={item => (
 					<EditAndDeleteItemWrapper
-						onEdit={handleEditCrypto}
+						onEdit={() => console.log("edit")}
 						onDelete={handleDeleteCrypto}
 						id={item.id}
+						renderEditModal={
+							<EditCryptoModal
+								handleEditCrypto={handleEditCrypto}
+								item={item}
+							/>
+						}
 					>
-						<CryptoListItem item={item} />
+						<CryptoListItem item={item} percentage={false} />
 					</EditAndDeleteItemWrapper>
 				)}
 				display="grid"

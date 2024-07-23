@@ -5,11 +5,16 @@ import MyList from "@/components/custom list/MyList";
 import EditAndDeleteItemWrapper from "@/components/custom list/wrappers/EditAndDeleteItemWrapper";
 import Modal from "@/components/Modal";
 import { useState } from "react";
-import AddAdminWalletModal from "./AddAdminWalletModal";
+import AdminWalletModal from "./AdminWalletModal";
+import { IAdminWallet } from "@/types";
 
 // Component for managing admin wallets
 export const AdminWalletSection = () => {
 	const [addWalletModal, setAddWalletModal] = useState<boolean>(false);
+	// keeps the track of the selected id for edit
+	const [editAdminWallet, setEditAdminWallet] = useState<IAdminWallet | null>(
+		null
+	);
 
 	// Handler for deleting an admin wallet
 	const handleDelete = async (id: number) => {
@@ -21,7 +26,47 @@ export const AdminWalletSection = () => {
 		}
 	};
 
-	const refreshWallets = async () => await adminApi.getAllAdminWallets();
+	// Handler for adding a new wallet (to be implemented)
+	const handleAddWallet = async (name: string, image: File | null) => {
+		// Validate inputs
+		if (!name || !image) {
+			return;
+		}
+
+		// Prepare form data
+		const formData = new FormData();
+		formData.append("icon", image);
+		formData.append("name", name);
+
+		try {
+			// Send request to add admin wallet
+			await adminApi.addAdminWallet(formData);
+			setAddWalletModal(false); // close the modal
+		} catch (error) {
+			console.error("Failed to add admin wallet:", error);
+			alert("Failed to add admin wallet. Please try again.");
+		}
+	};
+
+	const handleEditWallet = async (name: string, image: File | null) => {
+		// Validate inputs
+		if (!name || !image || !editAdminWallet) {
+			return;
+		}
+		// Prepare form data
+		const formData = new FormData();
+		formData.append("icon", image);
+		formData.append("name", name);
+
+		try {
+			// Send request to add admin wallet
+			await adminApi.updateAdminWallet(editAdminWallet.id, formData);
+			setEditAdminWallet(null); // close the modal
+		} catch (error) {
+			console.error("Failed to add admin wallet:", error);
+			alert("Failed to add admin wallet. Please try again.");
+		}
+	};
 
 	return (
 		<div>
@@ -29,12 +74,24 @@ export const AdminWalletSection = () => {
 				Admin wallets
 			</h1>
 			<MyList
-				apiCall={refreshWallets}
+				apiCall={adminApi.getAllAdminWallets}
 				renderItem={item => (
 					<EditAndDeleteItemWrapper
 						id={item.id}
-						name={item.name as string}
 						onDelete={handleDelete}
+						onEdit={() => setEditAdminWallet(item)} // open edit modal and set the id of wallet
+						renderEditModal={
+							<AdminWalletModal
+								title={`Edit ${editAdminWallet?.name}`}
+								givenName={
+									editAdminWallet ? (editAdminWallet.name as string) : ""
+								}
+								closeModal={() => {}} // This will be overwritten by the wrapper
+								handleNext={async (name, image) =>
+									await handleEditWallet(name, image)
+								}
+							/>
+						}
 					>
 						<AdminWalletListItem item={item} />
 					</EditAndDeleteItemWrapper>
@@ -42,9 +99,10 @@ export const AdminWalletSection = () => {
 			/>
 			<button onClick={() => setAddWalletModal(true)}>Add a wallet</button>
 			{addWalletModal && (
-				<AddAdminWalletModal
+				<AdminWalletModal
+					title="Add Admin Wallet"
 					closeModal={() => setAddWalletModal(false)}
-					refreshWallets={refreshWallets}
+					handleNext={handleAddWallet}
 				/>
 			)}
 		</div>

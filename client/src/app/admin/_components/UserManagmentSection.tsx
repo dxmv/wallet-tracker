@@ -4,6 +4,8 @@ import MyList from "@/components/custom list/MyList";
 
 // Component for managing users
 export const UserManagementSection = () => {
+	// for refetching users
+
 	// Handler for promoting a user
 	const handlePromoteUser = async (id: number) => {
 		try {

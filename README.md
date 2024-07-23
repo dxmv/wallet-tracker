@@ -71,7 +71,7 @@
 
 - Admin page
   - [x] Promote/demote users
-  - [ ] rdu admin wallets
+  - [x] rdu admin wallets
   - [ ] only accessible to admins
   - [ ] Refresh users
   - [ ] Notifications
@@ -80,6 +80,8 @@
 
 - [ ] JWT Malformed exception
 - [ ] Can't add admin wallet if the name is the same
+- [ ] Delete wallet icon when we delete wallet
+- [ ] Edit the icon and name for wallet, delete old image
 
 - Crypto
 
