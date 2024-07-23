@@ -2,7 +2,13 @@ import { IWallet } from "@/types";
 import React from "react";
 import Image from "next/image";
 
-const WalletListItem = ({ item }: { item: IWallet }) => {
+const WalletListItem = ({
+	item,
+	percentage = "",
+}: {
+	item: IWallet;
+	percentage: string;
+}) => {
 	if (!item.adminWallet) {
 		return <div>Loading</div>;
 	}
@@ -19,7 +25,7 @@ const WalletListItem = ({ item }: { item: IWallet }) => {
 				/>
 				<h1 className="font-bold ml-2">{item.adminWallet.name}</h1>
 			</div>
-			<p>{item.coins.length}</p>
+			<p>{percentage} %</p>
 		</>
 	);
 };

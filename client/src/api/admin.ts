@@ -10,6 +10,14 @@ export const adminApi = {
 				Authorization: `Bearer ${getCookie("token")}`,
 			},
 		}),
+	addAdminWallet: (formData: FormData) =>
+		fetchCustom<IAdminWallet>("/admin/wallets", {
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${getCookie("token")}`,
+			},
+			body: formData,
+		}),
 	deleteAdminWallet: (id: number) =>
 		fetchCustom<{ message: string }>(`/admin/wallets/${id}`, {
 			method: "DELETE",
@@ -17,6 +25,7 @@ export const adminApi = {
 				Authorization: `Bearer ${getCookie("token")}`,
 			},
 		}),
+
 	promoteUser: (id: number) =>
 		fetchCustom<IUser>(`/admin/promote/${id}`, {
 			method: "PATCH",

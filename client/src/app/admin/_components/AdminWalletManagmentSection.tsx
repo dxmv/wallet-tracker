@@ -5,6 +5,7 @@ import MyList from "@/components/custom list/MyList";
 import EditAndDeleteItemWrapper from "@/components/custom list/wrappers/EditAndDeleteItemWrapper";
 import Modal from "@/components/Modal";
 import { useState } from "react";
+import AddAdminWalletModal from "./AddAdminWalletModal";
 
 // Component for managing admin wallets
 export const AdminWalletSection = () => {
@@ -20,10 +21,7 @@ export const AdminWalletSection = () => {
 		}
 	};
 
-	// Handler for adding a new wallet (to be implemented)
-	const handleAddWallet = async () => {
-		// Implementation pending
-	};
+	const refreshWallets = async () => await adminApi.getAllAdminWallets();
 
 	return (
 		<div>
@@ -31,7 +29,7 @@ export const AdminWalletSection = () => {
 				Admin wallets
 			</h1>
 			<MyList
-				apiCall={adminApi.getAllAdminWallets}
+				apiCall={refreshWallets}
 				renderItem={item => (
 					<EditAndDeleteItemWrapper
 						id={item.id}
@@ -44,11 +42,9 @@ export const AdminWalletSection = () => {
 			/>
 			<button onClick={() => setAddWalletModal(true)}>Add a wallet</button>
 			{addWalletModal && (
-				<Modal
-					searchPart={false}
+				<AddAdminWalletModal
 					closeModal={() => setAddWalletModal(false)}
-					title="Add admin wallet"
-					handleNext={handleAddWallet}
+					refreshWallets={refreshWallets}
 				/>
 			)}
 		</div>

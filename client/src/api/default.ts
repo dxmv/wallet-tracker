@@ -11,7 +11,6 @@ export async function fetchCustom<T>(
 		...options,
 		headers: {
 			...options.headers,
-			"Content-Type": "application/json",
 		},
 	});
 

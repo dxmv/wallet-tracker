@@ -44,6 +44,7 @@ const Dashboard = () => {
 		return (
 			<RightHalf
 				showing={showing}
+				totalValue={totalValue}
 				setShowing={setShowing}
 				openModal={() => setOpenModal(true)}
 				setTotalValue={setTotalValue}
@@ -57,7 +58,7 @@ const Dashboard = () => {
 			{/* Pie chart */}
 			<div className="w-1/2">
 				<p className="font-bold text-2xl">
-					Total value: {totalValue.toFixed(2)}
+					Total value: ${totalValue.toFixed(2)}
 				</p>
 				{/* Render the chart */}
 				{chartData && (

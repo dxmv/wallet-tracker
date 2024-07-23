@@ -17,12 +17,14 @@ const SHOW_STYLE = "px-3 py-1 border-gray-600 border-2";
 // shows the list of elements currently on the chart
 const RightHalf = ({
 	showing,
+	totalValue,
 	setShowing,
 	openModal,
 	setTotalValue,
 	setChartData,
 }: {
 	showing: "Wallets" | "Crypto";
+	totalValue: number;
 	setShowing: React.Dispatch<React.SetStateAction<"Wallets" | "Crypto">>;
 	openModal: () => void;
 	setTotalValue: React.Dispatch<React.SetStateAction<number>>;
@@ -105,7 +107,10 @@ const RightHalf = ({
 				apiCall={refreshWallets}
 				renderItem={item => (
 					<LinkItemWrapper href={`/wallets/${item.id}`}>
-						<WalletListItem item={item} />
+						<WalletListItem
+							item={item}
+							percentage={(1 / totalValue).toFixed(2)}
+						/>
 					</LinkItemWrapper>
 				)}
 			/>
@@ -122,7 +127,11 @@ const RightHalf = ({
 						item={item}
 						renderDetails={crypto => <CryptoDetails crypto={crypto} />}
 					>
-						<CryptoListItem item={item} />
+						<CryptoListItem
+							item={item}
+							percentage={true}
+							totalValue={totalValue}
+						/>
 					</DetailsModalWrapper>
 				)}
 			/>
