@@ -58,6 +58,9 @@ public class AdminWalletService {
 
     public void deleteWallet(Long id) {
         AdminWallet aw = getWalletById(id); // this will to throw an error if the wallet doesn't exist
+
+        // delete the old image
+        imageUploadService.deleteImage(aw.getIconUrl());
         adminWalletRepository.deleteById(id);
     }
 

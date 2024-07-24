@@ -37,4 +37,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponse> handleForbidden(HttpClientErrorException.Forbidden ex){
         return new ResponseEntity<>(new ErrorResponse(HttpStatus.FORBIDDEN.value(),"Forbidden request"),HttpStatus.FORBIDDEN);
     }
+
+    @ExceptionHandler(InternalServerException.class)
+    public ResponseEntity<ErrorResponse> handleForbidden(InternalServerException ex){
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage()),HttpStatus.FORBIDDEN);
+    }
 }

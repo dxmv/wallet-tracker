@@ -1,9 +1,12 @@
 package com.tracker.server.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 /**
  *  Only admins can create these wallets
@@ -23,5 +26,9 @@ public class AdminWallet {
 
     @Column(unique = true)
     private String iconUrl;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "adminWallet", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Wallet> wallets;
 
 }
