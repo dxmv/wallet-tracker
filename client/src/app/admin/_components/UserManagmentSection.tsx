@@ -1,15 +1,24 @@
+"use client";
 import { adminApi } from "@/api/admin";
 import { userApi } from "@/api/user";
 import MyList from "@/components/custom list/MyList";
+import { useCallback, useState } from "react";
 
 // Component for managing users
 export const UserManagementSection = () => {
-	// for refetching users
+	// State to trigger refetch
+	const [refetchTrigger, setRefetchTrigger] = useState(0);
+
+	// Callback to refetch users
+	const refetchUsers = useCallback(() => {
+		setRefetchTrigger(prev => prev + 1);
+	}, []);
 
 	// Handler for promoting a user
 	const handlePromoteUser = async (id: number) => {
 		try {
 			await adminApi.promoteUser(id);
+			refetchUsers(); // Refetch users after successful demotion
 		} catch (e) {
 			console.error("Error promoting user:", e);
 		}
@@ -18,11 +27,17 @@ export const UserManagementSection = () => {
 	// Handler for demoting a user
 	const handleDemoteUser = async (id: number) => {
 		try {
-			await adminApi.demoteUser(id);
+			const res = await adminApi.demoteUser(id);
+			refetchUsers(); // Refetch users after successful demotion
 		} catch (e) {
 			console.error("Error demoting user:", e);
 		}
 	};
+
+	// Memoized API call function
+	const apiCall = useCallback(() => {
+		return userApi.getAllUsers();
+	}, [refetchTrigger]); // Dependency on refetchTrigger
 
 	return (
 		<div>
@@ -30,7 +45,7 @@ export const UserManagementSection = () => {
 				Users
 			</h1>
 			<MyList
-				apiCall={userApi.getAllUsers}
+				apiCall={apiCall}
 				renderItem={item => (
 					<div className="flex justify-between items-center">
 						<p>

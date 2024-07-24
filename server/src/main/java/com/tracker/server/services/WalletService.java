@@ -39,11 +39,16 @@ public class WalletService {
     public Wallet addWalletForCurrentUser(Long adminWalletId){
         User u = userService.getCurrentUser();
         AdminWallet aw = adminWalletService.getWalletById(adminWalletId);
+        // Count existing wallets for this admin wallet
+        int walletCount = walletRepository.countByAdminWalletId(adminWalletId);
+
 
         // if the current user & admin wallet exist, then create the wallet
         Wallet w = new Wallet();
         w.setAdminWallet(aw);
         w.setUser(u);
+        // Generate the wallet name
+        w.setWalletName(aw.getName() + " " + (walletCount + 1));
         return walletRepository.save(w);
     }
 
@@ -79,4 +84,12 @@ public class WalletService {
         return w;
     }
 
+    /**
+     * Returns a wallet with a name changed to walletName
+     */
+    public Wallet updateName(Long id, String walletName) {
+        Wallet w = this.getOneWalletForCurrentUser(id); // handles all potential errors
+        w.setWalletName(walletName);
+        return walletRepository.save(w);
+    }
 }

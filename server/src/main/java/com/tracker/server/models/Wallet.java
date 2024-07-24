@@ -31,6 +31,9 @@ public class Wallet {
     @JsonBackReference
     private User user;
 
+    @Column(unique = true)
+    private String walletName;
+
     @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL)
     private List<Crypto> coins = new ArrayList<>();
 }

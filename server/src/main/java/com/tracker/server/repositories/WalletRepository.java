@@ -11,4 +11,6 @@ import java.util.List;
 public interface WalletRepository extends JpaRepository<Wallet,Long> {
     @Query("SELECT w FROM Wallet w WHERE w.user.id = :userId")
     List<Wallet> findWalletsForUser(Long userId); // returns all wallets for a given user
+
+    int countByAdminWalletId(Long adminWalletId); // returns the count of wallets with the given adminWalletId
 }

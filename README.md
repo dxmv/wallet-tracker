@@ -91,17 +91,13 @@
 
 - Wallet
 
-  - [ ] Save the nickname
-  - [ ] Types of crypto in the wallet
+  - [x] Generate the wallet name
+  - [x] Save the nickname
+  - [x] Change wallet name
 
 - [x] Check if crypto belongs to a user's wallet
 - [x] Fix the response for deletes
-- [ ] Add 'nicknames' for user wallets
+- [x] Add 'nicknames' for user wallets
 - [ ] Add crypto types accepted for a wallet
 - [ ] Tests
 - [x] If crypto is already in a wallet, update it
-- [ ] Myb save the id of coin gecko crypto?
-
-- Tickets
-  - [ ] A user can submit a ticket
-  - [ ] Admins can delete tickets

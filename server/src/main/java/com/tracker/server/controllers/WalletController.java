@@ -40,6 +40,11 @@ public class WalletController {
         return new ResponseEntity<>(walletService.addWalletForCurrentUser(id),HttpStatus.CREATED);
     }
 
+    @PatchMapping("/name/{id}")
+    public ResponseEntity<Wallet> updateWalletName(@PathVariable Long id,@RequestBody String walletName){
+        return new ResponseEntity<>(walletService.updateName(id,walletName),HttpStatus.OK);
+    }
+
     @DeleteMapping("/{walletId}")
     public ResponseEntity<DeleteResponse> deleteWallet(@PathVariable Long walletId){
         walletService.deleteWalletForCurrentUser(walletId);
