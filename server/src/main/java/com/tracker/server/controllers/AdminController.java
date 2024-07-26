@@ -92,10 +92,13 @@ public class AdminController {
     /**
      * Updates the admin wallet
      */
-    @PutMapping("/wallets/{id}")
+    @PutMapping(value = "/wallets/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<AdminWallet> updateWallet(@PathVariable Long id,@RequestBody AdminWalletRequestBody aw){
-        return new ResponseEntity<>(adminWalletService.updateWallet(id,aw.name),HttpStatus.OK);
+    public ResponseEntity<AdminWallet> updateWallet(@PathVariable Long id,@ModelAttribute AdminWalletRequestBody aw){
+        if (aw.getIcon() == null) {
+            throw new BadRequestException("Icon file is missing");
+        }
+        return new ResponseEntity<>(adminWalletService.updateWallet(id,aw.getName(),aw.getIcon()),HttpStatus.OK);
     }
 
     /**

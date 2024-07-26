@@ -78,10 +78,11 @@
 
 ## Backend
 
-- [ ] JWT Malformed exception
-- [ ] Can't add admin wallet if the name is the same
-- [ ] Delete wallet icon when we delete wallet
-- [ ] Edit the icon and name for wallet, delete old image
+- [ ] Exceptions
+- [x] Can't add admin wallet if the name is the same
+- [x] Delete wallet icon when we delete wallet
+- [x] Edit the icon and name for wallet, delete old image
+- [ ] Images show only after we restart
 
 - Crypto
 
@@ -98,6 +99,5 @@
 - [x] Check if crypto belongs to a user's wallet
 - [x] Fix the response for deletes
 - [x] Add 'nicknames' for user wallets
-- [ ] Add crypto types accepted for a wallet
 - [ ] Tests
 - [x] If crypto is already in a wallet, update it

@@ -2,6 +2,7 @@ package com.tracker.server.services;
 
 import com.tracker.server.exceptions.BadRequestException;
 import com.tracker.server.exceptions.ConflictException;
+import com.tracker.server.exceptions.InternalServerException;
 import com.tracker.server.exceptions.NotFoundException;
 import com.tracker.server.models.AdminWallet;
 import com.tracker.server.repositories.AdminWalletRepository;
@@ -45,15 +46,10 @@ public class AdminWalletService {
      */
     public AdminWallet addWallet(String name, MultipartFile icon) {
         walletWithNameExists(name); // doesn't create it if the wallet with the same name exists
-        try{
-            AdminWallet aw = new AdminWallet();
-            aw.setName(name);
-            aw.setIconUrl(imageUploadService.uploadImage(icon));
-            return adminWalletRepository.save(aw);
-        } catch (IOException e) {
-            // TODO: maybe internal exception here
-            throw new BadRequestException(e.getMessage());
-        }
+        AdminWallet aw = new AdminWallet();
+        aw.setName(name);
+        aw.setIconUrl(imageUploadService.uploadImage(icon));
+        return adminWalletRepository.save(aw);
     }
 
     public void deleteWallet(Long id) {
@@ -64,12 +60,19 @@ public class AdminWalletService {
         adminWalletRepository.deleteById(id);
     }
 
-    public AdminWallet updateWallet(Long id, String name) {
-        // these two throw an error if the wallet with id or name already exist
-        walletWithNameExists(name);
+    public AdminWallet updateWallet(Long id, String name,MultipartFile icon) {
+        // find the wallet first
         AdminWallet aw = getWalletById(id);
+        if(!aw.getName().equals(name)){
+            // only check if the name doesn't match
+            // if the name matches that means that the wallet name hasn't changed
+            walletWithNameExists(name); // throws an error if a wallet with the given name exists
+        }
+        // delete the old icon
+        imageUploadService.deleteImage(aw.getIconUrl());
 
         aw.setName(name);
+        aw.setIconUrl(imageUploadService.uploadImage(icon));
         return adminWalletRepository.save(aw);
     }
 }

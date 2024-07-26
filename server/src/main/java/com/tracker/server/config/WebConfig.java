@@ -15,13 +15,5 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE") // Allow specified HTTP methods
                 .allowedHeaders("*"); // Allow all headers
     }
-
-    /**
-     * Here we define how to handle static resources
-     */
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/uploads/**") // Any URL that starts with "/uploads/" will be handled by this resource handler.
-                .addResourceLocations("classpath:/static/uploads/"); // This specifies where Spring should look for the files.
-    }
+    
 }
