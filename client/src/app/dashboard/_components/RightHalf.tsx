@@ -8,9 +8,9 @@ import WalletListItem from "@/components/custom list/WalletListItem";
 import React, { useCallback } from "react";
 import DetailsModalWrapper from "@/components/custom list/wrappers/DetailsModalItemWrapper";
 import CryptoDetails from "./CryptoDetails";
-import { ICrypto, IWallet } from "@/types";
 import { useCrypto } from "@/hooks/useCrypto";
 import { ChartData } from "chart.js";
+import { extractColor } from "@/utils/colorExtraction";
 
 const SHOW_STYLE = "px-3 py-1 border-gray-600 border-2";
 
@@ -40,6 +40,7 @@ const RightHalf = ({
 		const wallets = await walletApi.getAllWallets();
 		const labels: string[] = [];
 		const values: number[] = [];
+		const colorPromises: Promise<string>[] = [];
 
 		// calculate the value of coins in the wallet
 		const totalWalletValue = wallets.reduce((total, wallet) => {
@@ -49,12 +50,14 @@ const RightHalf = ({
 					const currentPrice = cryptoMap.get(coin.apiId)?.current_price || 0;
 					return total + coin.amount * currentPrice;
 				}, 0);
-
-			labels.push(wallet.adminWallet.name as string);
 			values.push(res);
+			labels.push(wallet.adminWallet.name as string);
+			colorPromises.push(extractColor(wallet.adminWallet.iconUrl as string)); // we will await this later
 
 			return res;
 		}, 0);
+
+		const colors = await Promise.all(colorPromises);
 		await setTotalValue(totalWalletValue);
 
 		await setChartData({
@@ -62,7 +65,7 @@ const RightHalf = ({
 			datasets: [
 				{
 					data: values,
-					backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+					backgroundColor: colors,
 				},
 			],
 		});
@@ -76,16 +79,20 @@ const RightHalf = ({
 		// for the chart
 		const labels: string[] = [];
 		const values: number[] = [];
+		const colorPromises: Promise<string>[] = [];
 
 		const totalCryptoValue = coins.reduce((total, coin) => {
 			const currentPrice = cryptoMap.get(coin.apiId)?.current_price || 0;
 			const res = total + coin.amount * currentPrice;
 
 			labels.push(coin.name as string);
-			values.push(total + coin.amount * currentPrice);
+			values.push(coin.amount * currentPrice);
+			colorPromises.push(extractColor(coin.imageUrl));
 
 			return res;
 		}, 0);
+
+		const colors = await Promise.all(colorPromises);
 		await setTotalValue(totalCryptoValue);
 
 		await setChartData({
@@ -93,7 +100,7 @@ const RightHalf = ({
 			datasets: [
 				{
 					data: values,
-					backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+					backgroundColor: colors,
 				},
 			],
 		});

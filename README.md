@@ -2,11 +2,11 @@
 
 ## Frontend
 
-- [ ] How to display the icon for crypto
+- [x] How to display the icon for crypto
 - [ ] Caching requests
 - [ ] Auth context?
 - [ ] Change navigation when logged in
-- [ ] Fix the problems with auth
+- [x] Fix the problems with auth
 - [ ] Home page
 - [ ] News page
 - [ ] Logout
@@ -52,7 +52,7 @@
 - Dashboard
 
   - [x] Pie chart
-  - [ ] Random colors
+  - [ ] Color based on the icon
   - [ ] Animation for switching showing
   - [x] Percentage on legend
   - [x] Display crypto

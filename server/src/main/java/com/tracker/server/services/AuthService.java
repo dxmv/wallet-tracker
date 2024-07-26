@@ -1,5 +1,6 @@
 package com.tracker.server.services;
 
+import com.tracker.server.exceptions.BadRequestException;
 import com.tracker.server.exceptions.ConflictException;
 import com.tracker.server.exceptions.NotFoundException;
 import com.tracker.server.models.Role;
@@ -36,7 +37,7 @@ public class AuthService {
 
         // if the user exists check does the password match
         if(!passwordEncoder.matches(password,u.getPassword())){
-            throw new NotFoundException("Incorrect password" );
+            throw new BadRequestException("Incorrect password");
         }
         return jwtUtil.generateToken(String.valueOf(u.getId()));
     }
