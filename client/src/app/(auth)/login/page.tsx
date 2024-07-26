@@ -8,8 +8,9 @@ import { MdKey } from "react-icons/md";
 import { useState } from "react";
 import { InputState } from "@/types";
 import { handleEmailChange, handlePasswordChange } from "@/utils/inputHandlers";
-import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
+import { authApi } from "@/api/auth";
+import { setCookie } from "@/utils/cookies";
 
 const Login = () => {
 	const [email, setEmail] = useState<InputState>({
@@ -25,11 +26,10 @@ const Login = () => {
 
 	const router = useRouter(); // to go to another page
 
-	const { login } = useAuth();
-
 	const handleLogin = async () => {
 		try {
-			await login(email.value, password.value);
+			const { jwt } = await authApi.login(email.value, password.value);
+			setCookie("token", jwt);
 			// redirect here
 			router.push("/dashboard");
 		} catch (error) {

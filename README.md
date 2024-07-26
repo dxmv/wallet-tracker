@@ -52,7 +52,7 @@
 - Dashboard
 
   - [x] Pie chart
-  - [ ] Color based on the icon
+  - [x] Color based on the icon
   - [ ] Animation for switching showing
   - [x] Percentage on legend
   - [x] Display crypto
@@ -62,7 +62,6 @@
 - Profile page
 
   - [ ] Simple details
-  - [ ] Change password
   - [ ] Stats like how much crypto in usd
 
 - Optimize

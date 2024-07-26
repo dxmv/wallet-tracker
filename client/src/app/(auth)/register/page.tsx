@@ -8,6 +8,7 @@ import { InputState } from "@/types";
 import { handleEmailChange, handlePasswordChange } from "@/utils/inputHandlers";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import { authApi } from "@/api/auth";
 
 const Register = () => {
 	const [email, setEmail] = useState<InputState>({
@@ -25,8 +26,6 @@ const Register = () => {
 	// error for the whole form
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-	const { register } = useAuth();
-
 	const router = useRouter(); // to go to another page
 
 	const handleRegister = async () => {
@@ -37,8 +36,7 @@ const Register = () => {
 		}
 
 		try {
-			// maybe add user to some kind of state?
-			await register(email.value, password.value);
+			await authApi.register(email.value, password.value);
 			// redirect to login page
 			router.push("/login");
 		} catch (error) {

@@ -19,6 +19,7 @@ export const setCookie = (name: String, value: String, days?: number) => {
 };
 
 // Remove the cookie with the given name
+// Sets the date in the past, so the browser deletes it
 export const removeCookie = (name: String) => {
-	// delete cookie
+	document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 };
