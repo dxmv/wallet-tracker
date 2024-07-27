@@ -10,7 +10,7 @@ export function useAuth() {
 	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [user, setUser] = useState<IUser>();
-	// const router = useRouter(); // to route throughout the app
+	const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
 	useEffect(() => {
 		authenticate();
@@ -27,7 +27,10 @@ export function useAuth() {
 				// the token is valid
 				if (decodedToken.exp && decodedToken.exp > currentTime) {
 					setIsAuthenticated(true);
-					setUser(await userApi.getCurrentUser());
+					await setUser(await userApi.getCurrentUser());
+					if (user && user.roles.includes("ADMIN")) {
+						setIsAdmin(true);
+					}
 				} else {
 					// Token is expired
 					setIsAuthenticated(false);
@@ -45,5 +48,5 @@ export function useAuth() {
 		setLoading(false);
 	};
 
-	return { isAuthenticated, loading, user };
+	return { isAuthenticated, loading, user, isAdmin };
 }

@@ -61,8 +61,8 @@
 
 - Profile page
 
-  - [ ] Simple details
-  - [ ] Stats like how much crypto in usd
+  - [x] Simple details
+  - [x] Stats like how much crypto in usd
 
 - Optimize
 
