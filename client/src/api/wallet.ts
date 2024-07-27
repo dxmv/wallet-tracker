@@ -24,6 +24,14 @@ export const walletApi = {
 				Authorization: `Bearer ${getCookie("token")}`,
 			},
 		}),
+	updateWalletName: (walletId: number, newWalletName: string) =>
+		fetchCustom<IWallet>(`/wallets/name/${walletId}`, {
+			method: "PATCH",
+			headers: {
+				Authorization: `Bearer ${getCookie("token")}`,
+			},
+			body: newWalletName,
+		}),
 	deleteWallet: (id: number) =>
 		fetchCustom(`/wallets/${id}`, {
 			method: "DELETE",

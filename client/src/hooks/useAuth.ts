@@ -13,40 +13,40 @@ export function useAuth() {
 	const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
 	useEffect(() => {
-		authenticate();
-	}, []);
+		const authenticate = async (): Promise<void> => {
+			const token = getCookie("token");
+			if (token) {
+				try {
+					// verify the token's expiration
+					const decodedToken = jwtDecode(token);
 
-	const authenticate = async (): Promise<void> => {
-		const token = getCookie("token");
-		if (token) {
-			try {
-				// verify the token's expiration
-				const decodedToken = jwtDecode(token);
-
-				const currentTime = Date.now() / 1000;
-				// the token is valid
-				if (decodedToken.exp && decodedToken.exp > currentTime) {
-					setIsAuthenticated(true);
-					await setUser(await userApi.getCurrentUser());
-					if (user && user.roles.includes("ADMIN")) {
-						setIsAdmin(true);
+					const currentTime = Date.now() / 1000;
+					// the token is valid
+					if (decodedToken.exp && decodedToken.exp > currentTime) {
+						setIsAuthenticated(true);
+						const res = await userApi.getCurrentUser();
+						await setUser(res);
+						if (res.roles.includes("ADMIN")) {
+							setIsAdmin(true);
+						}
+					} else {
+						// Token is expired
+						setIsAuthenticated(false);
+						removeCookie("token");
 					}
-				} else {
-					// Token is expired
+				} catch (error) {
+					// Invalid token
+					console.error("Invalid token:", error);
 					setIsAuthenticated(false);
 					removeCookie("token");
 				}
-			} catch (error) {
-				// Invalid token
-				console.error("Invalid token:", error);
+			} else {
 				setIsAuthenticated(false);
-				removeCookie("token");
 			}
-		} else {
-			setIsAuthenticated(false);
-		}
-		setLoading(false);
-	};
+			setLoading(false);
+		};
+		authenticate();
+	}, []);
 
 	return { isAuthenticated, loading, user, isAdmin };
 }

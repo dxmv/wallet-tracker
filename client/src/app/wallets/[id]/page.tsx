@@ -12,6 +12,7 @@ import EditAndDeleteItemWrapper from "@/components/custom list/wrappers/EditAndD
 import { cryptoApi } from "@/api/crypto";
 import { useCrypto } from "@/hooks/useCrypto";
 import EditCryptoModal from "../_components/EditCryptoModal";
+import WalletInfo from "../_components/WalletInfo";
 
 const Wallet = ({ params }: { params: { id: string } }) => {
 	const [wallet, setWallet] = useState<IWallet | null>(null);
@@ -93,28 +94,11 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 	return (
 		<main className="flex flex-col w-full py-8 px-4" style={{ height: "87vh" }}>
 			{/* Wallet info */}
-			<div className="flex justify-between pb-4 border-b-2 border-gray-300">
-				<div className="flex">
-					<img
-						src={wallet?.adminWallet.iconUrl}
-						alt="Zoki"
-						width={240}
-						height={240}
-						className="rounded-md shadow-md shadow-white"
-					/>
-					<div className="flex flex-col justify-between ml-3 h-1/2">
-						<h1 className="font-bold text-2xl">{wallet?.adminWallet.name}</h1>
-						<p>Number of coins: {wallet.coins.length}</p>
-						<p>Amount in dollars: {amountInDollars}</p>
-					</div>
-				</div>
-				<div>
-					<FaRegTrashAlt
-						className="text-lg text-red-600 cursor-pointer hover:text-red-800"
-						onClick={() => setDeleteWalletModal(true)}
-					/>
-				</div>
-			</div>
+			<WalletInfo
+				wallet={wallet}
+				amountInDollars={amountInDollars}
+				openDeleteModal={() => setDeleteWalletModal(true)}
+			/>
 			{/* Grid of coins */}
 			<div className="mt-4"></div>
 			<MyList

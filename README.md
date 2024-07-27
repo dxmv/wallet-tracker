@@ -4,23 +4,22 @@
 
 - [x] How to display the icon for crypto
 - [ ] Caching requests
-- [ ] Auth context?
 - [ ] Change navigation when logged in
 - [x] Fix the problems with auth
 - [ ] Home page
 - [ ] News page
-- [ ] Logout
+- [x] Logout
 - [ ] Better design
 - [x] When a user clicks on a crypto, they get various info about it in a modal
 - [x] Get 1000 cryptos from api
-- [ ] Optimize the dashboard
 - [ ] Add loading
 - [ ] Add refreshing
 - [ ] Handle errors
-- [ ] Fix use auth, to check if the token is valid
+- [x] Fix use auth, to check if the token is valid
 - [ ] Use fetch for the coingecko api
 - [ ] Favicon
 - [ ] Notifications
+- [ ] Search in modal
 
 - Modal
 
@@ -40,9 +39,11 @@
   - [x] Add crypto from here
   - [x] Delete crypto
   - [x] Delete wallet
-  - [ ] Edit the nickname of the wallet
+  - [x] Edit the nickname of the wallet
   - [x] Refresh the wallet after crypto action
   - [x] Edit crypto and display info for crypto modal
+  - [ ] Refresh wallet after actions
+  - [ ] Optimization
 
 - Crypto "page"
 
@@ -57,23 +58,20 @@
   - [x] Percentage on legend
   - [x] Display crypto
   - [x] Fix display of wallets
-  - [ ] Refresh on add
+  - [ ] Refresh info
+  - [ ] Optimization
 
 - Profile page
 
   - [x] Simple details
   - [x] Stats like how much crypto in usd
 
-- Optimize
-
-  - [ ] Search in modal
-
 - Admin page
   - [x] Promote/demote users
   - [x] rdu admin wallets
   - [ ] only accessible to admins
-  - [ ] Refresh users
-  - [ ] Notifications
+  - [ ] Refresh info
+  - [ ] Optimization
 
 ## Backend
 
@@ -81,7 +79,7 @@
 - [x] Can't add admin wallet if the name is the same
 - [x] Delete wallet icon when we delete wallet
 - [x] Edit the icon and name for wallet, delete old image
-- [ ] Images show only after we restart
+- [x] Images show only after we restart
 
 - Crypto
 
@@ -98,5 +96,4 @@
 - [x] Check if crypto belongs to a user's wallet
 - [x] Fix the response for deletes
 - [x] Add 'nicknames' for user wallets
-- [ ] Tests
 - [x] If crypto is already in a wallet, update it

@@ -26,6 +26,7 @@ export interface IWallet {
 	id: number;
 	coins: Array<ICrypto>;
 	adminWallet: IAdminWallet;
+	walletName: string;
 }
 
 export interface ICrypto {
