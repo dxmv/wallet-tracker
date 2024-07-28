@@ -3,10 +3,14 @@ import { adminApi } from "@/api/admin";
 import AdminWalletListItem from "@/components/custom list/AdminWalletListItem";
 import MyList from "@/components/custom list/MyList";
 import EditAndDeleteItemWrapper from "@/components/custom list/wrappers/EditAndDeleteItemWrapper";
-import Modal from "@/components/Modal";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import AdminWalletModal from "./AdminWalletModal";
 import { IAdminWallet } from "@/types";
+import {
+	handleErrorToast,
+	showSuccessToast,
+	showWarningToast,
+} from "@/utils/toasts";
 
 // Component for managing admin wallets
 export const AdminWalletSection = () => {
@@ -15,14 +19,23 @@ export const AdminWalletSection = () => {
 	const [editAdminWallet, setEditAdminWallet] = useState<IAdminWallet | null>(
 		null
 	);
+	// State to trigger refetch
+	const [refetchTrigger, setRefetchTrigger] = useState(0);
+
+	// Callback to refetch users
+	const refetchWallets = useCallback(() => {
+		setRefetchTrigger(prev => prev + 1);
+	}, []);
 
 	// Handler for deleting an admin wallet
 	const handleDelete = async (id: number) => {
 		if (!id) return;
 		try {
 			await adminApi.deleteAdminWallet(id);
+			showSuccessToast("Successfully deleted a wallet");
+			refetchWallets();
 		} catch (e) {
-			console.error("Error deleting admin wallet:", e);
+			handleErrorToast(e);
 		}
 	};
 
@@ -30,6 +43,7 @@ export const AdminWalletSection = () => {
 	const handleAddWallet = async (name: string, image: File | null) => {
 		// Validate inputs
 		if (!name || !image) {
+			showWarningToast("You haven't typed a name, or selected an image");
 			return;
 		}
 
@@ -42,15 +56,17 @@ export const AdminWalletSection = () => {
 			// Send request to add admin wallet
 			await adminApi.addAdminWallet(formData);
 			setAddWalletModal(false); // close the modal
-		} catch (error) {
-			console.error("Failed to add admin wallet:", error);
-			alert("Failed to add admin wallet. Please try again.");
+			showSuccessToast("Successfully added a wallet");
+			refetchWallets();
+		} catch (e) {
+			handleErrorToast(e);
 		}
 	};
 
 	const handleEditWallet = async (name: string, image: File | null) => {
 		// Validate inputs
 		if (!name || !image || !editAdminWallet) {
+			showWarningToast("You haven't typed a name, or selected an image");
 			return;
 		}
 		// Prepare form data
@@ -62,11 +78,16 @@ export const AdminWalletSection = () => {
 			// Send request to add admin wallet
 			await adminApi.updateAdminWallet(editAdminWallet.id, formData);
 			setEditAdminWallet(null); // close the modal
-		} catch (error) {
-			console.error("Failed to add admin wallet:", error);
-			alert("Failed to add admin wallet. Please try again.");
+			showSuccessToast("Successfully updated a wallet");
+			refetchWallets();
+		} catch (e) {
+			handleErrorToast(e);
 		}
 	};
+
+	const apiCall = useCallback(() => {
+		return adminApi.getAllAdminWallets();
+	}, [refetchTrigger]);
 
 	return (
 		<div>
@@ -74,7 +95,7 @@ export const AdminWalletSection = () => {
 				Admin wallets
 			</h1>
 			<MyList
-				apiCall={adminApi.getAllAdminWallets}
+				apiCall={apiCall}
 				renderItem={item => (
 					<EditAndDeleteItemWrapper
 						id={item.id}

@@ -18,7 +18,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 			const path = "/" + document.URL.split("/").pop() || "";
 			const allowedPaths = ["/", "/login", "/register"];
 
-			console.log(path, isAuthenticated);
 			// if the user isn't authenticated, redirect them to home page
 			if (!allowedPaths.includes(path) && !isAuthenticated) {
 				router.push("/");

@@ -31,7 +31,7 @@
   - [x] The wrong crypto is being added
   - [x] Do the same thing for wallet
   - [ ] Back button for the second stage of crypto modal
-  - [ ] Error message
+  - [ ] Notifications for errors
 
 - Wallet page
 
@@ -69,13 +69,14 @@
 - Admin page
   - [x] Promote/demote users
   - [x] rdu admin wallets
-  - [ ] only accessible to admins
-  - [ ] Refresh info
+  - [ ] Only accessible to admins
+  - [x] Edit wallet
+  - [x] Refresh info
   - [ ] Optimization
 
 ## Backend
 
-- [ ] Exceptions
+- [ ] Exceptions, fallback exceptions
 - [x] Can't add admin wallet if the name is the same
 - [x] Delete wallet icon when we delete wallet
 - [x] Edit the icon and name for wallet, delete old image

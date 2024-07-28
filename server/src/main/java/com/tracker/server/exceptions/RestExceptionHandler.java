@@ -43,4 +43,19 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponse> handleForbidden(InternalServerException ex){
         return new ResponseEntity<>(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage()),HttpStatus.FORBIDDEN);
     }
+
+
+    // Catch-all handler for other JWT-related exceptions
+    @ExceptionHandler(io.jsonwebtoken.JwtException.class)
+    public ResponseEntity<ErrorResponse> handleJwtException(io.jsonwebtoken.JwtException ex) {
+        ErrorResponse er = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());
+        return new ResponseEntity<>(er, HttpStatus.UNAUTHORIZED);
+    }
+
+    // handle all other errors, must be at the bottom
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex) {
+        ErrorResponse er = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage().isEmpty() ? "An unexpected error occurred" : ex.getMessage());
+        return new ResponseEntity<>(er, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

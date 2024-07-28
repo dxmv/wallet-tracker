@@ -2,6 +2,7 @@
 import { adminApi } from "@/api/admin";
 import { userApi } from "@/api/user";
 import MyList from "@/components/custom list/MyList";
+import { handleErrorToast } from "@/utils/toasts";
 import { useCallback, useState } from "react";
 
 // Component for managing users
@@ -20,17 +21,17 @@ export const UserManagementSection = () => {
 			await adminApi.promoteUser(id);
 			refetchUsers(); // Refetch users after successful demotion
 		} catch (e) {
-			console.error("Error promoting user:", e);
+			handleErrorToast(e);
 		}
 	};
 
 	// Handler for demoting a user
 	const handleDemoteUser = async (id: number) => {
 		try {
-			const res = await adminApi.demoteUser(id);
+			await adminApi.demoteUser(id);
 			refetchUsers(); // Refetch users after successful demotion
 		} catch (e) {
-			console.error("Error demoting user:", e);
+			handleErrorToast(e);
 		}
 	};
 

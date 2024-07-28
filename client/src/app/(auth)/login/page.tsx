@@ -11,6 +11,7 @@ import { handleEmailChange, handlePasswordChange } from "@/utils/inputHandlers";
 import { useRouter } from "next/navigation";
 import { authApi } from "@/api/auth";
 import { setCookie } from "@/utils/cookies";
+import { toast } from "react-toastify";
 
 const Login = () => {
 	const [email, setEmail] = useState<InputState>({

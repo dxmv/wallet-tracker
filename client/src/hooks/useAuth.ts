@@ -1,9 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getCookie, removeCookie } from "@/utils/cookies";
 import { IUser } from "@/types";
 import { jwtDecode } from "jwt-decode";
 import { userApi } from "@/api/user";
+import { handleErrorToast, showErrorToast } from "@/utils/toasts";
 
 // Hook that keeps track of the user's authentication status
 export function useAuth() {
@@ -12,41 +13,42 @@ export function useAuth() {
 	const [user, setUser] = useState<IUser>();
 	const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
-	useEffect(() => {
-		const authenticate = async (): Promise<void> => {
-			const token = getCookie("token");
-			if (token) {
-				try {
-					// verify the token's expiration
-					const decodedToken = jwtDecode(token);
+	const auth = useCallback(async () => {
+		const token = getCookie("token");
+		if (token) {
+			try {
+				// verify the token's expiration
+				const decodedToken = jwtDecode(token);
 
-					const currentTime = Date.now() / 1000;
-					// the token is valid
-					if (decodedToken.exp && decodedToken.exp > currentTime) {
-						setIsAuthenticated(true);
-						const res = await userApi.getCurrentUser();
-						await setUser(res);
-						if (res.roles.includes("ADMIN")) {
-							setIsAdmin(true);
-						}
-					} else {
-						// Token is expired
-						setIsAuthenticated(false);
-						removeCookie("token");
+				const currentTime = Date.now() / 1000;
+				// the token is valid
+				if (decodedToken.exp && decodedToken.exp > currentTime) {
+					setIsAuthenticated(true);
+					const res = await userApi.getCurrentUser();
+					await setUser(res);
+					if (res.roles.includes("ADMIN")) {
+						setIsAdmin(true);
 					}
-				} catch (error) {
-					// Invalid token
-					console.error("Invalid token:", error);
+				} else {
+					// Token is expired
 					setIsAuthenticated(false);
 					removeCookie("token");
 				}
-			} else {
+			} catch (e) {
+				// Invalid token
+				handleErrorToast(e);
 				setIsAuthenticated(false);
+				removeCookie("token");
 			}
-			setLoading(false);
-		};
-		authenticate();
+		} else {
+			setIsAuthenticated(false);
+		}
+		setLoading(false);
 	}, []);
+
+	useEffect(() => {
+		auth();
+	}, [auth]);
 
 	return { isAuthenticated, loading, user, isAdmin };
 }
