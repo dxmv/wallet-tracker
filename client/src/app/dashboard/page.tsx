@@ -20,7 +20,6 @@ type IShow = "Wallets" | "Crypto";
 
 const Dashboard = () => {
 	const [showing, setShowing] = useState<IShow>("Wallets");
-	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [totalValue, setTotalValue] = useState<number>(0);
 	const [chartData, setChartData] = useState<ChartData<"pie"> | null>(null);
 
@@ -46,7 +45,6 @@ const Dashboard = () => {
 				showing={showing}
 				totalValue={totalValue}
 				setShowing={setShowing}
-				openModal={() => setOpenModal(true)}
 				setTotalValue={setTotalValue}
 				setChartData={setChartData}
 			/>
@@ -68,13 +66,6 @@ const Dashboard = () => {
 				)}
 			</div>
 			{renderRightSide()}
-			{/* Show a modal based on the current showing */}
-			{openModal &&
-				(showing == "Wallets" ? (
-					<WalletsModal closeModal={() => setOpenModal(false)} />
-				) : (
-					<CryptoModal closeModal={() => setOpenModal(false)} />
-				))}
 		</main>
 	);
 };

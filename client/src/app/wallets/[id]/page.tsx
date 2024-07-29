@@ -13,11 +13,13 @@ import { cryptoApi } from "@/api/crypto";
 import { useCrypto } from "@/hooks/useCrypto";
 import EditCryptoModal from "../_components/EditCryptoModal";
 import WalletInfo from "../_components/WalletInfo";
+import { useApiWithRefetch } from "@/hooks/useApiWithRefetch";
 
 const Wallet = ({ params }: { params: { id: string } }) => {
 	const [wallet, setWallet] = useState<IWallet | null>(null);
 	const [deleteWalletModal, setDeleteWalletModal] = useState<boolean>(false);
 	const [addCryptoModal, setAddCryptoModal] = useState<boolean>(false);
+
 	const { push } = useRouter();
 	const cryptoMap = useCrypto();
 
@@ -81,7 +83,7 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 	const handleDeleteCrypto = async (id: number) => {
 		try {
 			await cryptoApi.deleteCrypto(id);
-			refreshWallet();
+			await refreshWallet();
 		} catch (e) {
 			console.error(e);
 		}

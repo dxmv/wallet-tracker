@@ -1,5 +1,4 @@
 "use client";
-import { adminApi } from "@/api/admin";
 import { cryptoApi } from "@/api/crypto";
 import { walletApi } from "@/api/wallet";
 import CryptoApiListItem from "@/components/custom list/CryptoApiListItem";
@@ -15,7 +14,13 @@ import React, { useCallback, useState } from "react";
 
 // first stage show crypto list
 // second stage show wallet list and amount input
-const CryptoModal = ({ closeModal }: { closeModal: () => void }) => {
+const CryptoModal = ({
+	closeModal,
+	refetchCoins,
+}: {
+	closeModal: () => void;
+	refetchCoins: () => void;
+}) => {
 	const [stage, setStage] = useState<number>(1); // what stage are we in?
 	const [selectedId, setSelectedId] = useState<string | null>(null);
 	const [walletId, setWalletId] = useState<number | null>(null);
@@ -46,6 +51,7 @@ const CryptoModal = ({ closeModal }: { closeModal: () => void }) => {
 				};
 				const data = await cryptoApi.addCrypto(walletId, payload);
 				showSuccessToast(`Successfully added ${data.name}`);
+				refetchCoins();
 				closeModal();
 			} catch (e) {
 				handleErrorToast(e);

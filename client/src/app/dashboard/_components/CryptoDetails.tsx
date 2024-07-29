@@ -4,8 +4,8 @@ import MyList from "@/components/custom list/MyList";
 import WalletListItem from "@/components/custom list/WalletListItem";
 import LinkItemWrapper from "@/components/custom list/wrappers/LinkItemWrapper";
 import { useCrypto } from "@/hooks/useCrypto";
-import { ICoinFromCoinGeckoStats, ICrypto } from "@/types";
-import React, { useCallback, useEffect, useState } from "react";
+import { ICrypto } from "@/types";
+import React, { useCallback } from "react";
 
 const CryptoDetails = ({ crypto }: { crypto: ICrypto }) => {
 	const cryptoMap = useCrypto();

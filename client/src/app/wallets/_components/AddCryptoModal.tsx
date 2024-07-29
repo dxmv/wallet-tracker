@@ -10,6 +10,7 @@ import Modal from "@/components/Modal";
 import { TextInput } from "@/components/TextInput";
 import { useCrypto } from "@/hooks/useCrypto";
 import { ICrypto } from "@/types";
+import { handleErrorToast } from "@/utils/toasts";
 import React, { useCallback, useState } from "react";
 
 const AddCryptoModal = ({
@@ -21,8 +22,8 @@ const AddCryptoModal = ({
 	walletId: number;
 	refreshWallet: () => Promise<void>;
 }) => {
-	const [selectedId, setSelectedId] = useState<number | null>(null);
-	const [amount, setAmount] = useState<number>(0);
+	const [selectedId, setSelectedId] = useState<string | null>(null);
+	const [amount, setAmount] = useState<string>("");
 
 	// for search in modal
 	const [search, setSearch] = useState<string>("");
@@ -30,20 +31,33 @@ const AddCryptoModal = ({
 	const crypto = useCrypto();
 
 	const handleNext = async () => {
-		// can only add if we selected the crypto wallet and entered a valid value for the amount
-		if (selectedId == null || amount <= 0) {
-			return;
+		try {
+			const newAmount = Number.parseInt(amount);
+			// can only add if we selected the crypto wallet and entered a valid value for the amount
+			if (selectedId == null || newAmount <= 0) {
+				throw new Error(
+					"You must selected a crypto and input a valid number (number>0)"
+				);
+			}
+			const currentCrypto = crypto.get(selectedId);
+
+			if (!currentCrypto) {
+				throw new Error("Crypto not found");
+			}
+
+			const payload: Omit<ICrypto, "id"> = {
+				name: currentCrypto.name,
+				imageUrl: currentCrypto.image as string,
+				ticker: currentCrypto.symbol,
+				apiId: currentCrypto.id as string,
+				amount: newAmount,
+			};
+			await cryptoApi.addCrypto(walletId, payload);
+			await refreshWallet();
+			closeModal();
+		} catch (e) {
+			handleErrorToast(e);
 		}
-		const payload: Omit<ICrypto, "id"> = {
-			name: crypto[selectedId - 1].name,
-			imageUrl: crypto[selectedId - 1].image as string,
-			ticker: crypto[selectedId - 1].symbol,
-			apiId: crypto[selectedId - 1].id as string,
-			amount,
-		};
-		await cryptoApi.addCrypto(walletId, payload);
-		await refreshWallet();
-		closeModal();
 	};
 
 	// optimized rendering the list of cryptos
@@ -51,12 +65,12 @@ const AddCryptoModal = ({
 		() => (
 			<>
 				<MyList
-					apiCall={async () => await crypto}
+					apiCall={async () => await Array.from(crypto.values())}
 					renderItem={item => (
 						<SelectItemWrapper
 							selectedId={selectedId}
 							setSelectedId={setSelectedId}
-							itemId={item.market_cap_rank}
+							itemId={item.id as string}
 						>
 							<CryptoApiListItem item={item} />
 						</SelectItemWrapper>
@@ -68,7 +82,7 @@ const AddCryptoModal = ({
 					inputText="Amount"
 					placeholderText={amount + ""}
 					value={amount + ""}
-					setValue={e => setAmount(Number.parseInt(e.target.value))}
+					setValue={e => setAmount(e.target.value)}
 					icon={<></>}
 				/>
 			</>

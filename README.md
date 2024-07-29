@@ -41,7 +41,7 @@
   - [x] Get only wallets for user
   - [x] The wrong crypto is being added
   - [x] Do the same thing for wallet
-  - [ ] Back button for the second stage of crypto modal
+  - [x] Back button for the second stage of crypto modal
   - [ ] Optimization
 
 - Wallet page
@@ -51,28 +51,27 @@
   - [x] Delete crypto
   - [x] Delete wallet
   - [x] Edit the nickname of the wallet
-  - [x] Refresh the wallet after crypto action
   - [x] Edit crypto and display info for crypto modal
-  - [ ] Refresh wallet after actions
+  - [x] Refresh wallet after actions
+  - [x] Fix add crypto bug
   - [ ] Optimization
 
 - Crypto "page"
 
   - [x] Display basic info
   - [x] Display the list of wallets for the crypto
-  - [ ] Notifications
-  - [ ] Optimization
+  - [x] Optimization
 
 - Dashboard
 
   - [x] Pie chart
   - [x] Color based on the icon
   - [ ] Animation for switching showing
-  - [ ] Calculate wallet %
+  - [ ] Calculate %
   - [x] Percentage on legend
   - [x] Display crypto
   - [x] Fix display of wallets
-  - [ ] Refresh info
+  - [x] Refresh info
   - [x] Notifications
   - [ ] Optimization
 

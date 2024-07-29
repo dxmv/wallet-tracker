@@ -8,7 +8,13 @@ import SelectItemWrapper from "@/components/custom list/wrappers/SelectItemWrapp
 import { handleErrorToast, showSuccessToast } from "@/utils/toasts";
 import React, { useCallback, useState } from "react";
 
-const WalletsModal = ({ closeModal }: { closeModal: () => void }) => {
+const WalletsModal = ({
+	closeModal,
+	refetchWallets,
+}: {
+	closeModal: () => void;
+	refetchWallets: () => void;
+}) => {
 	const [selectedId, setSelectedId] = useState<number | null>(null);
 
 	const [search, setSearch] = useState<string>("");
@@ -16,11 +22,11 @@ const WalletsModal = ({ closeModal }: { closeModal: () => void }) => {
 	const handleNext = async () => {
 		// check if a wallet is selected
 		if (selectedId != null) {
-			console.log("a");
 			try {
 				const data = await walletApi.addWallet(selectedId);
 				showSuccessToast(`Added wallet: ${data.walletName}`);
 				closeModal();
+				refetchWallets(); // to re-render wallet list
 			} catch (e) {
 				handleErrorToast(e);
 			}
