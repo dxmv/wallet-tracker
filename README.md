@@ -18,8 +18,19 @@
 - [x] Fix use auth, to check if the token is valid
 - [ ] Use fetch for the coingecko api
 - [ ] Favicon
-- [ ] Notifications
 - [ ] Search in modal
+- [ ] Configure MyListWidth
+- [ ] Loading page
+- [ ] Error page
+- [ ] Sort the lists
+- [ ] Optimize MyList
+- [ ] Better buttons
+
+- Auth pages
+
+  - [ ] Better design
+  - [ ] Notifications
+  - [ ] Optimization
 
 - Modal
 
@@ -31,7 +42,7 @@
   - [x] The wrong crypto is being added
   - [x] Do the same thing for wallet
   - [ ] Back button for the second stage of crypto modal
-  - [ ] Notifications for errors
+  - [ ] Optimization
 
 - Wallet page
 
@@ -49,30 +60,35 @@
 
   - [x] Display basic info
   - [x] Display the list of wallets for the crypto
+  - [ ] Notifications
+  - [ ] Optimization
 
 - Dashboard
 
   - [x] Pie chart
   - [x] Color based on the icon
   - [ ] Animation for switching showing
+  - [ ] Calculate wallet %
   - [x] Percentage on legend
   - [x] Display crypto
   - [x] Fix display of wallets
   - [ ] Refresh info
+  - [x] Notifications
   - [ ] Optimization
 
 - Profile page
 
   - [x] Simple details
   - [x] Stats like how much crypto in usd
+  - [x] Optimization
 
 - Admin page
   - [x] Promote/demote users
   - [x] rdu admin wallets
-  - [ ] Only accessible to admins
+  - [x] Only accessible to admins
   - [x] Edit wallet
   - [x] Refresh info
-  - [ ] Optimization
+  - [x] Optimization
 
 ## Backend
 

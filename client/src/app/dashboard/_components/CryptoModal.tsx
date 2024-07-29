@@ -10,6 +10,7 @@ import Modal from "@/components/Modal";
 import { TextInput } from "@/components/TextInput";
 import { useCrypto } from "@/hooks/useCrypto";
 import { ICrypto } from "@/types";
+import { handleErrorToast, showSuccessToast } from "@/utils/toasts";
 import React, { useCallback, useState } from "react";
 
 // first stage show crypto list
@@ -18,7 +19,7 @@ const CryptoModal = ({ closeModal }: { closeModal: () => void }) => {
 	const [stage, setStage] = useState<number>(1); // what stage are we in?
 	const [selectedId, setSelectedId] = useState<string | null>(null);
 	const [walletId, setWalletId] = useState<number | null>(null);
-	const [amount, setAmount] = useState<number>(0);
+	const [amount, setAmount] = useState<string>("");
 
 	// for search in modal
 	const [search, setSearch] = useState<string>("");
@@ -28,21 +29,27 @@ const CryptoModal = ({ closeModal }: { closeModal: () => void }) => {
 	const handleNext = async () => {
 		if (stage == 1 && selectedId != null) {
 			await setStage(prev => prev + 1);
-		} else if (stage == 2 && selectedId && walletId && amount > 0) {
+		} else if (stage == 2 && selectedId && walletId) {
 			const selectedCrypto = crypto.get(selectedId);
-			if (!selectedCrypto) {
+			const newAmount = Number.parseInt(amount);
+			if (!selectedCrypto || newAmount < 0) {
 				return;
 			}
-			// can only add if we selected the crypto wallet and entered a valid value for the amount
-			const payload: Omit<ICrypto, "id"> = {
-				name: selectedCrypto.name,
-				imageUrl: selectedCrypto.image as string,
-				ticker: selectedCrypto.symbol,
-				apiId: selectedCrypto.id as string,
-				amount,
-			};
-			await cryptoApi.addCrypto(walletId, payload);
-			closeModal();
+			try {
+				// can only add if we selected the crypto wallet and entered a valid value for the amount
+				const payload: Omit<ICrypto, "id"> = {
+					name: selectedCrypto.name,
+					imageUrl: selectedCrypto.image as string,
+					ticker: selectedCrypto.symbol,
+					apiId: selectedCrypto.id as string,
+					amount: newAmount,
+				};
+				const data = await cryptoApi.addCrypto(walletId, payload);
+				showSuccessToast(`Successfully added ${data.name}`);
+				closeModal();
+			} catch (e) {
+				handleErrorToast(e);
+			}
 		}
 	};
 
@@ -81,17 +88,18 @@ const CryptoModal = ({ closeModal }: { closeModal: () => void }) => {
 							setSelectedId={setWalletId}
 							itemId={item.id}
 						>
-							<WalletListItem item={item} />
+							<WalletListItem item={item} percentage="1" />
 						</SelectItemWrapper>
 					)}
 				/>
 				<TextInput
 					inputText="Amount"
-					placeholderText={amount + ""}
-					value={amount + ""}
-					setValue={e => setAmount(Number.parseInt(e.target.value))}
+					placeholderText={amount}
+					value={amount}
+					setValue={e => setAmount(e.target.value)}
 					icon={<></>}
 				/>
+				<button onClick={() => setStage(1)}>Back</button>
 			</>
 		),
 		[walletId, setWalletId, amount]

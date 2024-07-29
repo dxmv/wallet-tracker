@@ -8,6 +8,7 @@ export const cryptoApi = {
 			method: "POST",
 			headers: {
 				Authorization: `Bearer ${getCookie("token")}`,
+				"Content-Type": "application/json",
 			},
 			body: JSON.stringify(crypto),
 		}),

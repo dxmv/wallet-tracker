@@ -11,6 +11,8 @@ import {
 	showSuccessToast,
 	showWarningToast,
 } from "@/utils/toasts";
+import { useApiWithRefetch } from "@/hooks/useApiWithRefetch";
+import { walletApi } from "@/api/wallet";
 
 // Component for managing admin wallets
 export const AdminWalletSection = () => {
@@ -21,11 +23,8 @@ export const AdminWalletSection = () => {
 	);
 	// State to trigger refetch
 	const [refetchTrigger, setRefetchTrigger] = useState(0);
-
-	// Callback to refetch users
-	const refetchWallets = useCallback(() => {
-		setRefetchTrigger(prev => prev + 1);
-	}, []);
+	// memoized wallet call
+	const { apiCall, refetch } = useApiWithRefetch(adminApi.getAllAdminWallets);
 
 	// Handler for deleting an admin wallet
 	const handleDelete = async (id: number) => {
@@ -33,7 +32,7 @@ export const AdminWalletSection = () => {
 		try {
 			await adminApi.deleteAdminWallet(id);
 			showSuccessToast("Successfully deleted a wallet");
-			refetchWallets();
+			refetch();
 		} catch (e) {
 			handleErrorToast(e);
 		}
@@ -57,7 +56,7 @@ export const AdminWalletSection = () => {
 			await adminApi.addAdminWallet(formData);
 			setAddWalletModal(false); // close the modal
 			showSuccessToast("Successfully added a wallet");
-			refetchWallets();
+			refetch();
 		} catch (e) {
 			handleErrorToast(e);
 		}
@@ -79,15 +78,11 @@ export const AdminWalletSection = () => {
 			await adminApi.updateAdminWallet(editAdminWallet.id, formData);
 			setEditAdminWallet(null); // close the modal
 			showSuccessToast("Successfully updated a wallet");
-			refetchWallets();
+			refetch();
 		} catch (e) {
 			handleErrorToast(e);
 		}
 	};
-
-	const apiCall = useCallback(() => {
-		return adminApi.getAllAdminWallets();
-	}, [refetchTrigger]);
 
 	return (
 		<div>

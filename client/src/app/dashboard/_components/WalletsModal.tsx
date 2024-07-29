@@ -5,14 +5,13 @@ import Modal from "@/components/Modal";
 import AdminWalletListItem from "@/components/custom list/AdminWalletListItem";
 import MyList from "@/components/custom list/MyList";
 import SelectItemWrapper from "@/components/custom list/wrappers/SelectItemWrapper";
-import { useRouter } from "next/navigation";
+import { handleErrorToast, showSuccessToast } from "@/utils/toasts";
 import React, { useCallback, useState } from "react";
 
 const WalletsModal = ({ closeModal }: { closeModal: () => void }) => {
 	const [selectedId, setSelectedId] = useState<number | null>(null);
 
 	const [search, setSearch] = useState<string>("");
-	const { push } = useRouter();
 
 	const handleNext = async () => {
 		// check if a wallet is selected
@@ -20,9 +19,10 @@ const WalletsModal = ({ closeModal }: { closeModal: () => void }) => {
 			console.log("a");
 			try {
 				const data = await walletApi.addWallet(selectedId);
-				push(`/wallets/${data.id}`); // redirect
+				showSuccessToast(`Added wallet: ${data.walletName}`);
+				closeModal();
 			} catch (e) {
-				console.error(e);
+				handleErrorToast(e);
 			}
 		}
 	};

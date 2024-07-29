@@ -2,43 +2,29 @@
 import { adminApi } from "@/api/admin";
 import { userApi } from "@/api/user";
 import MyList from "@/components/custom list/MyList";
-import { handleErrorToast } from "@/utils/toasts";
-import { useCallback, useState } from "react";
+import { useApiWithRefetch } from "@/hooks/useApiWithRefetch";
+import { handleErrorToast, showSuccessToast } from "@/utils/toasts";
 
 // Component for managing users
 export const UserManagementSection = () => {
-	// State to trigger refetch
-	const [refetchTrigger, setRefetchTrigger] = useState(0);
+	// memoized apiCall
+	const { apiCall, refetch } = useApiWithRefetch(userApi.getAllUsers);
 
-	// Callback to refetch users
-	const refetchUsers = useCallback(() => {
-		setRefetchTrigger(prev => prev + 1);
-	}, []);
-
-	// Handler for promoting a user
-	const handlePromoteUser = async (id: number) => {
+	// handler for promoting and demoting the user
+	const handleUserRoleChange = async (
+		id: number,
+		action: "promote" | "demote"
+	) => {
 		try {
-			await adminApi.promoteUser(id);
-			refetchUsers(); // Refetch users after successful demotion
+			await (action === "promote"
+				? adminApi.promoteUser(id)
+				: adminApi.demoteUser(id));
+			refetch();
+			showSuccessToast(`Successfully ${action + "d"}`);
 		} catch (e) {
 			handleErrorToast(e);
 		}
 	};
-
-	// Handler for demoting a user
-	const handleDemoteUser = async (id: number) => {
-		try {
-			await adminApi.demoteUser(id);
-			refetchUsers(); // Refetch users after successful demotion
-		} catch (e) {
-			handleErrorToast(e);
-		}
-	};
-
-	// Memoized API call function
-	const apiCall = useCallback(() => {
-		return userApi.getAllUsers();
-	}, [refetchTrigger]); // Dependency on refetchTrigger
 
 	return (
 		<div>
@@ -56,13 +42,13 @@ export const UserManagementSection = () => {
 						<div className="flex">
 							<button
 								className="border-2 px-3 py-1 mr-2"
-								onClick={() => handlePromoteUser(item.id)}
+								onClick={() => handleUserRoleChange(item.id, "promote")}
 							>
 								PROMOTE
 							</button>
 							<button
 								className="border-2 px-3 py-1"
-								onClick={() => handleDemoteUser(item.id)}
+								onClick={() => handleUserRoleChange(item.id, "demote")}
 							>
 								DEMOTE
 							</button>

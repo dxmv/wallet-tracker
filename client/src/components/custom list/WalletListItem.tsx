@@ -23,7 +23,7 @@ const WalletListItem = ({
 					height={25}
 					className="rounded-lg"
 				/>
-				<h1 className="font-bold ml-2">{item.adminWallet.name}</h1>
+				<h1 className="font-bold ml-2">{item.walletName}</h1>
 			</div>
 			<p>{percentage} %</p>
 		</>
