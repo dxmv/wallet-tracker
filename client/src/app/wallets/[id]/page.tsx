@@ -5,20 +5,25 @@ import MyList from "@/components/custom list/MyList";
 import Modal from "@/components/Modal";
 import { IWallet } from "@/types";
 import { useRouter } from "next/navigation";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { FaRegTrashAlt } from "react-icons/fa";
+import React, {
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import AddCryptoModal from "../_components/AddCryptoModal";
 import EditAndDeleteItemWrapper from "@/components/custom list/wrappers/EditAndDeleteItemWrapper";
 import { cryptoApi } from "@/api/crypto";
 import { useCrypto } from "@/hooks/useCrypto";
 import EditCryptoModal from "../_components/EditCryptoModal";
 import WalletInfo from "../_components/WalletInfo";
-import { useApiWithRefetch } from "@/hooks/useApiWithRefetch";
 
 const Wallet = ({ params }: { params: { id: string } }) => {
 	const [wallet, setWallet] = useState<IWallet | null>(null);
 	const [deleteWalletModal, setDeleteWalletModal] = useState<boolean>(false);
 	const [addCryptoModal, setAddCryptoModal] = useState<boolean>(false);
+	const parentRef = useRef<HTMLDivElement>(null); // for the width of MyList
 
 	const { push } = useRouter();
 	const cryptoMap = useCrypto();
@@ -103,25 +108,32 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 			/>
 			{/* Grid of coins */}
 			<div className="mt-4"></div>
-			<MyList
-				apiCall={async () => await wallet.coins}
-				renderItem={item => (
-					<EditAndDeleteItemWrapper
-						onEdit={() => console.log("edit")}
-						onDelete={handleDeleteCrypto}
-						id={item.id}
-						renderEditModal={
-							<EditCryptoModal
-								handleEditCrypto={handleEditCrypto}
+			<div ref={parentRef}>
+				<MyList
+					apiCall={async () => await wallet.coins}
+					containerWidth={parentRef.current?.offsetWidth || 1400}
+					renderItem={item => (
+						<EditAndDeleteItemWrapper
+							onEdit={() => console.log("edit")}
+							onDelete={handleDeleteCrypto}
+							id={item.id}
+							renderEditModal={
+								<EditCryptoModal
+									handleEditCrypto={handleEditCrypto}
+									item={item}
+								/>
+							}
+						>
+							<CryptoListItem
+								current={cryptoMap.get(item.apiId)}
 								item={item}
+								percentage={false}
 							/>
-						}
-					>
-						<CryptoListItem item={item} percentage={false} />
-					</EditAndDeleteItemWrapper>
-				)}
-				display="grid"
-			/>
+						</EditAndDeleteItemWrapper>
+					)}
+					display="grid"
+				/>
+			</div>
 			{/* Button for adding crypto */}
 			<button onClick={() => setAddCryptoModal(true)}>Add crypto</button>
 

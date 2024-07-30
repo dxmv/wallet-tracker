@@ -62,7 +62,16 @@ const MyList = <T,>({
 			const index = rowIndex * columnCount + columnIndex; // calculating the item's index
 			const item = filteredItems[index];
 			if (!item) return null;
-			return <div style={style}>{renderItem(item)}</div>;
+			return (
+				<div
+					style={style}
+					className={`border-b-2 border-custom-purple-dark  ${
+						columnIndex == 0 && "border-r-2"
+					}`}
+				>
+					{renderItem(item)}
+				</div>
+			);
 		},
 		[filteredItems, renderItem, columnCount]
 	);

@@ -55,7 +55,8 @@
   - [x] Edit crypto and display info for crypto modal
   - [x] Refresh wallet after actions
   - [x] Fix add crypto bug
-  - [ ] Optimization
+  - [ ] Better style
+  - [x] Optimization
 
 - Crypto "page"
 

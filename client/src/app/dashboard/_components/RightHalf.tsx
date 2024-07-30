@@ -5,7 +5,7 @@ import CryptoListItem from "@/components/custom list/CryptoListItem";
 import LinkItemWrapper from "@/components/custom list/wrappers/LinkItemWrapper";
 import MyList from "@/components/custom list/MyList";
 import WalletListItem from "@/components/custom list/WalletListItem";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import DetailsModalWrapper from "@/components/custom list/wrappers/DetailsModalItemWrapper";
 import CryptoDetails from "./CryptoDetails";
 import { useCrypto } from "@/hooks/useCrypto";
@@ -33,6 +33,7 @@ const RightHalf = ({
 }) => {
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const cryptoMap = useCrypto();
+	const parentRef = useRef<HTMLDivElement>(null);
 
 	// refresh wallets and calculate the total value and chart data
 	const refreshWallets = useCallback(async () => {
@@ -114,6 +115,7 @@ const RightHalf = ({
 		() => (
 			<MyList
 				apiCall={walletRefetch.apiCall}
+				containerWidth={parentRef.current?.offsetWidth || 1200}
 				renderItem={item => (
 					<LinkItemWrapper href={`/wallets/${item.id}`}>
 						<WalletListItem
@@ -126,13 +128,14 @@ const RightHalf = ({
 				)}
 			/>
 		),
-		[walletRefetch.apiCall, totalValue, cryptoMap]
+		[walletRefetch.apiCall, totalValue, cryptoMap, parentRef]
 	);
 
 	const renderCryptoList = useCallback(
 		() => (
 			<MyList
 				apiCall={coinsRefetch.apiCall}
+				containerWidth={parentRef.current?.offsetWidth || 1200}
 				renderItem={item => (
 					<DetailsModalWrapper
 						item={item}
@@ -185,7 +188,7 @@ const RightHalf = ({
 	}, [openModal, showing]);
 
 	return (
-		<div className="flex flex-col w-1/2">
+		<div className="flex flex-col w-1/2" ref={parentRef}>
 			<div className="flex justify-between">
 				<h1>Your {showing}</h1>
 				{/* Choose what items to show */}

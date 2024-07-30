@@ -67,6 +67,7 @@ const CryptoModal = ({
 		return (
 			<MyList
 				apiCall={getCoins}
+				containerWidth={480}
 				renderItem={item => (
 					<SelectItemWrapper
 						selectedId={selectedId}
@@ -88,13 +89,19 @@ const CryptoModal = ({
 			<>
 				<MyList
 					apiCall={walletApi.getAllWallets}
+					containerWidth={480}
 					renderItem={item => (
 						<SelectItemWrapper
 							selectedId={walletId}
 							setSelectedId={setWalletId}
 							itemId={item.id}
 						>
-							<WalletListItem item={item} percentage="1" />
+							{/* have to add props so it can render the wallet */}
+							<WalletListItem
+								item={item}
+								totalValue={0}
+								cryptoMap={new Map()}
+							/>
 						</SelectItemWrapper>
 					)}
 				/>

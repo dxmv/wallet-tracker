@@ -11,7 +11,7 @@ import { TextInput } from "@/components/TextInput";
 import { useCrypto } from "@/hooks/useCrypto";
 import { ICrypto } from "@/types";
 import { handleErrorToast } from "@/utils/toasts";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 
 const AddCryptoModal = ({
 	closeModal,
@@ -24,6 +24,7 @@ const AddCryptoModal = ({
 }) => {
 	const [selectedId, setSelectedId] = useState<string | null>(null);
 	const [amount, setAmount] = useState<string>("");
+	const parentRef = useRef<HTMLDivElement>(null);
 
 	// for search in modal
 	const [search, setSearch] = useState<string>("");
@@ -66,6 +67,7 @@ const AddCryptoModal = ({
 			<>
 				<MyList
 					apiCall={async () => await Array.from(crypto.values())}
+					containerWidth={480}
 					renderItem={item => (
 						<SelectItemWrapper
 							selectedId={selectedId}

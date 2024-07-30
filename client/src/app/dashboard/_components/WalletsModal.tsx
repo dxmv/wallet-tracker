@@ -38,6 +38,7 @@ const WalletsModal = ({
 		() => (
 			<MyList
 				apiCall={adminApi.getAllAdminWallets}
+				containerWidth={480}
 				renderItem={item => (
 					<SelectItemWrapper
 						selectedId={selectedId}

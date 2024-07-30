@@ -58,7 +58,7 @@ const EditAndDeleteItemWrapper = ({
 			<div className="relative group">
 				{children}
 				{/* Edit and delete buttons overlay */}
-				<div className="absolute top-0 right-0 bg-gray-400 bg-opacity-90 p-2 rounded hidden group-hover:flex justify-around items-center space-x-2 w-full h-full">
+				<div className="absolute top-0 right-0 bg-custom-gray bg-opacity-90 p-2 rounded hidden group-hover:flex justify-around items-center space-x-2 w-full h-full">
 					<FaEdit
 						className="text-blue-500 cursor-pointer"
 						onClick={() => {
