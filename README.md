@@ -4,27 +4,28 @@
 
 - [x] How to display the icon for crypto
 - [ ] Caching requests
-- [ ] Change navigation when logged in
+- [x] Change navigation when logged in
 - [x] Fix the problems with auth
 - [ ] Home page
-- [ ] News page
 - [x] Logout
 - [ ] Better design
 - [x] When a user clicks on a crypto, they get various info about it in a modal
 - [x] Get 1000 cryptos from api
 - [ ] Add loading
-- [ ] Add refreshing
-- [ ] Handle errors
+- [x] Add refreshing
+- [ ] Handle errors for user auth
 - [x] Fix use auth, to check if the token is valid
 - [ ] Use fetch for the coingecko api
 - [ ] Favicon
-- [ ] Search in modal
+- [x] Search in modal
 - [ ] Configure MyListWidth
 - [ ] Loading page
 - [ ] Error page
 - [ ] Sort the lists
 - [ ] Optimize MyList
 - [ ] Better buttons
+- [ ] Animations
+- [ ] Clean code
 
 - Auth pages
 
@@ -66,8 +67,7 @@
 
   - [x] Pie chart
   - [x] Color based on the icon
-  - [ ] Animation for switching showing
-  - [ ] Calculate %
+  - [x] Calculate %
   - [x] Percentage on legend
   - [x] Display crypto
   - [x] Fix display of wallets

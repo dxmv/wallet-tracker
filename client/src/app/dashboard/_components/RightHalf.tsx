@@ -43,17 +43,15 @@ const RightHalf = ({
 
 		// calculate the value of coins in the wallet
 		const totalWalletValue = wallets.reduce((total, wallet) => {
-			const res =
-				total +
-				wallet.coins.reduce((total, coin) => {
-					const currentPrice = cryptoMap.get(coin.apiId)?.current_price || 0;
-					return total + coin.amount * currentPrice;
-				}, 0);
+			const res = wallet.coins.reduce((total, coin) => {
+				const currentPrice = cryptoMap.get(coin.apiId)?.current_price || 0;
+				return total + coin.amount * currentPrice;
+			}, 0);
 			values.push(res);
 			labels.push(wallet.adminWallet.name as string);
 			colorPromises.push(extractColor(wallet.adminWallet.iconUrl as string)); // we will await this later
 
-			return res;
+			return total + res;
 		}, 0);
 
 		const colors = await Promise.all(colorPromises);
@@ -120,13 +118,15 @@ const RightHalf = ({
 					<LinkItemWrapper href={`/wallets/${item.id}`}>
 						<WalletListItem
 							item={item}
-							percentage={(1 / totalValue).toFixed(2)}
+							percentage={true}
+							totalValue={totalValue}
+							cryptoMap={cryptoMap}
 						/>
 					</LinkItemWrapper>
 				)}
 			/>
 		),
-		[walletRefetch.apiCall]
+		[walletRefetch.apiCall, totalValue, cryptoMap]
 	);
 
 	const renderCryptoList = useCallback(
@@ -142,12 +142,13 @@ const RightHalf = ({
 							item={item}
 							percentage={true}
 							totalValue={totalValue}
+							current={cryptoMap.get(item.apiId)}
 						/>
 					</DetailsModalWrapper>
 				)}
 			/>
 		),
-		[coinsRefetch.apiCall]
+		[coinsRefetch.apiCall, totalValue]
 	);
 
 	// Memoize the buttons to prevent unnecessary re-renders

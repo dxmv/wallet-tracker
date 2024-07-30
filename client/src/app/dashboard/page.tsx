@@ -49,7 +49,7 @@ const Dashboard = () => {
 				setChartData={setChartData}
 			/>
 		);
-	}, [showing]);
+	}, [showing, totalValue]);
 
 	return (
 		<main style={{ height: "87vh" }} className="py-8 px-4 text-white flex">
@@ -60,7 +60,7 @@ const Dashboard = () => {
 				</p>
 				{/* Render the chart */}
 				{chartData && (
-					<div style={{ maxWidth: "400px", margin: "auto" }}>
+					<div style={{ width: "50%", margin: "auto" }}>
 						<Pie data={chartData} options={chartOptions} />
 					</div>
 				)}

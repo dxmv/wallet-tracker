@@ -1,19 +1,18 @@
 import { useCrypto } from "@/hooks/useCrypto";
-import { ICrypto } from "@/types";
+import { ICoinFromCoinGecko, ICrypto } from "@/types";
 import React, { useMemo } from "react";
 
 const CryptoListItem = ({
 	item,
 	totalValue,
 	percentage = false,
+	current,
 }: {
 	item: ICrypto;
 	totalValue?: number;
-	percentage: boolean;
+	percentage?: boolean;
+	current: ICoinFromCoinGecko | undefined;
 }) => {
-	const crypto = useCrypto();
-	const current = useMemo(() => crypto.get(item.apiId), [crypto, item.apiId]);
-
 	return (
 		<div className="flex justify-between items-center w-full">
 			<div className="flex items-center">
