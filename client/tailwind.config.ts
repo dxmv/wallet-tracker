@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 const config: Config = {
 	content: [
@@ -20,8 +21,25 @@ const config: Config = {
 				},
 				"custom-gray": "#CDCDCD",
 			},
+			animation: {
+				wave: "wave 10s linear infinite",
+			},
+			keyframes: {
+				wave: {
+					"0%": { transform: "translateX(0)" },
+					"100%": { transform: "translateX(-50%)" },
+				},
+			},
 		},
 	},
-	plugins: [],
+	plugins: [
+		plugin(function ({ addUtilities }) {
+			const newUtilities = {
+				".animation-delay-1000": { animationDelay: "1000ms" },
+				".animation-delay-2000": { animationDelay: "2000ms" },
+			};
+			addUtilities(newUtilities);
+		}),
+	],
 };
 export default config;

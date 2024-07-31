@@ -6,7 +6,7 @@
 - [ ] Caching requests
 - [x] Change navigation when logged in
 - [x] Fix the problems with auth
-- [ ] Home page
+- [x] Home page
 - [x] Logout
 - [ ] Better design
 - [x] When a user clicks on a crypto, they get various info about it in a modal
@@ -27,6 +27,7 @@
 - [ ] Animations
 - [ ] Clean code
 - [ ] Logo
+- [ ] Name
 
 - Auth pages
 
