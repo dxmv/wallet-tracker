@@ -26,12 +26,13 @@
 - [ ] Better buttons
 - [ ] Animations
 - [ ] Clean code
+- [ ] Logo
 
 - Auth pages
 
-  - [ ] Better design
-  - [ ] Notifications
-  - [ ] Optimization
+  - [x] Better design
+  - [x] Notifications
+  - [x] Optimization
 
 - Modal
 

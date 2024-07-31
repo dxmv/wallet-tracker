@@ -14,9 +14,10 @@ export const handleEmailChange = (
 
 	setEmail({
 		value: e.target.value,
-		errorMessage: !validEmail(e.target.value)
-			? "The email isn't in correct format"
-			: undefined,
+		errorMessage:
+			!validEmail(e.target.value) && e.target.value != ""
+				? "The email isn't in correct format"
+				: "",
 	});
 };
 
@@ -32,8 +33,9 @@ export const handlePasswordChange = (
 
 	setPassword({
 		value: e.target.value,
-		errorMessage: !validPassword(e.target.value)
-			? "The password must contain at least one uppercase letter and one number"
-			: undefined,
+		errorMessage:
+			!validPassword(e.target.value) && e.target.value != ""
+				? "The password must contain at least one uppercase letter and one number"
+				: "",
 	});
 };

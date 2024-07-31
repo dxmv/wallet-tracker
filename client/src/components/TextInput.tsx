@@ -46,8 +46,8 @@ export const TextInput = ({
 
 				{/* For the icon part of the input */}
 				<div
-					className="absolute bg-gray-500 h-full border-r-2 flex flex-row justify-center text-center"
-					style={{ width: "28px", top: 0, left: 0 }}
+					className="absolute bg-gray-500 h-full border-r-2 flex flex-row justify-center items-center text-center"
+					style={{ width: "24px", top: 0, left: 0 }}
 				>
 					{icon}
 				</div>

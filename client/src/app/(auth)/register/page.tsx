@@ -9,6 +9,11 @@ import { handleEmailChange, handlePasswordChange } from "@/utils/inputHandlers";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { authApi } from "@/api/auth";
+import {
+	handleErrorToast,
+	showErrorToast,
+	showWarningToast,
+} from "@/utils/toasts";
 
 const Register = () => {
 	const [email, setEmail] = useState<InputState>({
@@ -29,14 +34,33 @@ const Register = () => {
 	const router = useRouter(); // to go to another page
 
 	const handleRegister = async () => {
+		setErrorMessage("");
+		// all fields must not be empty
+		if (
+			password.value == "" ||
+			email.value == "" ||
+			confirmPassword.value == ""
+		) {
+			showWarningToast("Please enter your email and password");
+			return;
+		}
+		// all fields must not have an error
+		if (
+			email.errorMessage != "" ||
+			password.errorMessage != "" ||
+			confirmPassword.errorMessage != ""
+		) {
+			showWarningToast("Please enter a valid email and password");
+			return;
+		}
 		// password must match
 		if (password.value !== confirmPassword.value) {
-			setErrorMessage("Passwords do not match");
+			showErrorToast("Passwords do not match");
 			return;
 		}
 
 		try {
-			await authApi.register(email.value, password.value);
+			const data = await authApi.register(email.value, password.value);
 			// redirect to login page
 			router.push("/login");
 		} catch (error) {
@@ -45,62 +69,55 @@ const Register = () => {
 			} else {
 				setErrorMessage("An unexpected error occurred during registration");
 			}
+			handleErrorToast(error);
 		}
 	};
 
 	return (
-		<div className="text-center">
+		<div className=" text-center w-full flex-col flex justify-center bg-white text-black mt-4 p-4">
 			{/* Logo */}
-			<h1 className="font-bold my-3">Welcome to name of the website</h1>
-			<h1>Please register</h1>
-
+			<h1 className="font-bold mt-2 mb-4 text-2xl border-b-2 border-custom-gray text-center pb-2">
+				Welcome, please register
+			</h1>
 			{errorMessage && <div className="text-red-500 mt-2">{errorMessage}</div>}
-
-			{/* Register window */}
-			<div className="w-full flex-col flex bg-white text-black mt-4">
-				<TextInput
-					inputText={"Your email:"}
-					placeholderText={"eg. example@mail.com"}
-					icon={
-						<MdEmail className="absolute" style={{ top: "3px", left: "3px" }} />
-					}
-					value={email.value}
-					setValue={e => handleEmailChange(e, setEmail)}
-					errorMessage={email.errorMessage}
-				/>
-				<TextInput
-					inputText={"Your password:"}
-					placeholderText={"eg. Example123"}
-					password={true}
-					icon={
-						<MdKey className="absolute" style={{ top: "3px", left: "3px" }} />
-					}
-					value={password.value}
-					errorMessage={password.errorMessage}
-					setValue={e => handlePasswordChange(e, setPassword)}
-				/>
-				<TextInput
-					inputText={"Confirm your password:"}
-					placeholderText={"eg. Example123"}
-					icon={
-						<MdKey className="absolute" style={{ top: "3px", left: "3px" }} />
-					}
-					value={confirmPassword.value}
-					setValue={e => handlePasswordChange(e, setConfirm)}
-					errorMessage={confirmPassword.errorMessage}
-				/>
-
-				{/* 
-					disable the button if:
-						any of the text fields is empty
-						any of the error messages aren't empty
-				*/}
-				<button className="bg-green" onClick={handleRegister}>
-					Register
-				</button>
-				<Link href={"/login"}>Already have an account?</Link>
-				<Link href={"/register"}>Forgot your password?</Link>
-			</div>
+			<TextInput
+				inputText={"Your email:"}
+				placeholderText={"eg. example@mail.com"}
+				icon={
+					<MdEmail className="absolute" style={{ top: "3px", left: "3px" }} />
+				}
+				value={email.value}
+				setValue={e => handleEmailChange(e, setEmail)}
+				errorMessage={email.errorMessage}
+			/>
+			<div className="mb-4"></div>
+			<TextInput
+				inputText={"Your password:"}
+				placeholderText={"eg. Example123"}
+				password={true}
+				icon={
+					<MdKey className="absolute" style={{ top: "3px", left: "3px" }} />
+				}
+				value={password.value}
+				errorMessage={password.errorMessage}
+				setValue={e => handlePasswordChange(e, setPassword)}
+			/>
+			<div className="mb-4"></div>
+			<TextInput
+				inputText={"Confirm your password:"}
+				placeholderText={"eg. Example123"}
+				icon={
+					<MdKey className="absolute" style={{ top: "3px", left: "3px" }} />
+				}
+				value={confirmPassword.value}
+				setValue={e => handlePasswordChange(e, setConfirm)}
+				errorMessage={confirmPassword.errorMessage}
+			/>
+			<button className="bg-green my-4" onClick={handleRegister}>
+				Register
+			</button>
+			<Link href={"/login"}>Already have an account?</Link>
+			<Link href={"/register"}>Forgot your password?</Link>
 		</div>
 	);
 };
