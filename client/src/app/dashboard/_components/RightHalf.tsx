@@ -14,6 +14,8 @@ import { extractColor } from "@/utils/colorExtraction";
 import WalletsModal from "./WalletsModal";
 import CryptoModal from "./CryptoModal";
 import { useApiWithRefetch } from "@/hooks/useApiWithRefetch";
+import { calculateValuesAndChartData } from "@/utils/calculations";
+import { ICrypto, IWallet } from "@/types";
 
 const SHOW_STYLE = "px-3 py-1 border-gray-600 border-2";
 
@@ -38,72 +40,25 @@ const RightHalf = ({
 	// refresh wallets and calculate the total value and chart data
 	const refreshWallets = useCallback(async () => {
 		const wallets = await walletApi.getAllWallets();
-		const labels: string[] = [];
-		const values: number[] = [];
-		const colorPromises: Promise<string>[] = [];
+		const { totalValue, chartData, sortedItems } =
+			await calculateValuesAndChartData(wallets, cryptoMap);
 
-		// calculate the value of coins in the wallet
-		const totalWalletValue = wallets.reduce((total, wallet) => {
-			const res = wallet.coins.reduce((total, coin) => {
-				const currentPrice = cryptoMap.get(coin.apiId)?.current_price || 0;
-				return total + coin.amount * currentPrice;
-			}, 0);
-			values.push(res);
-			labels.push(wallet.adminWallet.name as string);
-			colorPromises.push(extractColor(wallet.adminWallet.iconUrl as string)); // we will await this later
+		await setTotalValue(totalValue);
+		await setChartData(chartData);
 
-			return total + res;
-		}, 0);
-
-		const colors = await Promise.all(colorPromises);
-		await setTotalValue(totalWalletValue);
-
-		await setChartData({
-			labels: labels,
-			datasets: [
-				{
-					data: values,
-					backgroundColor: colors,
-				},
-			],
-		});
-
-		return wallets;
+		return sortedItems as IWallet[];
 	}, [cryptoMap, setTotalValue, setChartData]);
 
 	// refresh coins and calculate the total value and chart data
 	const refreshCoins = useCallback(async () => {
 		const coins = await cryptoApi.getAllCryptoForUser();
-		// for the chart
-		const labels: string[] = [];
-		const values: number[] = [];
-		const colorPromises: Promise<string>[] = [];
+		const { totalValue, chartData, sortedItems } =
+			await calculateValuesAndChartData(coins, cryptoMap);
 
-		const totalCryptoValue = coins.reduce((total, coin) => {
-			const currentPrice = cryptoMap.get(coin.apiId)?.current_price || 0;
-			const res = total + coin.amount * currentPrice;
+		await setTotalValue(totalValue);
+		await setChartData(chartData);
 
-			labels.push(coin.name as string);
-			values.push(coin.amount * currentPrice);
-			colorPromises.push(extractColor(coin.imageUrl));
-
-			return res;
-		}, 0);
-
-		const colors = await Promise.all(colorPromises);
-		await setTotalValue(totalCryptoValue);
-
-		await setChartData({
-			labels: labels,
-			datasets: [
-				{
-					data: values,
-					backgroundColor: colors,
-				},
-			],
-		});
-
-		return coins;
+		return sortedItems as ICrypto[];
 	}, [cryptoMap, setTotalValue, setChartData]);
 
 	// to refetch wallets
@@ -128,7 +83,7 @@ const RightHalf = ({
 				)}
 			/>
 		),
-		[walletRefetch.apiCall, totalValue, cryptoMap, parentRef]
+		[walletRefetch.apiCall, totalValue, cryptoMap]
 	);
 
 	const renderCryptoList = useCallback(
@@ -151,7 +106,7 @@ const RightHalf = ({
 				)}
 			/>
 		),
-		[coinsRefetch.apiCall, totalValue]
+		[coinsRefetch.apiCall, totalValue, cryptoMap]
 	);
 
 	// Memoize the buttons to prevent unnecessary re-renders

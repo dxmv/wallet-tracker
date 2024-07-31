@@ -18,16 +18,16 @@
 - [ ] Use fetch for the coingecko api
 - [ ] Favicon
 - [x] Search in modal
-- [ ] Configure MyListWidth
+- [x] Configure MyListWidth
 - [ ] Loading page
 - [ ] Error page
-- [ ] Sort the lists
 - [ ] Optimize MyList
 - [ ] Better buttons
 - [ ] Animations
 - [ ] Clean code
 - [ ] Logo
 - [ ] Name
+- [ ] Colors
 
 - Auth pages
 
@@ -58,6 +58,8 @@
   - [x] Refresh wallet after actions
   - [x] Fix add crypto bug
   - [ ] Better style
+  - [ ] Sort the list
+  - [ ] Refresh on name change
   - [x] Optimization
 
 - Crypto "page"
@@ -76,7 +78,8 @@
   - [x] Fix display of wallets
   - [x] Refresh info
   - [x] Notifications
-  - [ ] Optimization
+  - [x] Optimization
+  - [x] Sort lists
 
 - Profile page
 

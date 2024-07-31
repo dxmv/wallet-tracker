@@ -63,10 +63,11 @@ const CryptoDetails = ({ crypto }: { crypto: ICrypto }) => {
 			{renderDetails()}
 			{/* List of wallets where this crypto appears */}
 			<MyList
+				containerWidth={480}
 				apiCall={() => cryptoApi.getWalletsByName(crypto.name as string)}
 				renderItem={item => (
 					<LinkItemWrapper href={`/wallets/${item.id}`}>
-						<WalletListItem item={item} />
+						<WalletListItem item={item} totalValue={0} cryptoMap={new Map()} />
 					</LinkItemWrapper>
 				)}
 			></MyList>

@@ -18,8 +18,8 @@ export interface IUser {
 
 export interface IAdminWallet {
 	id: number;
-	name: String;
-	iconUrl: String;
+	name: string;
+	iconUrl: string;
 }
 
 export interface IWallet {
@@ -31,8 +31,8 @@ export interface IWallet {
 
 export interface ICrypto {
 	id: number;
-	name: String;
-	ticker: String;
+	name: string;
+	ticker: string;
 	amount: number;
 	imageUrl: string;
 	apiId: string;
