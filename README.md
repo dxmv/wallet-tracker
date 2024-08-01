@@ -14,18 +14,21 @@
 - [x] Search in modal
 - [x] Configure MyListWidth
 - [ ] Caching requests
-- [ ] Handle errors for user auth
+- [x] Handle errors & loading for user auth
+- [x] Remove the loading from other components
 - [ ] Use fetch for the coingecko api
-- [ ] Add loading
-- [ ] Error page
+- [x] Add loading page
+- [x] Error page
 - [ ] Optimize MyList
 - [x] Better buttons
+- [ ] Fix button style bug
 - [ ] Animations
 - [ ] Clean code
 - [ ] Logo
 - [ ] Name
 - [ ] Favicon
 - [ ] Better showing on dashboard
+- [ ] Remove useless imports
 
 - Auth pages
 

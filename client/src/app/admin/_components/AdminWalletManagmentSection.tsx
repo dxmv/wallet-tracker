@@ -3,7 +3,7 @@ import { adminApi } from "@/api/admin";
 import AdminWalletListItem from "@/components/custom list/AdminWalletListItem";
 import MyList from "@/components/custom list/MyList";
 import EditAndDeleteItemWrapper from "@/components/custom list/wrappers/EditAndDeleteItemWrapper";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import AdminWalletModal from "./AdminWalletModal";
 import { IAdminWallet } from "@/types";
 import {
@@ -22,8 +22,6 @@ export const AdminWalletSection = () => {
 	const [editAdminWallet, setEditAdminWallet] = useState<IAdminWallet | null>(
 		null
 	);
-	// State to trigger refetch
-	const [refetchTrigger, setRefetchTrigger] = useState(0);
 	// memoized wallet call
 	const { apiCall, refetch } = useApiWithRefetch(adminApi.getAllAdminWallets);
 

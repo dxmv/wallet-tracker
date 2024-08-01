@@ -3,16 +3,20 @@ import { ICoinFromCoinGecko } from "@/types";
 import React, { useCallback, useEffect, useState } from "react";
 import CryptoContext from "./CryptoContext";
 import { coinGecko } from "@/api/coinGecko";
+import { handleErrorToast } from "@/utils/toasts";
+import LoadingPage from "@/components/LoadingPage";
+import ErrorPage from "@/components/ErrorPage";
 
 // wrapper for context
 const CryptoProvider = ({ children }: { children: React.ReactNode }) => {
 	const [cryptocurrencies, setCryptocurrencies] = useState<
 		Map<string, ICoinFromCoinGecko>
 	>(new Map());
-	// const [loading, setLoading] = useState<boolean>(true);
-	// const [error, setError] = useState<String>("");
+	const [loading, setLoading] = useState<boolean>(true);
+	const [error, setError] = useState<Error | null>(null);
 
 	const fetchCrypto = useCallback(async () => {
+		setLoading(true);
 		try {
 			// add all cryptos to the list
 			let list: Array<ICoinFromCoinGecko> = [];
@@ -28,16 +32,24 @@ const CryptoProvider = ({ children }: { children: React.ReactNode }) => {
 				});
 				return newMap;
 			});
-		} catch (err) {
-			console.error(err);
+		} catch (e) {
+			handleErrorToast(e);
+			setError(e as Error);
 		} finally {
-			// setLoading(false);
+			setLoading(false);
 		}
 	}, []);
 
 	useEffect(() => {
 		fetchCrypto();
 	}, [fetchCrypto]);
+
+	if (loading) {
+		<LoadingPage />;
+	}
+	if (error) {
+		<ErrorPage errorMessage={error.message} />;
+	}
 
 	return (
 		<CryptoContext.Provider value={cryptocurrencies}>

@@ -1,15 +1,11 @@
 "use client";
-import WavyBackground from "@/components/WavyBackground";
+import WavyBackground from "@/components/wrappers/WavyBackground";
 import { useAuth } from "@/hooks/useAuth";
 import { PURPLE_BUTTON_STYLE } from "@/utils/styles";
 import Link from "next/link";
 
 export default function Home() {
-	const { isAuthenticated, loading } = useAuth();
-
-	if (loading) {
-		return <WavyBackground>Loading...</WavyBackground>;
-	}
+	const { isAuthenticated } = useAuth();
 
 	return (
 		<WavyBackground>

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import ProtectedRoute from "@/components/ProtectedRoute";
+import ProtectedRoute from "@/components/wrappers/ProtectedRoute";
 import CryptoProvider from "@/context/coins/CryptoProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AuthWrapper from "@/components/wrappers/AuthWraper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,10 +25,12 @@ export default function RootLayout({
 				className={inter.className}
 				style={{ height: "100vh", width: "100vw" }}
 			>
-				<ProtectedRoute>
-					<CryptoProvider>{children}</CryptoProvider>
-				</ProtectedRoute>
-				<ToastContainer />
+				<AuthWrapper>
+					<ProtectedRoute>
+						<CryptoProvider>{children}</CryptoProvider>
+					</ProtectedRoute>
+					<ToastContainer />
+				</AuthWrapper>
 			</body>
 		</html>
 	);

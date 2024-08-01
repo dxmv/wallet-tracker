@@ -7,11 +7,12 @@ import { userApi } from "@/api/user";
 import { handleErrorToast, showErrorToast } from "@/utils/toasts";
 
 // Hook that keeps track of the user's authentication status
-export function useAuth() {
+export const useAuth = () => {
 	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [user, setUser] = useState<IUser>();
 	const [isAdmin, setIsAdmin] = useState<boolean>(false);
+	const [error, setError] = useState<Error | null>(null);
 
 	const auth = useCallback(async () => {
 		const token = getCookie("token");
@@ -39,6 +40,7 @@ export function useAuth() {
 				handleErrorToast(e);
 				setIsAuthenticated(false);
 				removeCookie("token");
+				setError(e as Error);
 			}
 		} else {
 			setIsAuthenticated(false);
@@ -50,5 +52,5 @@ export function useAuth() {
 		auth();
 	}, [auth]);
 
-	return { isAuthenticated, loading, user, isAdmin };
-}
+	return { isAuthenticated, loading, user, isAdmin, error };
+};
