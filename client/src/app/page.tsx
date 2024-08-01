@@ -1,6 +1,7 @@
 "use client";
 import WavyBackground from "@/components/WavyBackground";
 import { useAuth } from "@/hooks/useAuth";
+import { PURPLE_BUTTON_STYLE } from "@/utils/styles";
 import Link from "next/link";
 
 export default function Home() {
@@ -26,13 +27,17 @@ export default function Home() {
 						experience we also visualize the distribution of your crypto across
 						different wallets, and the distribution of cryptos you hold.
 					</p>
-					<div>
+					<div className="mt-8">
 						{isAuthenticated ? (
 							<Link href="/dashboard">Dashboard</Link>
 						) : (
-							<div>
-								<Link href="/login">Login</Link>
-								<Link href="/register">Register</Link>
+							<div className="flex justify-around items-center">
+								<Link href="/login" className={PURPLE_BUTTON_STYLE}>
+									Login
+								</Link>
+								<Link href="/register" className={PURPLE_BUTTON_STYLE}>
+									Register
+								</Link>
 							</div>
 						)}
 					</div>

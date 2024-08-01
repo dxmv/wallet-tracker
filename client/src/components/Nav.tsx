@@ -40,7 +40,7 @@ const NavLink = ({ href, children }: { href: string; children: ReactNode }) => {
 				pathname === href && activeLinkClass
 			}`}
 		>
-			<Link className="text-lg" href={href}>
+			<Link className="text-lg hover:text-custom-gray" href={href}>
 				{children}
 			</Link>
 		</div>

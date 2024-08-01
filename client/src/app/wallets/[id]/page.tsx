@@ -18,6 +18,7 @@ import { cryptoApi } from "@/api/crypto";
 import { useCrypto } from "@/hooks/useCrypto";
 import EditCryptoModal from "../_components/EditCryptoModal";
 import WalletInfo from "../_components/WalletInfo";
+import { PURPLE_BUTTON_STYLE } from "@/utils/styles";
 
 const Wallet = ({ params }: { params: { id: string } }) => {
 	const [wallet, setWallet] = useState<IWallet | null>(null);
@@ -105,12 +106,13 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 				wallet={wallet}
 				amountInDollars={amountInDollars}
 				openDeleteModal={() => setDeleteWalletModal(true)}
+				refreshWallet={refreshWallet}
 			/>
 			{/* Grid of coins */}
 			<div className="mt-4"></div>
 			<div ref={parentRef}>
 				<MyList
-					apiCall={async () => await wallet.coins}
+					apiCall={async () => await wallet.coins.sort()}
 					containerWidth={parentRef.current?.offsetWidth || 1400}
 					renderItem={item => (
 						<EditAndDeleteItemWrapper
@@ -135,7 +137,14 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 				/>
 			</div>
 			{/* Button for adding crypto */}
-			<button onClick={() => setAddCryptoModal(true)}>Add crypto</button>
+			<div className="flex justify-center">
+				<button
+					onClick={() => setAddCryptoModal(true)}
+					className={`${PURPLE_BUTTON_STYLE} w-1/12 font-semibold `}
+				>
+					Add crypto
+				</button>
+			</div>
 
 			{/* Show the delete wallet modal */}
 			{deleteWalletModal && (
@@ -144,14 +153,20 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 					handleNext={handleDeleteWallet}
 					searchPart={false}
 					title="Confirm"
-					search=""
-					setSearch={() => {}}
+					nextButtonText="Yes"
 				>
 					<div>
 						<p>
 							Are you sure you want to delete the wallet with id {wallet.id}?
 						</p>
-						<button onClick={() => setDeleteWalletModal(false)}>No</button>
+						<div className="flex justify-center">
+							<button
+								onClick={() => setDeleteWalletModal(false)}
+								className={`${PURPLE_BUTTON_STYLE}  mt-8 bg-red-600 hover:bg-red-800`}
+							>
+								No
+							</button>
+						</div>
 					</div>
 				</Modal>
 			)}

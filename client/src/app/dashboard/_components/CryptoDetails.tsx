@@ -64,6 +64,7 @@ const CryptoDetails = ({ crypto }: { crypto: ICrypto }) => {
 			{/* List of wallets where this crypto appears */}
 			<MyList
 				containerWidth={480}
+				containerHeight={300}
 				apiCall={() => cryptoApi.getWalletsByName(crypto.name as string)}
 				renderItem={item => (
 					<LinkItemWrapper href={`/wallets/${item.id}`}>

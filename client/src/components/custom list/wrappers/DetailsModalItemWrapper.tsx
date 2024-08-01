@@ -47,6 +47,7 @@ function DetailsModalWrapper<T>({
 				closeModal={handleClose}
 				handleNext={handleClose}
 				searchPart={false}
+				nextButtonText="Close"
 			>
 				{renderDetails(item)}
 			</Modal>

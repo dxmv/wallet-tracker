@@ -14,6 +14,7 @@ import {
 	showErrorToast,
 	showWarningToast,
 } from "@/utils/toasts";
+import { PURPLE_BUTTON_STYLE } from "@/utils/styles";
 
 const Register = () => {
 	const [email, setEmail] = useState<InputState>({
@@ -74,7 +75,7 @@ const Register = () => {
 	};
 
 	return (
-		<div className=" text-center w-full flex-col flex justify-center bg-white text-black mt-4 p-4">
+		<div className=" text-center w-full flex-col flex justify-center bg-white items-center text-black mt-4 p-4 rounded-md shadow-lg shadow-custom-gray">
 			{/* Logo */}
 			<h1 className="font-bold mt-2 mb-4 text-2xl border-b-2 border-custom-gray text-center pb-2">
 				Welcome, please register
@@ -113,11 +114,15 @@ const Register = () => {
 				setValue={e => handlePasswordChange(e, setConfirm)}
 				errorMessage={confirmPassword.errorMessage}
 			/>
-			<button className="bg-green my-4" onClick={handleRegister}>
+			<button
+				className={`${PURPLE_BUTTON_STYLE} my-4 w-1/4 font-semibold`}
+				onClick={handleRegister}
+			>
 				Register
 			</button>
-			<Link href={"/login"}>Already have an account?</Link>
-			<Link href={"/register"}>Forgot your password?</Link>
+			<Link href={"/login"} className="text-custom-gray hover:text-black">
+				Already have an account?
+			</Link>
 		</div>
 	);
 };

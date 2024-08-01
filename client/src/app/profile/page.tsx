@@ -5,6 +5,7 @@ import MyList from "@/components/custom list/MyList";
 import { useAuth } from "@/hooks/useAuth";
 import { useCrypto } from "@/hooks/useCrypto";
 import { ICrypto, IWallet } from "@/types";
+import { PURPLE_BUTTON_STYLE } from "@/utils/styles";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 
@@ -157,7 +158,7 @@ const ProfilePage = () => {
 				</div>
 			</div>
 			<button
-				className="text-red-500 border-2 py-2 px-4 rounded-lg"
+				className={`${PURPLE_BUTTON_STYLE} font-bold `}
 				onClick={handleLogout}
 			>
 				Logout

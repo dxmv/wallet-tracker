@@ -3,37 +3,36 @@
 ## Frontend
 
 - [x] How to display the icon for crypto
-- [ ] Caching requests
 - [x] Change navigation when logged in
 - [x] Fix the problems with auth
 - [x] Home page
 - [x] Logout
-- [ ] Better design
 - [x] When a user clicks on a crypto, they get various info about it in a modal
 - [x] Get 1000 cryptos from api
-- [ ] Add loading
 - [x] Add refreshing
-- [ ] Handle errors for user auth
 - [x] Fix use auth, to check if the token is valid
-- [ ] Use fetch for the coingecko api
-- [ ] Favicon
 - [x] Search in modal
 - [x] Configure MyListWidth
-- [ ] Loading page
+- [ ] Caching requests
+- [ ] Handle errors for user auth
+- [ ] Use fetch for the coingecko api
+- [ ] Add loading
 - [ ] Error page
 - [ ] Optimize MyList
-- [ ] Better buttons
+- [x] Better buttons
 - [ ] Animations
 - [ ] Clean code
 - [ ] Logo
 - [ ] Name
-- [ ] Colors
+- [ ] Favicon
+- [ ] Better showing on dashboard
 
 - Auth pages
 
   - [x] Better design
   - [x] Notifications
   - [x] Optimization
+  - [ ] Better background
 
 - Modal
 
@@ -45,6 +44,8 @@
   - [x] The wrong crypto is being added
   - [x] Do the same thing for wallet
   - [x] Back button for the second stage of crypto modal
+  - [ ] Better design
+  - [ ] Colors
   - [ ] Optimization
 
 - Wallet page
@@ -57,10 +58,10 @@
   - [x] Edit crypto and display info for crypto modal
   - [x] Refresh wallet after actions
   - [x] Fix add crypto bug
+  - [x] Optimization
   - [ ] Better style
   - [ ] Sort the list
-  - [ ] Refresh on name change
-  - [x] Optimization
+  - [x] Refresh on name change
 
 - Crypto "page"
 
@@ -80,12 +81,15 @@
   - [x] Notifications
   - [x] Optimization
   - [x] Sort lists
+  - [ ] Animation for switching
+  - [ ] Colors
 
 - Profile page
 
   - [x] Simple details
   - [x] Stats like how much crypto in usd
   - [x] Optimization
+  - [ ] Better background
 
 - Admin page
   - [x] Promote/demote users
@@ -94,6 +98,7 @@
   - [x] Edit wallet
   - [x] Refresh info
   - [x] Optimization
+  - [ ] Better background
 
 ## Backend
 

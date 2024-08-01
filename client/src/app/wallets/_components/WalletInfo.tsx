@@ -1,5 +1,6 @@
 import { walletApi } from "@/api/wallet";
 import { IWallet } from "@/types";
+import { handleErrorToast } from "@/utils/toasts";
 import React, { useState } from "react";
 import { FaCheck, FaRegTrashAlt, FaTimes } from "react-icons/fa";
 
@@ -7,10 +8,12 @@ const WalletInfo = ({
 	wallet,
 	amountInDollars,
 	openDeleteModal,
+	refreshWallet,
 }: {
 	wallet: IWallet;
 	amountInDollars: string | number;
 	openDeleteModal: () => void;
+	refreshWallet: () => Promise<void>;
 }) => {
 	// State to control whether the wallet name is being edited
 	const [editWalletName, setEditWalletName] = useState<boolean>(false);
@@ -21,9 +24,10 @@ const WalletInfo = ({
 	const handleSubmit = async () => {
 		try {
 			await walletApi.updateWalletName(wallet.id, newWalletName);
+			await refreshWallet();
 			setEditWalletName(false);
-		} catch (error) {
-			console.error("Failed to update wallet name:", error);
+		} catch (e) {
+			handleErrorToast(e);
 		}
 	};
 

@@ -2,6 +2,7 @@
 import React, { useEffect, useRef } from "react";
 import { TextInput } from "./TextInput";
 import { IoMdSearch } from "react-icons/io";
+import { PURPLE_BUTTON_STYLE } from "@/utils/styles";
 
 interface IModalParams {
 	title: string;
@@ -11,6 +12,7 @@ interface IModalParams {
 	search: string;
 	searchPart?: boolean;
 	setSearch: React.Dispatch<React.SetStateAction<string>>;
+	nextButtonText?: string; // text for the next button
 }
 
 const Modal = ({
@@ -21,6 +23,7 @@ const Modal = ({
 	children,
 	search,
 	setSearch,
+	nextButtonText = "Next",
 }: IModalParams) => {
 	const modalRef = useRef<HTMLDivElement>(null); // references the modal
 
@@ -83,8 +86,8 @@ const Modal = ({
 				<div className="mb-6"></div>
 				{/* List of items */}
 				{children}
-				<button className="border-2 px-3 py-1 mt-6" onClick={handleNext}>
-					Next
+				<button className={`${PURPLE_BUTTON_STYLE} mt-6`} onClick={handleNext}>
+					{nextButtonText}
 				</button>
 			</div>
 		</div>

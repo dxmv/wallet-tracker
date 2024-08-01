@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { authApi } from "@/api/auth";
 import { setCookie } from "@/utils/cookies";
 import { handleErrorToast, showWarningToast } from "@/utils/toasts";
+import { PURPLE_BUTTON_STYLE } from "@/utils/styles";
 
 const Login = () => {
 	const [email, setEmail] = useState<InputState>({
@@ -60,7 +61,7 @@ const Login = () => {
 	};
 
 	return (
-		<div className=" text-center w-full flex-col flex justify-center bg-white text-black mt-4 p-4">
+		<div className=" text-center w-full flex-col flex justify-center items-center bg-white text-black mt-4 p-4 rounded-md shadow-lg shadow-custom-gray">
 			{/* Logo */}
 			<h1 className="font-bold mt-2 mb-4 text-2xl border-b-2 border-custom-gray text-center pb-2">
 				Please log in
@@ -89,11 +90,15 @@ const Login = () => {
 				errorMessage={password.errorMessage}
 				setValue={e => handlePasswordChange(e, setPassword)}
 			/>
-			<button className="bg-green my-4" onClick={handleLogin}>
-				Log in
+			<button
+				className={`${PURPLE_BUTTON_STYLE} w-1/4 font-semibold my-4`}
+				onClick={handleLogin}
+			>
+				Login
 			</button>
-			<Link href={"/register"}>Don&apos;t have an account?</Link>
-			<Link href={"/register"}>Forgot your password?</Link>
+			<Link href={"/register"} className="text-custom-gray hover:text-black">
+				Don&apos;t have an account?
+			</Link>
 		</div>
 	);
 };

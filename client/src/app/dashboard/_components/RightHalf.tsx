@@ -16,6 +16,7 @@ import CryptoModal from "./CryptoModal";
 import { useApiWithRefetch } from "@/hooks/useApiWithRefetch";
 import { calculateValuesAndChartData } from "@/utils/calculations";
 import { ICrypto, IWallet } from "@/types";
+import { PURPLE_BUTTON_STYLE } from "@/utils/styles";
 
 const SHOW_STYLE = "px-3 py-1 border-gray-600 border-2";
 
@@ -151,9 +152,15 @@ const RightHalf = ({
 			</div>
 			{/* Different api calls for both wallets and crypto */}
 			{showing == "Wallets" ? renderWalletList() : renderCryptoList()}
-			<button className="mt-8" onClick={() => setOpenModal(true)}>
-				Add {showing}
-			</button>
+			<div className="flex w-full justify-center items-center">
+				<button
+					className={`${PURPLE_BUTTON_STYLE} w-1/6 mt-8`}
+					onClick={() => setOpenModal(true)}
+				>
+					Add {showing}
+				</button>
+			</div>
+
 			{/* Show a modal based on the current showing */}
 			{renderModal}
 		</div>
