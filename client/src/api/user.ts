@@ -17,5 +17,9 @@ export const userApi = {
 			headers: {
 				Authorization: `Bearer ${getCookie("token")}`,
 			},
+			// we don't change the user that much
+			next: {
+				revalidate: 3600, // Cache for 1 hour (3600 seconds)
+			},
 		}),
 };

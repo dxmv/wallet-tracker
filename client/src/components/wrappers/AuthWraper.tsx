@@ -11,7 +11,6 @@ const AuthWrapper = ({ children }: { children: ReactNode }) => {
 	if (loading) {
 		return <LoadingPage />;
 	}
-
 	if (error) {
 		return <ErrorPage errorMessage={"Error while fetching a user!"} />;
 	}

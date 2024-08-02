@@ -16,18 +16,17 @@
 - [ ] Caching requests
 - [x] Handle errors & loading for user auth
 - [x] Remove the loading from other components
-- [ ] Use fetch for the coingecko api
 - [x] Add loading page
 - [x] Error page
-- [ ] Optimize MyList
+- [x] Optimize MyList
 - [x] Better buttons
 - [ ] Fix button style bug
 - [ ] Animations
 - [ ] Clean code
-- [ ] Logo
-- [ ] Name
-- [ ] Favicon
-- [ ] Better showing on dashboard
+- [x] Logo
+- [x] Name
+- [x] Favicon
+- [x] Better showing on dashboard
 - [ ] Remove useless imports
 
 - Auth pages
@@ -35,7 +34,6 @@
   - [x] Better design
   - [x] Notifications
   - [x] Optimization
-  - [ ] Better background
 
 - Modal
 
@@ -47,9 +45,9 @@
   - [x] The wrong crypto is being added
   - [x] Do the same thing for wallet
   - [x] Back button for the second stage of crypto modal
-  - [ ] Better design
-  - [ ] Colors
-  - [ ] Optimization
+  - [x] Better design
+  - [x] Colors
+  - [x] Optimization
 
 - Wallet page
 
@@ -62,7 +60,7 @@
   - [x] Refresh wallet after actions
   - [x] Fix add crypto bug
   - [x] Optimization
-  - [ ] Better style
+  - [x] Better style list
   - [ ] Sort the list
   - [x] Refresh on name change
 

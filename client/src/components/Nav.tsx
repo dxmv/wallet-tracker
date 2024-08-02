@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { ReactNode } from "react";
+import Image from "next/image";
 
 const Nav = () => {
 	const { isAdmin, loading } = useAuth();
@@ -20,7 +21,11 @@ const Nav = () => {
 					"linear-gradient(180deg, rgba(103,58,183,0.5) 6%, rgba(0,0,0,1) 40%)",
 			}}
 		>
-			<div>Logo</div>
+			<div>
+				<Link href="/">
+					<Image src="/logo.png" alt="Logo" width={32} height={32} />
+				</Link>
+			</div>
 			<div className="flex flex-row w-2/6 justify-between">
 				<NavLink href={"/dashboard"}>Dashboard</NavLink>
 				{isAdmin && <NavLink href="/admin">Admin</NavLink>}

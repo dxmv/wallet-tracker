@@ -19,6 +19,7 @@ import { useCrypto } from "@/hooks/useCrypto";
 import EditCryptoModal from "../_components/EditCryptoModal";
 import WalletInfo from "../_components/WalletInfo";
 import { PURPLE_BUTTON_STYLE } from "@/utils/styles";
+import ErrorPage from "@/components/ErrorPage";
 
 const Wallet = ({ params }: { params: { id: string } }) => {
 	const [wallet, setWallet] = useState<IWallet | null>(null);
@@ -96,7 +97,7 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 	};
 
 	if (!wallet) {
-		return <>a</>;
+		return <ErrorPage errorMessage={`No wallet with ${params.id}`} />;
 	}
 
 	return (

@@ -3,6 +3,7 @@ import WavyBackground from "@/components/wrappers/WavyBackground";
 import { useAuth } from "@/hooks/useAuth";
 import { PURPLE_BUTTON_STYLE } from "@/utils/styles";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Home() {
 	const { isAuthenticated } = useAuth();
@@ -11,9 +12,12 @@ export default function Home() {
 		<WavyBackground>
 			<div className="w-full h-screen flex items-center justify-center">
 				<div className="w-1/2">
-					<h1 className="text-2xl font-bold mb-8">Welcome to NAME OF APP</h1>
+					<div className="flex justify-center">
+						<Image src={"/logo.png"} alt="Logo" width={300} height={300} />
+					</div>
+					<h1 className="text-4xl font-bold mb-8">Welcome to Julius</h1>
 					{/* Short description of the app */}
-					<p className="text-xl font-semibold mb-2">
+					<p className="text-2xl font-semibold mb-2">
 						Do you have so many crypto wallets that you can't keep track of all
 						of them?
 					</p>

@@ -25,10 +25,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 		}
 	}, [isAuthenticated, loading, router]);
 
-	if (loading) {
-		return <div>Loading...</div>; // Or any loading indicator you prefer
-	}
-
 	return <>{children}</>;
 };
 

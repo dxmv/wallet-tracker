@@ -1,5 +1,6 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
+import { handleErrorToast } from "@/utils/toasts";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
 	FixedSizeList as List,
 	FixedSizeGrid as Grid,
@@ -27,11 +28,10 @@ const MyList = <T,>({
 	containerHeight = 400,
 	display = "list",
 	columnCount = 3,
-	searchTerm,
-	searchKeys,
+	searchTerm = "",
+	searchKeys = [],
 }: MyListProps<T>) => {
 	const [allItems, setAllItems] = useState<Array<T>>([]);
-	const [filteredItems, setFilteredItems] = useState<Array<T>>([]);
 
 	// fetch data when component mounts
 	useEffect(() => {
@@ -39,13 +39,26 @@ const MyList = <T,>({
 			try {
 				const data = await apiCall();
 				setAllItems(data);
-				setFilteredItems(data);
 			} catch (e) {
-				console.error(e);
+				handleErrorToast(e);
 			}
 		};
 		fetchData();
 	}, [apiCall]);
+
+	// filtering
+	const filteredItems = useMemo(() => {
+		if (!searchTerm) return allItems;
+		return allItems.filter(item =>
+			searchKeys?.some(key => {
+				const value = item[key];
+				return (
+					typeof value === "string" &&
+					value.toLowerCase().includes(searchTerm.toLowerCase())
+				);
+			})
+		);
+	}, [allItems, searchTerm, searchKeys]);
 
 	// Memoized row renderer for the virtualized list
 	const ListRow = useCallback(
@@ -65,8 +78,10 @@ const MyList = <T,>({
 			return (
 				<div
 					style={style}
-					className={`border-b-2 border-custom-purple-dark  ${
-						columnIndex == 0 && "border-r-2"
+					className={`border-b-2 border-custom-purple-dark px-1  ${
+						columnIndex !== 0 &&
+						columnIndex !== columnCount - 1 &&
+						"border-l-2 border-r-2"
 					}`}
 				>
 					{renderItem(item)}
@@ -75,21 +90,6 @@ const MyList = <T,>({
 		},
 		[filteredItems, renderItem, columnCount]
 	);
-
-	// filtering
-	useEffect(() => {
-		const filteredList = allItems.filter(item => {
-			if (!searchTerm) return true;
-			return searchKeys?.some(key => {
-				const value = item[key];
-				return (
-					typeof value === "string" &&
-					value.toLowerCase().includes(searchTerm.toLowerCase())
-				);
-			});
-		});
-		setFilteredItems(filteredList);
-	}, [allItems, searchTerm, searchKeys]);
 
 	return display === "list" ? (
 		<List

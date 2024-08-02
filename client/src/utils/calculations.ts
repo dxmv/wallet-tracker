@@ -29,7 +29,7 @@ export const calculateValuesAndChartData = async (
 				const currentPrice = cryptoMap.get(coin.apiId)?.current_price || 0;
 				return walletTotal + coin.amount * currentPrice;
 			}, 0);
-			labels.push(item.adminWallet.name);
+			labels.push(item.walletName);
 			colorPromises.push(extractColor(item.adminWallet.iconUrl));
 		} else {
 			const currentPrice = cryptoMap.get(item.apiId)?.current_price || 0;

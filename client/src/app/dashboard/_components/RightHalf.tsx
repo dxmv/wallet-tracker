@@ -18,7 +18,7 @@ import { calculateValuesAndChartData } from "@/utils/calculations";
 import { ICrypto, IWallet } from "@/types";
 import { PURPLE_BUTTON_STYLE } from "@/utils/styles";
 
-const SHOW_STYLE = "px-3 py-1 border-gray-600 border-2";
+const SHOW_STYLE = "px-3 py-1 border-custom-gray border-2";
 
 // shows the list of elements currently on the chart
 const RightHalf = ({
@@ -117,7 +117,7 @@ const RightHalf = ({
 				<button
 					key={type}
 					className={`${SHOW_STYLE} ${type === "Crypto" ? "" : "border-r-0"} ${
-						showing === type ? "bg-gray-500" : ""
+						showing === type ? "bg-custom-purple-light" : ""
 					}`}
 					onClick={() => setShowing(type as "Wallets" | "Crypto")}
 				>
