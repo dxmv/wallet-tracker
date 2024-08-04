@@ -3,7 +3,7 @@ import { walletApi } from "@/api/wallet";
 import CryptoListItem from "@/components/custom list/CryptoListItem";
 import MyList from "@/components/custom list/MyList";
 import Modal from "@/components/Modal";
-import { IWallet } from "@/types";
+import { ICrypto, IWallet } from "@/types";
 import { useRouter } from "next/navigation";
 import React, {
 	useCallback,
@@ -20,6 +20,9 @@ import EditCryptoModal from "../_components/EditCryptoModal";
 import WalletInfo from "../_components/WalletInfo";
 import { PURPLE_BUTTON_STYLE } from "@/utils/styles";
 import ErrorPage from "@/components/ErrorPage";
+import { useApiWithRefetch } from "@/hooks/useApiWithRefetch";
+import { handleErrorToast } from "@/utils/toasts";
+import LoadingPage from "@/components/LoadingPage";
 
 const Wallet = ({ params }: { params: { id: string } }) => {
 	const [wallet, setWallet] = useState<IWallet | null>(null);
@@ -47,20 +50,33 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 	}, [wallet, cryptoMap]);
 
 	// when we modify the coins, we need to refetch the wallet
+	// returns coins sorted by value
 	const refreshWallet = useCallback(async () => {
+		let wallet;
 		try {
-			const updatedWallet = await walletApi.getOneWallet(
-				Number.parseInt(params.id)
-			);
-			setWallet(updatedWallet);
+			wallet = await walletApi.getOneWallet(Number.parseInt(params.id));
 		} catch (e) {
-			console.error(e);
+			handleErrorToast(e);
+			return [];
 		}
+		if (!wallet) {
+			return [];
+		}
+		await setWallet(wallet);
+		return wallet.coins
+			.map(coin => {
+				const currentPrice = cryptoMap.get(coin.apiId)?.current_price || 0;
+				return { ...coin, value: coin.amount * currentPrice };
+			})
+			.sort((a, b) => b.value - a.value);
 	}, [params.id]);
 
 	// fetch the wallet
+	const { apiCall, refetch } = useApiWithRefetch(refreshWallet);
+
+	// fetch on start
 	useEffect(() => {
-		refreshWallet();
+		apiCall();
 	}, []);
 
 	// deletes the wallet
@@ -72,7 +88,7 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 			await walletApi.deleteWallet(wallet?.id);
 			await push("/dashboard");
 		} catch (e) {
-			console.error(e);
+			handleErrorToast(e);
 		}
 	};
 
@@ -80,9 +96,9 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 	const handleEditCrypto = async (id: number, amount: number) => {
 		try {
 			await cryptoApi.changeAmount(id, amount);
-			await refreshWallet();
+			await refetch();
 		} catch (e) {
-			console.error(e);
+			handleErrorToast(e);
 		}
 	};
 
@@ -90,14 +106,57 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 	const handleDeleteCrypto = async (id: number) => {
 		try {
 			await cryptoApi.deleteCrypto(id);
-			await refreshWallet();
+			await refetch();
 		} catch (e) {
-			console.error(e);
+			handleErrorToast(e);
 		}
 	};
 
+	const loadCryptoList = useCallback(
+		() => (
+			<MyList
+				apiCall={apiCall}
+				containerWidth={parentRef.current?.offsetWidth || 1400}
+				renderItem={item => (
+					<EditAndDeleteItemWrapper
+						onEdit={() => console.log("edit")}
+						onDelete={handleDeleteCrypto}
+						id={item.id}
+						renderEditModal={
+							<EditCryptoModal
+								handleEditCrypto={handleEditCrypto}
+								item={item}
+							/>
+						}
+					>
+						<div className="flex justify-between items-center w-full">
+							<div className="flex items-center">
+								<img
+									src={item.imageUrl}
+									alt="image"
+									width={25}
+									height={25}
+									className="rounded-lg"
+								/>
+								<div className="ml-2">
+									<h1 className="font-bold ">{item.name}</h1>
+									<p className="text-sm">
+										{item.ticker && item.ticker.toUpperCase()}
+									</p>
+								</div>
+							</div>
+							<p>${item.value.toFixed(2)}</p>
+						</div>
+					</EditAndDeleteItemWrapper>
+				)}
+				display="grid"
+			/>
+		),
+		[apiCall, cryptoMap]
+	);
+
 	if (!wallet) {
-		return <ErrorPage errorMessage={`No wallet with ${params.id}`} />;
+		return <LoadingPage />;
 	}
 
 	return (
@@ -107,36 +166,11 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 				wallet={wallet}
 				amountInDollars={amountInDollars}
 				openDeleteModal={() => setDeleteWalletModal(true)}
-				refreshWallet={refreshWallet}
+				refreshWallet={refetch}
 			/>
 			{/* Grid of coins */}
-			<div className="mt-4"></div>
-			<div ref={parentRef}>
-				<MyList
-					apiCall={async () => await wallet.coins.sort()}
-					containerWidth={parentRef.current?.offsetWidth || 1400}
-					renderItem={item => (
-						<EditAndDeleteItemWrapper
-							onEdit={() => console.log("edit")}
-							onDelete={handleDeleteCrypto}
-							id={item.id}
-							renderEditModal={
-								<EditCryptoModal
-									handleEditCrypto={handleEditCrypto}
-									item={item}
-								/>
-							}
-						>
-							<CryptoListItem
-								current={cryptoMap.get(item.apiId)}
-								item={item}
-								percentage={false}
-							/>
-						</EditAndDeleteItemWrapper>
-					)}
-					display="grid"
-				/>
-			</div>
+			<div className="mt-4">{loadCryptoList()}</div>
+			<div ref={parentRef}></div>
 			{/* Button for adding crypto */}
 			<div className="flex justify-center">
 				<button
@@ -175,7 +209,7 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 				<AddCryptoModal
 					closeModal={() => setAddCryptoModal(false)}
 					walletId={wallet.id}
-					refreshWallet={refreshWallet}
+					refreshWallet={refetch}
 				/>
 			)}
 		</main>

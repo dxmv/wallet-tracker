@@ -13,7 +13,7 @@ const WalletInfo = ({
 	wallet: IWallet;
 	amountInDollars: string | number;
 	openDeleteModal: () => void;
-	refreshWallet: () => Promise<void>;
+	refreshWallet: () => void;
 }) => {
 	// State to control whether the wallet name is being edited
 	const [editWalletName, setEditWalletName] = useState<boolean>(false);

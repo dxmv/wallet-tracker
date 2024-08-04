@@ -20,7 +20,7 @@ const AddCryptoModal = ({
 }: {
 	closeModal: () => void;
 	walletId: number;
-	refreshWallet: () => Promise<void>;
+	refreshWallet: () => void;
 }) => {
 	const [selectedId, setSelectedId] = useState<string | null>(null);
 	const [amount, setAmount] = useState<string>("");
@@ -47,9 +47,9 @@ const AddCryptoModal = ({
 			}
 
 			const payload: Omit<ICrypto, "id"> = {
-				name: currentCrypto.name,
+				name: currentCrypto.name as string,
 				imageUrl: currentCrypto.image as string,
-				ticker: currentCrypto.symbol,
+				ticker: currentCrypto.symbol.toUpperCase(),
 				apiId: currentCrypto.id as string,
 				amount: newAmount,
 			};

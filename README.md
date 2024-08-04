@@ -61,7 +61,7 @@
   - [x] Fix add crypto bug
   - [x] Optimization
   - [x] Better style list
-  - [ ] Sort the list
+  - [x] Sort the list
   - [x] Refresh on name change
 
 - Crypto "page"
@@ -82,8 +82,6 @@
   - [x] Notifications
   - [x] Optimization
   - [x] Sort lists
-  - [ ] Animation for switching
-  - [ ] Colors
 
 - Profile page
 
