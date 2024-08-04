@@ -103,7 +103,8 @@
 
 ## Backend
 
-- [ ] Exceptions, fallback exceptions
+- [x] All exceptions handler
+- [x] Handle security exceptions
 - [x] Can't add admin wallet if the name is the same
 - [x] Delete wallet icon when we delete wallet
 - [x] Edit the icon and name for wallet, delete old image

@@ -20,7 +20,7 @@ const CryptoProvider = ({ children }: { children: React.ReactNode }) => {
 		try {
 			// add all cryptos to the list
 			let list: Array<ICoinFromCoinGecko> = [];
-			for (let i = 1; i <= 4; i++) {
+			for (let i = 1; i <= 1; i++) {
 				const response = await coinGecko.getCoinListWithMarketData(i);
 				list = [...list, ...response];
 			}
