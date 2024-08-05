@@ -13,21 +13,21 @@
 - [x] Fix use auth, to check if the token is valid
 - [x] Search in modal
 - [x] Configure MyListWidth
-- [ ] Caching requests
+- [x] Caching coin gecko requests
 - [x] Handle errors & loading for user auth
 - [x] Remove the loading from other components
 - [x] Add loading page
 - [x] Error page
 - [x] Optimize MyList
 - [x] Better buttons
-- [ ] Fix button style bug
-- [ ] Animations
-- [ ] Clean code
+- [x] Fix button style bug
+- [x] Animations
+- [x] Clean code
 - [x] Logo
 - [x] Name
 - [x] Favicon
 - [x] Better showing on dashboard
-- [ ] Remove useless imports
+- [x] Remove useless imports
 
 - Auth pages
 

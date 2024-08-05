@@ -33,11 +33,12 @@ const config: Config = {
 		},
 	},
 	plugins: [
-		plugin(function ({ addUtilities }) {
+		plugin(function ({ addUtilities, theme }) {
 			const newUtilities = {
 				".animation-delay-1000": { animationDelay: "1000ms" },
 				".animation-delay-2000": { animationDelay: "2000ms" },
 			};
+
 			addUtilities(newUtilities);
 		}),
 	],

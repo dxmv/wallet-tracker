@@ -4,7 +4,7 @@ import { getCookie, removeCookie } from "@/utils/cookies";
 import { IUser } from "@/types";
 import { jwtDecode } from "jwt-decode";
 import { userApi } from "@/api/user";
-import { handleErrorToast, showErrorToast } from "@/utils/toasts";
+import { handleErrorToast } from "@/utils/toasts";
 
 // Hook that keeps track of the user's authentication status
 export const useAuth = () => {

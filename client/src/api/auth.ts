@@ -1,4 +1,4 @@
-import { IUser, RequestError } from "@/types";
+import { IUser } from "@/types";
 import { fetchCustom } from "./default";
 import { removeCookie } from "@/utils/cookies";
 

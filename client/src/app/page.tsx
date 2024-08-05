@@ -1,7 +1,6 @@
 "use client";
 import WavyBackground from "@/components/wrappers/WavyBackground";
 import { useAuth } from "@/hooks/useAuth";
-import { PURPLE_BUTTON_STYLE } from "@/utils/styles";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -32,10 +31,10 @@ export default function Home() {
 							<Link href="/dashboard">Dashboard</Link>
 						) : (
 							<div className="flex justify-around items-center">
-								<Link href="/login" className={PURPLE_BUTTON_STYLE}>
+								<Link href="/login" className="btn-purple">
 									Login
 								</Link>
-								<Link href="/register" className={PURPLE_BUTTON_STYLE}>
+								<Link href="/register" className="btn-purple">
 									Register
 								</Link>
 							</div>

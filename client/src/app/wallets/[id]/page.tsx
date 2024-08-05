@@ -1,53 +1,29 @@
 "use client";
 import { walletApi } from "@/api/wallet";
-import CryptoListItem from "@/components/custom list/CryptoListItem";
 import MyList from "@/components/custom list/MyList";
 import Modal from "@/components/Modal";
-import { ICrypto, IWallet } from "@/types";
+import { IWallet } from "@/types";
 import { useRouter } from "next/navigation";
-import React, {
-	useCallback,
-	useEffect,
-	useMemo,
-	useRef,
-	useState,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import AddCryptoModal from "../_components/AddCryptoModal";
 import EditAndDeleteItemWrapper from "@/components/custom list/wrappers/EditAndDeleteItemWrapper";
 import { cryptoApi } from "@/api/crypto";
 import { useCrypto } from "@/hooks/useCrypto";
 import EditCryptoModal from "../_components/EditCryptoModal";
 import WalletInfo from "../_components/WalletInfo";
-import { PURPLE_BUTTON_STYLE } from "@/utils/styles";
-import ErrorPage from "@/components/ErrorPage";
 import { useApiWithRefetch } from "@/hooks/useApiWithRefetch";
 import { handleErrorToast } from "@/utils/toasts";
 import LoadingPage from "@/components/LoadingPage";
 
 const Wallet = ({ params }: { params: { id: string } }) => {
 	const [wallet, setWallet] = useState<IWallet | null>(null);
+	const [totalAmount, setTotalAmount] = useState<number>(0);
 	const [deleteWalletModal, setDeleteWalletModal] = useState<boolean>(false);
 	const [addCryptoModal, setAddCryptoModal] = useState<boolean>(false);
 	const parentRef = useRef<HTMLDivElement>(null); // for the width of MyList
 
 	const { push } = useRouter();
 	const cryptoMap = useCrypto();
-
-	// calculate the amount in dollars
-	const amountInDollars = useMemo(() => {
-		if (!wallet) {
-			return 0;
-		}
-		return wallet.coins
-			.reduce((previous, current) => {
-				const currentApi = cryptoMap.get(current.apiId);
-				if (!currentApi) {
-					return previous;
-				}
-				return previous + current.amount * currentApi.current_price;
-			}, 0)
-			.toFixed(2);
-	}, [wallet, cryptoMap]);
 
 	// when we modify the coins, we need to refetch the wallet
 	// returns coins sorted by value
@@ -66,10 +42,11 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 		return wallet.coins
 			.map(coin => {
 				const currentPrice = cryptoMap.get(coin.apiId)?.current_price || 0;
+				setTotalAmount(prev => prev + currentPrice * coin.amount);
 				return { ...coin, value: coin.amount * currentPrice };
 			})
 			.sort((a, b) => b.value - a.value);
-	}, [params.id]);
+	}, [params.id, cryptoMap]);
 
 	// fetch the wallet
 	const { apiCall, refetch } = useApiWithRefetch(refreshWallet);
@@ -112,6 +89,7 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 		}
 	};
 
+	// optimized list loading
 	const loadCryptoList = useCallback(
 		() => (
 			<MyList
@@ -164,7 +142,7 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 			{/* Wallet info */}
 			<WalletInfo
 				wallet={wallet}
-				amountInDollars={amountInDollars}
+				amountInDollars={totalAmount}
 				openDeleteModal={() => setDeleteWalletModal(true)}
 				refreshWallet={refetch}
 			/>
@@ -175,7 +153,7 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 			<div className="flex justify-center">
 				<button
 					onClick={() => setAddCryptoModal(true)}
-					className={`${PURPLE_BUTTON_STYLE} w-1/12 font-semibold `}
+					className={`btn-purple w-1/12 font-semibold `}
 				>
 					Add crypto
 				</button>
@@ -197,7 +175,7 @@ const Wallet = ({ params }: { params: { id: string } }) => {
 						<div className="flex justify-center">
 							<button
 								onClick={() => setDeleteWalletModal(false)}
-								className={`${PURPLE_BUTTON_STYLE}  mt-8 bg-red-600 hover:bg-red-800`}
+								className={`btn-purple mt-8 bg-red-600 hover:bg-red-800`}
 							>
 								No
 							</button>

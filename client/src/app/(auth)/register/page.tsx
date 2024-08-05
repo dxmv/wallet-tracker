@@ -7,7 +7,7 @@ import { MdKey } from "react-icons/md";
 import { InputState } from "@/types";
 import { handleEmailChange, handlePasswordChange } from "@/utils/inputHandlers";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/hooks/useAuth";
+import Image from "next/image";
 import { authApi } from "@/api/auth";
 import {
 	handleErrorToast,
@@ -76,7 +76,7 @@ const Register = () => {
 
 	return (
 		<div className=" text-center w-full flex-col flex justify-center bg-white items-center text-black mt-4 p-4 rounded-md shadow-lg shadow-custom-gray">
-			{/* Logo */}
+			<Image src="/logo.png" width={100} height={100} alt="Logo" />
 			<h1 className="font-bold mt-2 mb-4 text-2xl border-b-2 border-custom-gray text-center pb-2">
 				Welcome, please register
 			</h1>

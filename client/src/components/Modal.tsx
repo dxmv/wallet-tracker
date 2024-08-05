@@ -2,7 +2,6 @@
 import React, { useEffect, useRef } from "react";
 import { TextInput } from "./TextInput";
 import { IoMdSearch } from "react-icons/io";
-import { PURPLE_BUTTON_STYLE } from "@/utils/styles";
 
 interface IModalParams {
 	title: string;
@@ -86,7 +85,7 @@ const Modal = ({
 				<div className="mb-6"></div>
 				{/* List of items */}
 				{children}
-				<button className={`${PURPLE_BUTTON_STYLE} mt-6`} onClick={handleNext}>
+				<button className={`btn-purple mt-6`} onClick={handleNext}>
 					{nextButtonText}
 				</button>
 			</div>

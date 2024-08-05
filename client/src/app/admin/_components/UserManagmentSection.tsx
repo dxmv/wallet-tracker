@@ -3,7 +3,6 @@ import { adminApi } from "@/api/admin";
 import { userApi } from "@/api/user";
 import MyList from "@/components/custom list/MyList";
 import { useApiWithRefetch } from "@/hooks/useApiWithRefetch";
-import { PURPLE_BUTTON_STYLE } from "@/utils/styles";
 import { handleErrorToast, showSuccessToast } from "@/utils/toasts";
 
 // Component for managing users
@@ -42,13 +41,13 @@ export const UserManagementSection = () => {
 						</p>
 						<div className="flex">
 							<button
-								className={`${PURPLE_BUTTON_STYLE} mr-4 bg-green-500 hover:bg-green-800`}
+								className={`btn-purple mr-4 bg-green-500 hover:bg-green-800`}
 								onClick={() => handleUserRoleChange(item.id, "promote")}
 							>
 								PROMOTE
 							</button>
 							<button
-								className={`${PURPLE_BUTTON_STYLE} mr-4 bg-red-500 hover:bg-red-800`}
+								className={`btn-purple mr-4 bg-red-500 hover:bg-red-800`}
 								onClick={() => handleUserRoleChange(item.id, "demote")}
 							>
 								DEMOTE

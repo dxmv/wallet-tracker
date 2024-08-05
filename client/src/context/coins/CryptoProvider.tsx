@@ -20,6 +20,7 @@ const CryptoProvider = ({ children }: { children: React.ReactNode }) => {
 		try {
 			// add all cryptos to the list
 			let list: Array<ICoinFromCoinGecko> = [];
+			// here you can change the amount of crypto you want to fetch
 			for (let i = 1; i <= 1; i++) {
 				const response = await coinGecko.getCoinListWithMarketData(i);
 				list = [...list, ...response];
@@ -33,7 +34,6 @@ const CryptoProvider = ({ children }: { children: React.ReactNode }) => {
 				return newMap;
 			});
 		} catch (e) {
-			console.log(e);
 			handleErrorToast(e);
 			setError(e as Error);
 		} finally {

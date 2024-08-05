@@ -8,6 +8,7 @@ const genRanHex = (size: number): string =>
 		.map(() => Math.floor(Math.random() * 10 + 6).toString(16))
 		.join("");
 
+// extracts the color from the image
 export const extractColor = async (imageUrl: string): Promise<string> => {
 	try {
 		const color = await fac.getColorAsync(imageUrl, { algorithm: "simple" });

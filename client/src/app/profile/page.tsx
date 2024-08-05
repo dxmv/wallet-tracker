@@ -4,10 +4,8 @@ import { walletApi } from "@/api/wallet";
 import MyList from "@/components/custom list/MyList";
 import { useAuth } from "@/hooks/useAuth";
 import { useCrypto } from "@/hooks/useCrypto";
-import { ICrypto, IWallet } from "@/types";
-import { PURPLE_BUTTON_STYLE } from "@/utils/styles";
 import { useRouter } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface IStat {
 	text: string;
@@ -157,10 +155,7 @@ const ProfilePage = () => {
 					/>
 				</div>
 			</div>
-			<button
-				className={`${PURPLE_BUTTON_STYLE} font-bold `}
-				onClick={handleLogout}
-			>
+			<button className={`btn-purple font-bold `} onClick={handleLogout}>
 				Logout
 			</button>
 		</main>

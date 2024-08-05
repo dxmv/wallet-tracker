@@ -32,6 +32,7 @@ export const calculateValuesAndChartData = async (
 			labels.push(item.walletName);
 			colorPromises.push(extractColor(item.adminWallet.iconUrl));
 		} else {
+			// calculate the value for a coin
 			const currentPrice = cryptoMap.get(item.apiId)?.current_price || 0;
 			itemValue = item.amount * currentPrice;
 			labels.push(item.name);

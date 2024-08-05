@@ -12,8 +12,6 @@ import {
 	showWarningToast,
 } from "@/utils/toasts";
 import { useApiWithRefetch } from "@/hooks/useApiWithRefetch";
-import { walletApi } from "@/api/wallet";
-import { PURPLE_BUTTON_STYLE } from "@/utils/styles";
 
 // Component for managing admin wallets
 export const AdminWalletSection = () => {
@@ -115,7 +113,7 @@ export const AdminWalletSection = () => {
 			<div className="flex justify-center">
 				<button
 					onClick={() => setAddWalletModal(true)}
-					className={`${PURPLE_BUTTON_STYLE} w-1/6`}
+					className={`btn-purple w-1/6`}
 				>
 					Add a wallet
 				</button>

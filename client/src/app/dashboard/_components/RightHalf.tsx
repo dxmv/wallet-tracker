@@ -10,13 +10,11 @@ import DetailsModalWrapper from "@/components/custom list/wrappers/DetailsModalI
 import CryptoDetails from "./CryptoDetails";
 import { useCrypto } from "@/hooks/useCrypto";
 import { ChartData } from "chart.js";
-import { extractColor } from "@/utils/colorExtraction";
 import WalletsModal from "./WalletsModal";
 import CryptoModal from "./CryptoModal";
 import { useApiWithRefetch } from "@/hooks/useApiWithRefetch";
 import { calculateValuesAndChartData } from "@/utils/calculations";
 import { ICrypto, IWallet } from "@/types";
-import { PURPLE_BUTTON_STYLE } from "@/utils/styles";
 
 const SHOW_STYLE = "px-3 py-1 border-custom-gray border-2";
 
@@ -154,7 +152,7 @@ const RightHalf = ({
 			{showing == "Wallets" ? renderWalletList() : renderCryptoList()}
 			<div className="flex w-full justify-center items-center">
 				<button
-					className={`${PURPLE_BUTTON_STYLE} w-1/6 mt-8`}
+					className={`btn-purple w-1/6 mt-8`}
 					onClick={() => setOpenModal(true)}
 				>
 					Add {showing}

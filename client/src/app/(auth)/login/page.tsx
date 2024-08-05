@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { authApi } from "@/api/auth";
 import { setCookie } from "@/utils/cookies";
 import { handleErrorToast, showWarningToast } from "@/utils/toasts";
+import Image from "next/image";
 import { PURPLE_BUTTON_STYLE } from "@/utils/styles";
 
 const Login = () => {
@@ -62,7 +63,7 @@ const Login = () => {
 
 	return (
 		<div className=" text-center w-full flex-col flex justify-center items-center bg-white text-black mt-4 p-4 rounded-md shadow-lg shadow-custom-gray">
-			{/* Logo */}
+			<Image src="/logo.png" width={100} height={100} alt="Logo" />
 			<h1 className="font-bold mt-2 mb-4 text-2xl border-b-2 border-custom-gray text-center pb-2">
 				Please log in
 			</h1>
